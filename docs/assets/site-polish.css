@@ -1,0 +1,300 @@
+/* ═══════════════════════════════════════════════════════════════
+   CYBERSECURITY NOTES — Stripe-Inspired Design System V3
+   Minimal, high-contrast, beautiful typography.
+═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  /* Stripe Colors */
+  --md-primary-fg-color: #635bff;             /* Blurple */
+  --md-primary-fg-color--light: #7a73ff;
+  --md-primary-fg-color--dark: #4d45e5;
+  --md-accent-fg-color: #0abf53;              /* Green Accent */
+
+  --md-default-bg-color: #ffffff;
+  --md-default-fg-color: #32325d;             /* Dark Slate */
+  --md-default-fg-color--light: #424770;      /* Muted Slate */
+
+  --r-sm: 4px;
+  --r-md: 8px;                                /* Classic Stripe Box */
+  --r-lg: 12px;
+  
+  --border: #e6ebf1;
+  --surf-0: #ffffff;
+  --surf-1: #f6f9fc;                          /* Stripe Grey Sub-bg */
+  --surf-2: #e3e8ee;
+  
+  /* Classic Stripe Shadows */
+  --shadow-sm: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+  --shadow-hover: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3);
+
+  --accent-1: #635bff;
+  --accent-2: #0abf53;
+  --accent-glow: rgba(99,91,255,0.18);
+  
+  --measure: 76ch;
+  --leading: 1.65;
+  --transition: 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #635bff;
+  --md-primary-fg-color--light: #7a73ff;
+  --md-primary-fg-color--dark: #4d45e5;
+  
+  --md-default-bg-color: #0f1422;
+  --md-default-fg-color: #e3e8ee;
+  --md-default-fg-color--light: #aab7c4;
+
+  --border: #2b303b;
+  --surf-0: #1a1f36;
+  --surf-1: #0f1422;
+  --surf-2: #242a3e;
+  
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 15px 35px rgba(0, 0, 0, 0.4), 0 5px 15px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+body {
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--surf-1);
+}
+
+.md-grid          { max-width: 86rem; }
+.md-main__inner   { margin-top: 0; }
+.md-content__inner { 
+  padding: 3rem; 
+  background: var(--surf-0);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  border: 1px solid var(--border);
+}
+.md-content__inner > :first-child { margin-top: 0; }
+
+@media screen and (max-width: 76.1875em) {
+  .md-content__inner { 
+    margin-top: 0;
+    padding: 1.5rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+/* ── Typography ────────────────────────────────────────────── */
+.md-typeset {
+  font-size: 1.0625rem; /* 17px base, Stripe style */
+  line-height: var(--leading);
+  color: var(--md-default-fg-color--light);
+  font-family: 'Inter', var(--md-text-font-family, sans-serif);
+}
+
+.md-typeset p,
+.md-typeset li,
+.md-typeset td,
+.md-typeset blockquote { 
+  line-height: var(--leading); 
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset h1 {
+  margin: 0 0 1rem;
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset h2 {
+  margin: 2.5rem 0 1rem;
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--md-default-fg-color);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.6rem;
+}
+
+.md-typeset h3 {
+  margin: 2rem 0 0.8rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset h4 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset b, .md-typeset strong {
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset h1 + p,
+.md-typeset h2 + p,
+.md-typeset h3 + p,
+.md-typeset > p,
+.md-typeset > ul,
+.md-typeset > ol,
+.md-typeset > blockquote { max-width: var(--measure); }
+
+/* Custom bullet points */
+.md-typeset ul { list-style: none; padding-left: 0; }
+.md-typeset ul li { position: relative; padding-left: 1.25rem; margin-bottom: 0.4rem; }
+.md-typeset ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent-1);
+  font-weight: bold;
+}
+
+/* ── Header & Navigation ───────────────────────────────────── */
+.md-header {
+  background-color: var(--surf-0);
+  box-shadow: 0 1px 0 var(--border);
+}
+[data-md-color-scheme="slate"] .md-header { background-color: var(--surf-1); }
+
+.md-tabs {
+  background-color: var(--surf-0);
+  border-bottom: 1px solid var(--border);
+}
+[data-md-color-scheme="slate"] .md-tabs { background-color: var(--surf-1); }
+
+.md-header__title, .md-nav__title {
+  font-weight: 700;
+  color: var(--md-default-fg-color) !important;
+}
+
+.md-header__button { color: var(--md-default-fg-color) !important; }
+.md-header__button.md-logo { color: var(--accent-1) !important; }
+
+.md-tabs__link {
+  color: var(--md-default-fg-color--light) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.md-tabs__item--active .md-tabs__link,
+.md-tabs__link:hover { color: var(--accent-1) !important; }
+
+.md-nav__link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transition);
+}
+
+/* ── Admonitions (Info boxes) ──────────────────────────────── */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  background: var(--surf-0);
+  margin: 1.5rem 0;
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary { 
+  font-size: 0.95rem; 
+  font-weight: 600; 
+  background: rgba(0,0,0,0.02);
+  border-bottom: 1px solid var(--border);
+}
+
+.md-typeset .note { border-left: 4px solid var(--accent-1); }
+.md-typeset .success { border-left: 4px solid var(--accent-2); }
+.md-typeset .tip { border-left: 4px solid var(--accent-1); }
+
+/* ── Code Blocks ───────────────────────────────────────────── */
+.md-typeset code {
+  font-size: 0.85em;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--surf-2);
+  border: 1px solid var(--border);
+  padding: 0.2em 0.4em;
+  border-radius: var(--r-sm);
+  color: var(--accent-1);
+}
+
+.md-typeset pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* ── Tables ────────────────────────────────────────────────── */
+.md-typeset__scrollwrap {
+  margin: 1.5rem 0;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.md-typeset table:not([class]) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background: var(--surf-0);
+}
+
+.md-typeset table:not([class]) th {
+  padding: 0.8rem 1rem;
+  background: var(--surf-1);
+  color: var(--md-default-fg-color);
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.md-typeset table:not([class]) td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset table:not([class]) tr:last-child td { border-bottom: none; }
+.md-typeset table:not([class]) tbody tr:hover td { background: var(--surf-1); }
+
+/* ── Search ────────────────────────────────────────────────── */
+.md-search__form {
+  background-color: var(--surf-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+}
+
+.md-search__form:focus-within {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* ── HR ────────────────────────────────────────────────────── */
+.md-typeset hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 2rem 0;
+}
+
+/* ── Links ─────────────────────────────────────────────────── */
+.md-typeset a {
+  color: var(--accent-1);
+  font-weight: 500;
+  transition: opacity var(--transition);
+}
+.md-typeset a:hover { opacity: 0.8; }
