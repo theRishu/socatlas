@@ -7,6 +7,13 @@
 
 Welcome to **SOC Atlas**, a comprehensive, open-source cybersecurity knowledge base. This repository holds highly structured playbooks, deep technical walkthroughs, and 1200 high-yield revision points designed specifically for Security Operations Center (SOC) Analysts, Security Engineers, and Infosec students.
 
+## 🌐 View the Live Website
+You do not need to download or install anything to read the documentation. You can view the fully interactive, hosted version of **SOC Atlas** directly in your browser right here:
+
+👉 **[Link to your live Vercel / GitHub Pages site will go here]**
+
+---
+
 ## 🌟 Key Features
 * **🚨 SOC Alerts & Playbooks:** Step-by-step triage, investigation, and containment workflows for EDR events, Malware, Ransomware, DDoS, Impossible Travel, and Privilege Escalation.
 * **🏴‍☠️ Major Attacks Directory:** Clear technical breakdowns of critical attack vectors (SQLi, XSS, CSRF, SSRF, ARP Spoofing) mapped directly across the OSI Model.
