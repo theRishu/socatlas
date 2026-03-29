@@ -269,6 +269,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const SECTION_SELECTOR = '[data-pdf-section-group]';
   const HTML2PDF_CDN = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
   const EMOJI_RE = /[\p{Extended_Pictographic}\uFE0F]/gu;
+  const PDF_PAGE_WIDTH_MM = 210;
+  const PDF_PAGE_HEIGHT_MM = 297;
+  const PDF_MARGIN_MM = 10;
 
   const parseSelection = () => {
     const raw = new URLSearchParams(window.location.search).get("sections");
@@ -288,6 +291,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     const mode = new URLSearchParams(window.location.search).get("mode");
     return mode === "paper" ? "paper" : "color";
   };
+
+  const parseImages = () =>
+    new URLSearchParams(window.location.search).get("images") !== "0";
 
   const isDownloadRequested = () =>
     new URLSearchParams(window.location.search).get("download") === "1";
@@ -330,11 +336,35 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     }
 
     const modeLabel = parseMode() === "paper" ? "Paper-friendly" : "Color PDF";
-    note.textContent = `Included in this PDF: ${labels.join(", ")} • ${modeLabel}`;
+    const imagesLabel = parseImages() ? "With images" : "Text only";
+    note.textContent = `Included in this PDF: ${labels.join(", ")} • ${modeLabel} • ${imagesLabel}`;
   };
 
   const applyMode = () => {
     document.documentElement.dataset.pdfMode = parseMode();
+  };
+
+  const applyImagePreference = () => {
+    const includeImages = parseImages();
+    document.documentElement.dataset.pdfImages = includeImages ? "on" : "off";
+
+    if (includeImages) {
+      return;
+    }
+
+    const seenFigures = new Set();
+    document
+      .querySelectorAll(".md-content__inner figure, .md-content__inner picture, .md-content__inner img, .md-content__inner svg")
+      .forEach((node) => {
+        const figure = node.closest("figure");
+        if (figure && !seenFigures.has(figure)) {
+          seenFigures.add(figure);
+          figure.hidden = true;
+          return;
+        }
+
+        node.hidden = true;
+      });
   };
 
   const ensureStatusNote = () => {
@@ -366,16 +396,17 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const buildFilename = () => {
     const selected = parseSelection();
     const mode = parseMode();
+    const imagesSuffix = parseImages() ? "" : "-no-images";
 
     if (!selected.length) {
-      return `socatlas-complete-guide-${mode}.pdf`;
+      return `socatlas-complete-guide-${mode}${imagesSuffix}.pdf`;
     }
 
     if (selected.length <= 2) {
-      return `socatlas-${selected.join("-")}-${mode}.pdf`;
+      return `socatlas-${selected.join("-")}-${mode}${imagesSuffix}.pdf`;
     }
 
-    return `socatlas-${selected[0]}-${selected.length}-sections-${mode}.pdf`;
+    return `socatlas-${selected[0]}-${selected.length}-sections-${mode}${imagesSuffix}.pdf`;
   };
 
   const stripEmoji = (value) =>
@@ -415,6 +446,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   };
 
   const waitForImages = async () => {
+    if (!parseImages()) {
+      return;
+    }
+
     const images = Array.from(document.querySelectorAll(".md-content__inner img"));
     await Promise.all(
       images.map(
@@ -433,6 +468,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   };
 
   const waitForImagesWithin = async (root) => {
+    if (!parseImages()) {
+      return;
+    }
+
     const images = Array.from(root.querySelectorAll("img"));
     await Promise.all(
       images.map(
@@ -457,6 +496,27 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
       });
     });
 
+  const removeImages = (root) => {
+    const removedFigures = new Set();
+    root.querySelectorAll("figure, picture, img, svg").forEach((node) => {
+      if (node.tagName === "FIGURE") {
+        node.remove();
+        return;
+      }
+
+      const figure = node.closest("figure");
+      if (figure && root.contains(figure)) {
+        if (!removedFigures.has(figure)) {
+          removedFigures.add(figure);
+          figure.remove();
+        }
+        return;
+      }
+
+      node.remove();
+    });
+  };
+
   const buildExportClone = (target) => {
     const shell = document.createElement("div");
     shell.className = "pdf-export-shell";
@@ -465,6 +525,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     clone.classList.add("pdf-export-canvas");
 
     clone.querySelectorAll("#pdf-download-status").forEach((node) => node.remove());
+
+    if (!parseImages()) {
+      removeImages(clone);
+    }
 
     if (parseMode() === "paper") {
       clone.querySelectorAll("[data-pdf-section-title]").forEach((section) => {
@@ -484,6 +548,79 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     document.body.appendChild(shell);
 
     return { shell, clone };
+  };
+
+  const collectPdfNavigation = (container) => {
+    const contentRoot =
+      container.querySelector(".pdf-export-canvas") ||
+      container.firstElementChild ||
+      container;
+    const contentWidth =
+      contentRoot.scrollWidth ||
+      contentRoot.getBoundingClientRect().width ||
+      1;
+    const printableWidthMm = PDF_PAGE_WIDTH_MM - PDF_MARGIN_MM * 2;
+    const printableHeightMm = PDF_PAGE_HEIGHT_MM - PDF_MARGIN_MM * 2;
+    const pageHeightPx = contentWidth * (printableHeightMm / printableWidthMm);
+
+    return Array.from(contentRoot.querySelectorAll(SECTION_SELECTOR))
+      .filter((section) => !section.hidden)
+      .map((section) => ({
+        title: stripEmoji(section.dataset.pdfSectionTitle || "Section"),
+        pageNumber: Math.max(1, Math.floor(section.offsetTop / pageHeightPx) + 1),
+      }));
+  };
+
+  const injectPdfContents = (pdf, sections) => {
+    if (!sections.length || typeof pdf.insertPage !== "function") {
+      return;
+    }
+
+    const entriesPerPage = 14;
+    const insertedPages = Math.max(1, Math.ceil(sections.length / entriesPerPage));
+
+    for (let page = 0; page < insertedPages; page += 1) {
+      pdf.insertPage(page + 1);
+    }
+
+    const modeLabel = parseMode() === "paper" ? "Paper-friendly" : "Color PDF";
+    const imagesLabel = parseImages() ? "With images" : "Text only";
+
+    for (let page = 0; page < insertedPages; page += 1) {
+      const pageNumber = page + 1;
+      pdf.setPage(pageNumber);
+      pdf.setTextColor(15, 23, 42);
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(22);
+      pdf.text(page === 0 ? "SOCAtlas PDF Contents" : "SOCAtlas PDF Contents (cont.)", 18, 22);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(10.5);
+      pdf.setTextColor(71, 85, 105);
+      pdf.text(`Jump directly inside this PDF. ${modeLabel}. ${imagesLabel}.`, 18, 30);
+
+      const slice = sections.slice(page * entriesPerPage, (page + 1) * entriesPerPage);
+      let y = 44;
+
+      slice.forEach((section) => {
+        const targetPage = section.pageNumber + insertedPages;
+        pdf.setTextColor(17, 24, 39);
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(12);
+        pdf.text(section.title, 18, y);
+
+        pdf.setFont("helvetica", "normal");
+        pdf.text(String(targetPage), 188, y, { align: "right" });
+        pdf.setDrawColor(220, 226, 232);
+        pdf.line(18, y + 2.4, 190, y + 2.4);
+
+        if (typeof pdf.link === "function") {
+          pdf.link(18, y - 5.5, 172, 8, { pageNumber: targetPage });
+        }
+
+        y += 14;
+      });
+    }
   };
 
   const triggerDownload = async () => {
@@ -506,10 +643,11 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
       await waitForImagesWithin(exportNodes.clone);
       await waitForLayout();
 
-      await html2pdf()
+      const worker = html2pdf()
         .set({
           filename: buildFilename(),
-          margin: [10, 10, 10, 10],
+          margin: [PDF_MARGIN_MM, PDF_MARGIN_MM, PDF_MARGIN_MM, PDF_MARGIN_MM],
+          enableLinks: false,
           pagebreak: {
             mode: ["css", "legacy"],
             avoid: [
@@ -538,8 +676,16 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
             orientation: "portrait",
           },
         })
-        .from(exportNodes.clone)
-        .save();
+        .from(exportNodes.clone);
+
+      await worker.toContainer();
+      const container = await worker.get("container");
+      const pdfNavigation = collectPdfNavigation(container);
+      await worker.toCanvas();
+      await worker.toPdf();
+      const pdf = await worker.get("pdf");
+      injectPdfContents(pdf, pdfNavigation);
+      await worker.save();
 
       if (exportShell) {
         exportShell.remove();
@@ -560,6 +706,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const init = () => {
     applyMode();
     applySelection(parseSelection());
+    applyImagePreference();
 
     if (isDownloadRequested()) {
       window.setTimeout(() => {
@@ -626,6 +773,41 @@ def build_section_index(entries):
     return sections
 
 
+def build_page_anchor_map(entries):
+    anchors = {}
+    used = set()
+
+    for _, _, source in entries:
+        normalized = posixpath.normpath(source)
+        base_anchor = f"guide-page-{slugify(posixpath.splitext(normalized)[0].replace('/', '-'))}"
+        anchor = base_anchor
+        suffix = 2
+
+        while anchor in used:
+            anchor = f"{base_anchor}-{suffix}"
+            suffix += 1
+
+        anchors[normalized] = anchor
+        used.add(anchor)
+
+    return anchors
+
+
+def build_section_anchor_map(entries):
+    anchors = {}
+
+    for section, _, source in entries:
+        normalized = posixpath.normpath(source)
+        prefix = normalized.split("/", 1)[0] if "/" in normalized else ""
+        if not prefix:
+            continue
+
+        label = "Start Here" if section is None else section
+        anchors[prefix] = f"guide-section-{slugify(label)}"
+
+    return anchors
+
+
 def strip_first_h1_and_shift(content: str, shift: int) -> str:
     lines = content.splitlines()
     output = []
@@ -659,7 +841,12 @@ def strip_first_h1_and_shift(content: str, shift: int) -> str:
     return "\n".join(output).strip()
 
 
-def rewrite_target(source_path: str, target: str) -> str:
+def rewrite_target(
+    source_path: str,
+    target: str,
+    page_anchors: dict[str, str],
+    section_anchors: dict[str, str],
+) -> str:
     if target.startswith(("http://", "https://", "mailto:", "#", "javascript:")):
         return target
 
@@ -671,13 +858,25 @@ def rewrite_target(source_path: str, target: str) -> str:
     source_dir = posixpath.dirname(source_path)
     resolved = posixpath.normpath(posixpath.join(source_dir, base))
 
+    if resolved in page_anchors:
+        return f"#{page_anchors[resolved]}"
+
+    prefix = resolved.split("/", 1)[0] if "/" in resolved else ""
+    if prefix and prefix in section_anchors and resolved.endswith((".md", ".html")):
+        return f"#{section_anchors[prefix]}"
+
     if anchor:
         return f"{resolved}#{anchor}"
 
     return resolved
 
 
-def rewrite_links(content: str, source_path: str) -> str:
+def rewrite_links(
+    content: str,
+    source_path: str,
+    page_anchors: dict[str, str],
+    section_anchors: dict[str, str],
+) -> str:
     lines = content.splitlines()
     output = []
     in_fence = False
@@ -695,7 +894,7 @@ def rewrite_links(content: str, source_path: str) -> str:
             continue
 
         rewritten = LINK_RE.sub(
-            lambda match: f"{match.group(1)}({rewrite_target(source_path, match.group(2).strip())})",
+            lambda match: f"{match.group(1)}({rewrite_target(source_path, match.group(2).strip(), page_anchors, section_anchors)})",
             line,
         )
         output.append(rewritten)
@@ -737,6 +936,8 @@ def generate():
     config = yaml.load(CONFIG_PATH.read_text(), Loader=yaml.BaseLoader)
     entries = flatten_nav(config.get("nav", []))
     sections = build_section_index(entries)
+    page_anchors = build_page_anchor_map(entries)
+    section_anchors = build_section_anchor_map(entries)
 
     parts = [INTRO.rstrip()]
     current_section = UNSET
@@ -748,6 +949,8 @@ def generate():
         parts.append(
             f'<section class="pdf-guide-section" data-pdf-section-group="{slug}" data-pdf-section-title="{label}" markdown="1">'
         )
+        parts.append("")
+        parts.append(f'<div id="guide-section-{slug}"></div>')
         parts.append("")
         parts.append(f"## {label}")
 
@@ -761,7 +964,7 @@ def generate():
 
         source_path = DOCS_DIR / source
         content = source_path.read_text()
-        content = rewrite_links(content, source)
+        content = rewrite_links(content, source, page_anchors, section_anchors)
         content = strip_marked_blocks(content)
         content = strip_download_lines(content)
         content = strip_first_h1_and_shift(content, shift=2)
@@ -772,6 +975,8 @@ def generate():
             open_section(section)
             current_section = section
 
+        parts.append("")
+        parts.append(f'<div id="{page_anchors[posixpath.normpath(source)]}"></div>')
         parts.append("")
         parts.append(f"### {title}")
         parts.append("")

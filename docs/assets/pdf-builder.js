@@ -2,6 +2,7 @@
   const ROOT_SELECTOR = "[data-pdf-builder]";
   const STORAGE_KEY = "socatlas-pdf-sections";
   const MODE_STORAGE_KEY = "socatlas-pdf-mode";
+  const IMAGE_STORAGE_KEY = "socatlas-pdf-images";
   const PRESETS = [
     {
       id: "interview-core",
@@ -106,6 +107,22 @@
     }
   }
 
+  function readSavedImages() {
+    try {
+      return localStorage.getItem(IMAGE_STORAGE_KEY) !== "0";
+    } catch {
+      return true;
+    }
+  }
+
+  function saveImages(includeImages) {
+    try {
+      localStorage.setItem(IMAGE_STORAGE_KEY, includeImages ? "1" : "0");
+    } catch {
+      // Ignore storage issues in private mode.
+    }
+  }
+
   function sameSelection(selected, target) {
     if (selected.length !== target.length) {
       return false;
@@ -184,6 +201,7 @@
   function render(root, sections) {
     const selected = new Set(readSavedSelection(sections));
     const selectedMode = readSavedMode();
+    const includeImages = readSavedImages();
     const options = sections
       .map(
         (section) => `
@@ -222,6 +240,14 @@
           <input type="radio" name="pdf-mode" value="paper" ${selectedMode === "paper" ? "checked" : ""}>
           <span class="pdf-builder__mode-title">Paper-friendly</span>
           <span class="pdf-builder__mode-meta">Pure black-and-white output with accent colors removed.</span>
+        </label>
+      </div>
+
+      <div class="pdf-builder__settings">
+        <label class="pdf-builder__mode pdf-builder__mode--toggle">
+          <input type="checkbox" data-pdf-images ${includeImages ? "checked" : ""}>
+          <span class="pdf-builder__mode-title">Include images and diagrams</span>
+          <span class="pdf-builder__mode-meta">Turn this off for a lighter text-first PDF that is faster to scan and print.</span>
         </label>
       </div>
 
@@ -264,7 +290,7 @@
         </div>
       </div>
 
-      <p class="pdf-builder__hint">Downloads a real PDF file. Paper-friendly removes accent colors and is tuned for clean printing.</p>
+      <p class="pdf-builder__hint">Downloads a real PDF file with a clickable contents page. Paper-friendly removes accent colors, and images can be turned off for a lighter export.</p>
       <p class="pdf-builder__empty" data-pdf-empty hidden>Select at least one section to build a PDF.</p>
     `;
 
@@ -280,6 +306,7 @@
     const preview = root.querySelector("[data-pdf-preview]");
     const download = root.querySelector("[data-pdf-download]");
     const copyButton = root.querySelector("[data-pdf-copy]");
+    const imagesToggle = root.querySelector("[data-pdf-images]");
     const previewBase = preview.getAttribute("href") || "complete-guide.html";
     const copyButtonLabel = "Copy share link";
 
@@ -310,17 +337,23 @@
         .filter((checkbox) => checkbox.checked)
         .map((checkbox) => checkbox.value);
       const mode = modes.find((input) => input.checked)?.value || "color";
+      const images = imagesToggle.checked;
       const selectedSet = new Set(selectedValues);
       const selectedSections = sections.filter((section) => selectedSet.has(section.slug));
       const topicCount = selectedSections.reduce((sum, section) => sum + section.count, 0);
       const params = new URLSearchParams();
       const currentModeLabel = mode === "paper" ? "Paper-friendly" : "Color PDF";
+      const imagesLabel = images ? "with images" : "text only";
 
       if (selectedValues.length) {
         params.set("sections", selectedValues.join(","));
       }
 
       params.set("mode", mode);
+
+      if (!images) {
+        params.set("images", "0");
+      }
 
       preview.href = `${previewBase}?${params.toString()}`;
 
@@ -332,7 +365,7 @@
       modeLabel.textContent = currentModeLabel;
 
       summary.textContent = selectedValues.length
-        ? `${pluralize(selectedValues.length, "section", "sections")} selected for a ${currentModeLabel.toLowerCase()} export.`
+        ? `${pluralize(selectedValues.length, "section", "sections")} selected for a ${currentModeLabel.toLowerCase()} export, ${imagesLabel}.`
         : "No sections selected yet.";
 
       badgeContainer.innerHTML = selectedSections.length
@@ -359,6 +392,7 @@
       updatePresets(selectedValues);
       saveSelection(selectedValues);
       saveMode(mode);
+      saveImages(images);
     };
 
     root.querySelector("[data-pdf-select-all]").addEventListener("click", () => {
@@ -420,6 +454,8 @@
       input.addEventListener("change", update);
     });
 
+    imagesToggle.addEventListener("change", update);
+
     updateSelectionStyles();
     update();
     bindVisibility(root);
@@ -442,9 +478,9 @@
       render(root, sections);
     } catch (error) {
       root.innerHTML = `
-        <p class="pdf-builder__eyebrow">Custom PDF</p>
-        <h2 class="pdf-builder__title">Build the exact PDF you want</h2>
-        <p class="pdf-builder__empty">The custom PDF selector could not load right now. Open the full guide and print it from there.</p>
+        <p class="pdf-builder__eyebrow">Download PDF</p>
+        <h2 class="pdf-builder__title">Build your SOCAtlas PDF</h2>
+        <p class="pdf-builder__empty">The PDF options could not load right now. Refresh the page and try again.</p>
       `;
       console.error(error);
     }

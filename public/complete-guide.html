@@ -7059,6 +7059,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const SECTION_SELECTOR = '[data-pdf-section-group]';
   const HTML2PDF_CDN = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
   const EMOJI_RE = /[\p{Extended_Pictographic}️]/gu;
+  const PDF_PAGE_WIDTH_MM = 210;
+  const PDF_PAGE_HEIGHT_MM = 297;
+  const PDF_MARGIN_MM = 10;
 
   const parseSelection = () => {
     const raw = new URLSearchParams(window.location.search).get("sections");
@@ -7078,6 +7081,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     const mode = new URLSearchParams(window.location.search).get("mode");
     return mode === "paper" ? "paper" : "color";
   };
+
+  const parseImages = () =>
+    new URLSearchParams(window.location.search).get("images") !== "0";
 
   const isDownloadRequested = () =>
     new URLSearchParams(window.location.search).get("download") === "1";
@@ -7120,11 +7126,35 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     }
 
     const modeLabel = parseMode() === "paper" ? "Paper-friendly" : "Color PDF";
-    note.textContent = `Included in this PDF: ${labels.join(", ")} • ${modeLabel}`;
+    const imagesLabel = parseImages() ? "With images" : "Text only";
+    note.textContent = `Included in this PDF: ${labels.join(", ")} • ${modeLabel} • ${imagesLabel}`;
   };
 
   const applyMode = () => {
     document.documentElement.dataset.pdfMode = parseMode();
+  };
+
+  const applyImagePreference = () => {
+    const includeImages = parseImages();
+    document.documentElement.dataset.pdfImages = includeImages ? "on" : "off";
+
+    if (includeImages) {
+      return;
+    }
+
+    const seenFigures = new Set();
+    document
+      .querySelectorAll(".md-content__inner figure, .md-content__inner picture, .md-content__inner img, .md-content__inner svg")
+      .forEach((node) => {
+        const figure = node.closest("figure");
+        if (figure && !seenFigures.has(figure)) {
+          seenFigures.add(figure);
+          figure.hidden = true;
+          return;
+        }
+
+        node.hidden = true;
+      });
   };
 
   const ensureStatusNote = () => {
@@ -7156,16 +7186,17 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const buildFilename = () => {
     const selected = parseSelection();
     const mode = parseMode();
+    const imagesSuffix = parseImages() ? "" : "-no-images";
 
     if (!selected.length) {
-      return `socatlas-complete-guide-${mode}.pdf`;
+      return `socatlas-complete-guide-${mode}${imagesSuffix}.pdf`;
     }
 
     if (selected.length <= 2) {
-      return `socatlas-${selected.join("-")}-${mode}.pdf`;
+      return `socatlas-${selected.join("-")}-${mode}${imagesSuffix}.pdf`;
     }
 
-    return `socatlas-${selected[0]}-${selected.length}-sections-${mode}.pdf`;
+    return `socatlas-${selected[0]}-${selected.length}-sections-${mode}${imagesSuffix}.pdf`;
   };
 
   const stripEmoji = (value) =>
@@ -7205,6 +7236,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   };
 
   const waitForImages = async () => {
+    if (!parseImages()) {
+      return;
+    }
+
     const images = Array.from(document.querySelectorAll(".md-content__inner img"));
     await Promise.all(
       images.map(
@@ -7223,6 +7258,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   };
 
   const waitForImagesWithin = async (root) => {
+    if (!parseImages()) {
+      return;
+    }
+
     const images = Array.from(root.querySelectorAll("img"));
     await Promise.all(
       images.map(
@@ -7247,6 +7286,27 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
       });
     });
 
+  const removeImages = (root) => {
+    const removedFigures = new Set();
+    root.querySelectorAll("figure, picture, img, svg").forEach((node) => {
+      if (node.tagName === "FIGURE") {
+        node.remove();
+        return;
+      }
+
+      const figure = node.closest("figure");
+      if (figure && root.contains(figure)) {
+        if (!removedFigures.has(figure)) {
+          removedFigures.add(figure);
+          figure.remove();
+        }
+        return;
+      }
+
+      node.remove();
+    });
+  };
+
   const buildExportClone = (target) => {
     const shell = document.createElement("div");
     shell.className = "pdf-export-shell";
@@ -7255,6 +7315,10 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     clone.classList.add("pdf-export-canvas");
 
     clone.querySelectorAll("#pdf-download-status").forEach((node) => node.remove());
+
+    if (!parseImages()) {
+      removeImages(clone);
+    }
 
     if (parseMode() === "paper") {
       clone.querySelectorAll("[data-pdf-section-title]").forEach((section) => {
@@ -7274,6 +7338,79 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     document.body.appendChild(shell);
 
     return { shell, clone };
+  };
+
+  const collectPdfNavigation = (container) => {
+    const contentRoot =
+      container.querySelector(".pdf-export-canvas") ||
+      container.firstElementChild ||
+      container;
+    const contentWidth =
+      contentRoot.scrollWidth ||
+      contentRoot.getBoundingClientRect().width ||
+      1;
+    const printableWidthMm = PDF_PAGE_WIDTH_MM - PDF_MARGIN_MM * 2;
+    const printableHeightMm = PDF_PAGE_HEIGHT_MM - PDF_MARGIN_MM * 2;
+    const pageHeightPx = contentWidth * (printableHeightMm / printableWidthMm);
+
+    return Array.from(contentRoot.querySelectorAll(SECTION_SELECTOR))
+      .filter((section) => !section.hidden)
+      .map((section) => ({
+        title: stripEmoji(section.dataset.pdfSectionTitle || "Section"),
+        pageNumber: Math.max(1, Math.floor(section.offsetTop / pageHeightPx) + 1),
+      }));
+  };
+
+  const injectPdfContents = (pdf, sections) => {
+    if (!sections.length || typeof pdf.insertPage !== "function") {
+      return;
+    }
+
+    const entriesPerPage = 14;
+    const insertedPages = Math.max(1, Math.ceil(sections.length / entriesPerPage));
+
+    for (let page = 0; page < insertedPages; page += 1) {
+      pdf.insertPage(page + 1);
+    }
+
+    const modeLabel = parseMode() === "paper" ? "Paper-friendly" : "Color PDF";
+    const imagesLabel = parseImages() ? "With images" : "Text only";
+
+    for (let page = 0; page < insertedPages; page += 1) {
+      const pageNumber = page + 1;
+      pdf.setPage(pageNumber);
+      pdf.setTextColor(15, 23, 42);
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(22);
+      pdf.text(page === 0 ? "SOCAtlas PDF Contents" : "SOCAtlas PDF Contents (cont.)", 18, 22);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(10.5);
+      pdf.setTextColor(71, 85, 105);
+      pdf.text(`Jump directly inside this PDF. ${modeLabel}. ${imagesLabel}.`, 18, 30);
+
+      const slice = sections.slice(page * entriesPerPage, (page + 1) * entriesPerPage);
+      let y = 44;
+
+      slice.forEach((section) => {
+        const targetPage = section.pageNumber + insertedPages;
+        pdf.setTextColor(17, 24, 39);
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(12);
+        pdf.text(section.title, 18, y);
+
+        pdf.setFont("helvetica", "normal");
+        pdf.text(String(targetPage), 188, y, { align: "right" });
+        pdf.setDrawColor(220, 226, 232);
+        pdf.line(18, y + 2.4, 190, y + 2.4);
+
+        if (typeof pdf.link === "function") {
+          pdf.link(18, y - 5.5, 172, 8, { pageNumber: targetPage });
+        }
+
+        y += 14;
+      });
+    }
   };
 
   const triggerDownload = async () => {
@@ -7296,10 +7433,11 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
       await waitForImagesWithin(exportNodes.clone);
       await waitForLayout();
 
-      await html2pdf()
+      const worker = html2pdf()
         .set({
           filename: buildFilename(),
-          margin: [10, 10, 10, 10],
+          margin: [PDF_MARGIN_MM, PDF_MARGIN_MM, PDF_MARGIN_MM, PDF_MARGIN_MM],
+          enableLinks: false,
           pagebreak: {
             mode: ["css", "legacy"],
             avoid: [
@@ -7328,8 +7466,16 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
             orientation: "portrait",
           },
         })
-        .from(exportNodes.clone)
-        .save();
+        .from(exportNodes.clone);
+
+      await worker.toContainer();
+      const container = await worker.get("container");
+      const pdfNavigation = collectPdfNavigation(container);
+      await worker.toCanvas();
+      await worker.toPdf();
+      const pdf = await worker.get("pdf");
+      injectPdfContents(pdf, pdfNavigation);
+      await worker.save();
 
       if (exportShell) {
         exportShell.remove();
@@ -7350,6 +7496,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
   const init = () => {
     applyMode();
     applySelection(parseSelection());
+    applyImagePreference();
 
     if (isDownloadRequested()) {
       window.setTimeout(() => {
@@ -7368,7 +7515,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 
 <h1 id="socatlas-complete-guide">SOCAtlas Complete Guide</h1>
 <section class="pdf-guide-section" data-pdf-section-group="start-here" data-pdf-section-title="Start Here">
+<div id="guide-section-start-here"></div>
 <h2 id="start-here">Start Here</h2>
+<div id="guide-page-index"></div>
 <h3 id="home">Home</h3>
 <p class="page-lead">SOCAtlas helps you master cybersecurity concepts in a clear order and revise them instantly before interviews or operational shifts. It is built for SOC analysts, engineers, students, and anyone who demands practical explanations with real attack scenarios and tools.</p>
 <div class="admonition note">
@@ -7386,22 +7535,22 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <li>
 <p><strong>New to cybersecurity?</strong></p>
 <p>Begin with the fundamentals: what cybersecurity means, the CIA Triad, encryption, and hashing. These are the concepts that come up in every interview.</p>
-<p><a href="fundamentals/introduction.html">Open fundamentals</a></p>
+<p><a href="#guide-page-fundamentals-introduction">Open fundamentals</a></p>
 </li>
 <li>
 <p><strong>Networking feels fuzzy?</strong></p>
 <p>Review IP addressing, DNS, DHCP, VPNs, firewalls, proxies, and both the OSI and TCP/IP models. They are the backbone of most security discussions.</p>
-<p><a href="networking/basics.html">Study networking</a></p>
+<p><a href="#guide-page-networking-basics">Study networking</a></p>
 </li>
 <li>
 <p><strong>Preparing for SOC roles?</strong></p>
 <p>Focus on SIEM, EDR, IDS, IPS, incident response, IOCs, IOAs, and the MITRE ATT&amp;CK framework — exactly what SOC analysts use daily.</p>
-<p><a href="defense/siem_soc_edr.html">Go to detection and defense</a></p>
+<p><a href="#guide-section-detection-defense">Go to detection and defense</a></p>
 </li>
 <li>
 <p><strong>Need fast revision?</strong></p>
 <p>Jump straight into the 1200 quick-point pages. Each row gives you a clean definition, a one-sentence answer, and a real-world example.</p>
-<p><a href="quick/basics.html">Jump to quick points</a></p>
+<p><a href="#guide-page-quick-basics">Jump to quick points</a></p>
 </li>
 </ul>
 </div>
@@ -7429,37 +7578,37 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <tbody>
 <tr>
 <td>1</td>
-<td><a href="fundamentals/introduction.html">What is Cybersecurity?</a></td>
+<td><a href="#guide-page-fundamentals-introduction">What is Cybersecurity?</a></td>
 <td>Build the mental model first</td>
 </tr>
 <tr>
 <td>2</td>
-<td><a href="fundamentals/cia_triad.html">CIA Triad</a>, <a href="fundamentals/encryption.html">Encryption</a>, <a href="fundamentals/hashing.html">Hashing</a></td>
+<td><a href="#guide-page-fundamentals-cia-triad">CIA Triad</a>, <a href="#guide-page-fundamentals-encryption">Encryption</a>, <a href="#guide-page-fundamentals-hashing">Hashing</a></td>
 <td>The three pillars interviewers always test</td>
 </tr>
 <tr>
 <td>3</td>
-<td><a href="networking/basics.html">Networking Basics</a> and <a href="networking/osi_tcpip.html">OSI &amp; TCP/IP Models</a></td>
+<td><a href="#guide-page-networking-basics">Networking Basics</a> and <a href="#guide-page-networking-osi-tcpip">OSI &amp; TCP/IP Models</a></td>
 <td>Everything connects through the network</td>
 </tr>
 <tr>
 <td>4</td>
-<td><a href="threats/vulnerabilities.html">Vulnerabilities &amp; Risk</a> and <a href="threats/cyber_threats.html">Modern Malware</a></td>
+<td><a href="#guide-page-threats-vulnerabilities">Vulnerabilities &amp; Risk</a> and <a href="#guide-page-threats-cyber-threats">Modern Malware</a></td>
 <td>Know what you are defending against</td>
 </tr>
 <tr>
 <td>5</td>
-<td><a href="defense/siem_soc_edr.html">SIEM, SOC &amp; EDR</a> and <a href="defense/incident_response.html">Incident Response</a></td>
+<td><a href="#guide-section-detection-defense">SIEM, SOC &amp; EDR</a> and <a href="#guide-page-defense-incident-response">Incident Response</a></td>
 <td>The tools and playbooks defenders use</td>
 </tr>
 </tbody>
 </table>
 <h5 id="fast-revision-before-an-interview">Fast revision before an interview</h5>
 <ol>
-<li>Skim <a href="quick/basics.html">Basics</a></li>
-<li>Review <a href="quick/attacks.html">Attacks</a> and <a href="quick/tools.html">Tools</a></li>
-<li>Revisit <a href="frameworks.html">Security frameworks</a></li>
-<li>Finish with <a href="governance/ioc_ioa_mitre.html">IOC, IOA &amp; MITRE ATT&amp;CK</a></li>
+<li>Skim <a href="#guide-page-quick-basics">Basics</a></li>
+<li>Review <a href="#guide-page-quick-attacks">Attacks</a> and <a href="#guide-page-quick-tools">Tools</a></li>
+<li>Revisit <a href="#guide-page-frameworks">Security frameworks</a></li>
+<li>Finish with <a href="#guide-page-governance-ioc-ioa-mitre">IOC, IOA &amp; MITRE ATT&amp;CK</a></li>
 </ol>
 <h4 id="must-know-concepts-at-a-glance">Must-know concepts at a glance</h4>
 <table>
@@ -7530,7 +7679,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 </div>
 </section>
 <section class="pdf-guide-section" data-pdf-section-group="fundamentals" data-pdf-section-title="🏛️ Fundamentals">
+<div id="guide-section-fundamentals"></div>
 <h2 id="fundamentals">🏛️ Fundamentals</h2>
+<div id="guide-page-fundamentals-introduction"></div>
 <h3 id="introduction-to-cybersecurity">Introduction to Cybersecurity</h3>
 <p class="page-lead">Cybersecurity is the practice of protecting computers, networks, systems, applications, and data from digital attacks, unauthorized access, damage, and theft.</p>
 <div class="admonition note">
@@ -7592,6 +7743,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <p class="admonition-title">Easy way to remember it</p>
 <p>Cybersecurity is the digital equivalent of locks, alarms, identity checks, cameras, and emergency response plans.</p>
 </div>
+<div id="guide-page-fundamentals-cia-triad"></div>
 <h3 id="cia-triad-founding-principles">CIA Triad &amp; Founding Principles</h3>
 <p class="page-lead">The CIA Triad is the foundational model of cybersecurity. Nearly every security control, policy, and architecture decision can be mapped back to confidentiality, integrity, or availability.</p>
 <p><img alt="CIA Triad Diagram" class="page-image" src="assets/cia_triad.png" /></p>
@@ -7668,6 +7820,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <p class="admonition-title">Related concept</p>
 <p>AAA helps enforce the CIA Triad in real systems: authentication verifies identity, authorization controls access, and accounting records activity.</p>
 </div>
+<div id="guide-page-fundamentals-encryption"></div>
 <h3 id="encryption-key-management">Encryption &amp; Key Management</h3>
 <p class="page-lead">Encryption protects data by converting readable information into ciphertext so that only someone with the correct key can read it. It is one of the main controls used to protect confidentiality.</p>
 <div class="admonition note">
@@ -7754,6 +7907,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <blockquote>
 <p><strong>Answer:</strong> A KMS is a centralized system for generating, storing, rotating, and controlling encryption keys so applications do not need to embed or expose those keys directly.</p>
 </blockquote>
+<div id="guide-page-fundamentals-hashing"></div>
 <h3 id="hashing-data-integrity">Hashing &amp; Data Integrity</h3>
 <p class="page-lead">Hashing converts data into a fixed-length value called a hash or digest. Unlike encryption, hashing is designed to be one-way, which makes it useful for integrity checks and password verification.</p>
 <div class="admonition note">
@@ -7883,7 +8037,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 </blockquote>
 </section>
 <section class="pdf-guide-section" data-pdf-section-group="networking" data-pdf-section-title="🌐 Networking">
+<div id="guide-section-networking"></div>
 <h2 id="networking">🌐 Networking</h2>
+<div id="guide-page-networking-basics"></div>
 <h3 id="networking-basics">Networking Basics</h3>
 <p class="page-lead">Networking is the foundation that lets devices communicate, share data, and reach services inside an organization and across the internet.</p>
 <div class="admonition note">
@@ -8076,6 +8232,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <li>segment networks to limit blast radius</li>
 </ul>
 <p>If you can read IPs, ports, protocols, and traffic patterns comfortably, you can understand both attacks and defenses much faster.</p>
+<div id="guide-page-networking-osi-tcpip"></div>
 <h3 id="osi-tcpip-models">OSI &amp; TCP/IP Models</h3>
 <p class="page-lead">The OSI model is a seven-layer reference model used to explain how communication works across a network. The TCP/IP model is the practical model used by the internet. Security teams use both models to describe where a problem exists and which controls apply.</p>
 <p><img alt="OSI model diagram" class="page-image" src="assets/osi_model.png" /></p>
@@ -8267,6 +8424,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <blockquote>
 <p><strong>Answer:</strong> It is the order in which evidence should be collected based on how quickly it disappears, usually starting with volatile data such as memory and active network state before moving to disks and long-term logs.</p>
 </blockquote>
+<div id="guide-page-networking-aaa-dns-dhcp"></div>
 <h3 id="identity-aaa-dns-dhcp">Identity — AAA, DNS, DHCP</h3>
 <p class="page-lead">AAA, DNS, and DHCP are core networking concepts that come up constantly in cybersecurity interviews. AAA controls identity and access, DNS resolves names to IP addresses, and DHCP assigns IP configuration automatically.</p>
 <div class="admonition note">
@@ -8393,6 +8551,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <blockquote>
 <p>A recursive server looks up the answer on behalf of the client. An authoritative server holds the final records for a domain.</p>
 </blockquote>
+<div id="guide-page-networking-vpn-firewall"></div>
 <h3 id="security-vpn-firewall-proxy">Security — VPN, Firewall, Proxy</h3>
 <p class="page-lead">VPNs, firewalls, and proxies all deal with network traffic, but they solve different problems. A firewall filters traffic, a VPN encrypts traffic, and a proxy forwards traffic on behalf of a client or server.</p>
 <div class="admonition note">
@@ -8570,7 +8729,9 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 </blockquote>
 </section>
 <section class="pdf-guide-section" data-pdf-section-group="major-attacks-directory" data-pdf-section-title="🏴‍☠️ Major Attacks Directory">
+<div id="guide-section-major-attacks-directory"></div>
 <h2 id="major-attacks-directory">🏴‍☠️ Major Attacks Directory</h2>
+<div id="guide-page-threats-vulnerabilities"></div>
 <h3 id="vulnerabilities-risk">Vulnerabilities &amp; Risk</h3>
 <p class="page-lead">These terms are closely related, but they are not interchangeable. Knowing the difference helps you describe how security problems are found, prioritized, and addressed.</p>
 <div class="admonition note">
@@ -8686,6 +8847,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <blockquote>
 <p><strong>Answer:</strong> A vulnerability assessment focuses on identifying and listing weaknesses, often at scale. A penetration test goes further by attempting controlled exploitation to show whether those weaknesses can actually be used to gain access or cause impact.</p>
 </blockquote>
+<div id="guide-page-threats-cyber-threats"></div>
 <h3 id="cyber-threats-landscape">Cyber Threats Landscape</h3>
 <p class="page-lead">Malware is any software designed to harm, disrupt, spy on, extort, or gain unauthorized access to a system. Interviewers often expect you to distinguish the major malware types and explain how they spread or what they are meant to do.</p>
 <div class="admonition note">
@@ -8783,6 +8945,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <blockquote>
 <p>Fileless malware operates mainly in memory and often abuses legitimate tools such as PowerShell or WMI, which makes it harder for traditional file-based antivirus to detect.</p>
 </blockquote>
+<div id="guide-page-threats-social-engineering"></div>
 <h3 id="social-engineering">Social Engineering</h3>
 <p class="page-lead">Social engineering attacks target people instead of software flaws. The attacker’s goal is to manipulate trust, urgency, fear, or routine behavior so a victim reveals information, clicks a link, opens a file, or grants access.</p>
 <div class="admonition note">
@@ -8916,6 +9079,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <blockquote>
 <p><strong>Answer:</strong> Pretexting is when an attacker invents a believable story or role to persuade a victim to share information or perform an action they would normally refuse.</p>
 </blockquote>
+<div id="guide-page-attack-xss"></div>
 <h3 id="cross-site-scripting-xss">Cross-Site Scripting (XSS)</h3>
 <div class="admonition note">
 <p class="admonition-title">What is XSS?</p>
@@ -8944,6 +9108,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <li><strong>Fix:</strong> Strict output encoding, input validation, and implementing strong Content Security Policies (CSP).</li>
 </ul>
 </div>
+<div id="guide-page-attack-sqli"></div>
 <h3 id="sql-injection-sqli">SQL Injection (SQLi)</h3>
 <div class="admonition note">
 <p class="admonition-title">What is SQL Injection?</p>
@@ -8969,6 +9134,7 @@ The resulting query becomes <code>SELECT * FROM users WHERE username = '' OR 1=1
 <li><strong>Fix:</strong> Always use Parameterized Queries (Prepared Statements) so input is absolutely never treated as code.</li>
 </ul>
 </div>
+<div id="guide-page-attack-csrf"></div>
 <h3 id="cross-site-request-forgery-csrf">Cross-Site Request Forgery (CSRF)</h3>
 <div class="admonition note">
 <p class="admonition-title">What is CSRF?</p>
@@ -8993,6 +9159,7 @@ The resulting query becomes <code>SELECT * FROM users WHERE username = '' OR 1=1
 <li><strong>Fix:</strong> Implement unique, unpredictable Anti-CSRF tokens for every form and utilize the SameSite cookie attribute.</li>
 </ul>
 </div>
+<div id="guide-page-attack-ssrf"></div>
 <h3 id="server-side-request-forgery-ssrf">Server-Side Request Forgery (SSRF)</h3>
 <div class="admonition note">
 <p class="admonition-title">What is SSRF?</p>
@@ -9017,6 +9184,7 @@ The resulting query becomes <code>SELECT * FROM users WHERE username = '' OR 1=1
 <li><strong>Fix:</strong> Use strict URL allow-lists, disable internal routing for the web app, and enforce AWS IMDSv2.</li>
 </ul>
 </div>
+<div id="guide-page-attack-mitm"></div>
 <h3 id="man-in-the-middle-mitm">Man-in-the-Middle (MitM)</h3>
 <div class="admonition note">
 <p class="admonition-title">What is MitM?</p>
@@ -9041,6 +9209,7 @@ The resulting query becomes <code>SELECT * FROM users WHERE username = '' OR 1=1
 <li><strong>Fix:</strong> Enforce strong encryption via HTTPS, implement HSTS, and use secure VPN tunnels on public networks.</li>
 </ul>
 </div>
+<div id="guide-page-attack-arp-spoofing"></div>
 <h3 id="arp-spoofing-poisoning">ARP Spoofing (Poisoning)</h3>
 <div class="admonition note">
 <p class="admonition-title">What is ARP Spoofing?</p>
@@ -9066,6 +9235,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Fix:</strong> Enable Dynamic ARP Inspection (DAI) on corporate switches and use Static ARP tables for highly critical servers.</li>
 </ul>
 </div>
+<div id="guide-page-attack-dos"></div>
 <h3 id="denial-of-service-dos">Denial of Service (DoS)</h3>
 <div class="admonition note">
 <p class="admonition-title">What is DoS/DDoS?</p>
@@ -9096,7 +9266,9 @@ All the victim computers update their ARP cache and start sending their internet
 </div>
 </section>
 <section class="pdf-guide-section" data-pdf-section-group="detection-defense" data-pdf-section-title="🛡️ Detection &amp; Defense">
+<div id="guide-section-detection-defense"></div>
 <h2 id="detection-defense">🛡️ Detection &amp; Defense</h2>
+<div id="guide-page-defense-ids-ips"></div>
 <h3 id="ids-ips">IDS &amp; IPS</h3>
 <p class="page-lead">An IDS, or Intrusion Detection System, monitors activity and raises alerts when it sees suspicious behavior. An IPS, or Intrusion Prevention System, goes a step further by blocking or stopping that activity automatically.</p>
 <div class="admonition note">
@@ -9181,6 +9353,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p>A SPAN port, or port mirroring, is a switch port that receives a copy of network traffic so a monitoring tool such as a NIDS can inspect it without sitting inline.</p>
 </blockquote>
+<div id="guide-page-defense-siem-soar"></div>
 <h3 id="siem-soar">SIEM &amp; SOAR</h3>
 <p class="page-lead">A SIEM is the central nervous system of a security programme — it collects, correlates, and alerts on log data from across the environment. SOAR extends that by automating the response actions that analysts would otherwise perform by hand.</p>
 <div class="admonition note">
@@ -9351,6 +9524,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p>A playbook is an automated workflow that defines the exact steps to take in response to a specific type of alert — for example, a phishing playbook might extract links, detonate them in a sandbox, block the sender domain, and notify the user's manager.</p>
 </blockquote>
+<div id="guide-page-defense-soc"></div>
 <h3 id="soc-security-operations">SOC — Security Operations</h3>
 <p class="page-lead">The SOC is the team and operational structure responsible for monitoring an organisation's environment 24/7, investigating security events, and coordinating response. It is not a tool — it is a function made up of people, processes, and technology working together.</p>
 <div class="admonition note">
@@ -9539,6 +9713,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p>Threat hunting is a proactive search for attacker behaviour that automated detections have not yet caught. A hunter starts with a hypothesis — "what if an attacker is using living-off-the-land techniques?" — and searches through EDR and SIEM data looking for subtle signs of that behaviour.</p>
 </blockquote>
+<div id="guide-page-defense-edr-xdr"></div>
 <h3 id="edr-xdr-mdr">EDR, XDR &amp; MDR</h3>
 <p class="page-lead">Endpoint Detection and Response, Extended Detection and Response, and Managed Detection and Response are three related but distinct capabilities. Together they form the modern detection and response layer that goes far beyond traditional antivirus.</p>
 <div class="admonition note">
@@ -9822,6 +9997,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p>When the organisation lacks the budget, staffing, or expertise to run 24/7 monitoring internally. MDR makes sense for organisations without a mature security function who need immediate detection and response capability without a multi-year programme to build it.</p>
 </blockquote>
+<div id="guide-page-defense-kill-chain"></div>
 <h3 id="cyber-kill-chain">Cyber Kill Chain</h3>
 <p class="page-lead">The cyber kill chain is a seven-stage attack lifecycle model created by Lockheed Martin. It maps how an attacker progresses from initial research all the way to achieving their goal — and shows defenders exactly where they can stop the attack.</p>
 <div class="admonition note">
@@ -9974,6 +10150,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p>Because each stage builds on the last. Breaking the chain at delivery prevents exploitation entirely. By stage 6 or 7 the attacker has persistence, C2, and is actively working toward their objective — stopping them at that point requires containment, eradication, and recovery, which is far more disruptive than blocking a phishing email.</p>
 </blockquote>
+<div id="guide-page-defense-incident-response"></div>
 <h3 id="incident-response">Incident Response</h3>
 <p class="page-lead">Incident response is the structured process security teams follow to prepare for, detect, contain, eradicate, and recover from security incidents while minimizing business impact.</p>
 <div class="admonition note">
@@ -10062,7 +10239,9 @@ All the victim computers update their ARP cache and start sending their internet
 </blockquote>
 </section>
 <section class="pdf-guide-section" data-pdf-section-group="governance-compliance" data-pdf-section-title="⚖️ Governance &amp; Compliance">
+<div id="guide-section-governance-compliance"></div>
 <h2 id="governance-compliance">⚖️ Governance &amp; Compliance</h2>
+<div id="guide-page-governance-compliance"></div>
 <h3 id="compliance-regulatory-floor">Compliance &amp; Regulatory Floor</h3>
 <p class="page-lead">Compliance means following laws, regulations, standards, or contractual requirements related to security and data protection. It is important, but compliance alone does not automatically mean an organization is secure.</p>
 <div class="admonition note">
@@ -10155,6 +10334,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p>A data retention policy defines how long different categories of data should be kept and when they should be securely deleted.</p>
 </blockquote>
+<div id="guide-page-frameworks"></div>
 <h3 id="security-frameworks-nist-iso">Security Frameworks (NIST &amp; ISO)</h3>
 <p class="page-lead">Security frameworks give teams a shared structure for managing risk, selecting controls, measuring maturity, and responding to incidents. In interviews, the goal is usually not to list every framework. It is to explain which framework fits which problem and why.</p>
 <div class="admonition note">
@@ -10276,6 +10456,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p><strong>Answer:</strong> Start with the business context. Industry, geography, customer requirements, and risk profile determine the priority. For example, card data pushes PCI DSS higher, healthcare data pushes HIPAA higher, and general program maturity often starts with NIST CSF.</p>
 </blockquote>
+<div id="guide-page-governance-risk-threat-intel"></div>
 <h3 id="risk-threat-intelligence">Risk &amp; Threat Intelligence</h3>
 <p class="page-lead">Risk management helps an organization decide what to protect first. Threat intelligence helps it understand which attackers, techniques, and indicators matter most right now. Together, they help security teams spend time and budget where it will reduce the most risk.</p>
 <div class="admonition note">
@@ -10381,6 +10562,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p><strong>Answer:</strong> The Pyramid of Pain shows how difficult it is for an attacker to change different artifacts. Blocking a hash or IP address causes little pain because attackers can replace them quickly. Detecting tactics and techniques causes much more pain because changing behavior is harder.</p>
 </blockquote>
+<div id="guide-page-governance-ioc-ioa-mitre"></div>
 <h3 id="ttps-ioc-ioa-mitre-attck">TTPs — IOC, IOA &amp; MITRE ATT&amp;CK</h3>
 <p class="page-lead">IOCs, IOAs, and MITRE ATT&amp;CK help analysts describe suspicious activity in a structured way. They are common interview topics because they connect threat detection, incident response, and threat hunting.</p>
 <div class="admonition note">
@@ -10462,7 +10644,9 @@ All the victim computers update their ARP cache and start sending their internet
 </blockquote>
 </section>
 <section class="pdf-guide-section" data-pdf-section-group="soc-alerts-scenarios" data-pdf-section-title="🚨 SOC Alerts &amp; Scenarios">
+<div id="guide-section-soc-alerts-scenarios"></div>
 <h2 id="soc-alerts-scenarios">🚨 SOC Alerts &amp; Scenarios</h2>
+<div id="guide-page-alerts-general"></div>
 <h3 id="general-alert-handling">General Alert Handling</h3>
 <div class="admonition note">
 <p class="admonition-title">What is an Alert?</p>
@@ -10493,6 +10677,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If confirmed malicious, I take immediate containment actions, escalate to the L2 team, and extensively document the incident.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-malware"></div>
 <h3 id="malware-infection">Malware Infection</h3>
 <div class="admonition note">
 <p class="admonition-title">What is Malware?</p>
@@ -10525,6 +10710,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If confirmed malicious, I isolate the affected endpoint, block the malicious indicators globally, escalate to L2, and document the incident.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-ransomware"></div>
 <h3 id="ransomware-attack">Ransomware Attack</h3>
 <div class="admonition note">
 <p class="admonition-title">What is Ransomware?</p>
@@ -10555,6 +10741,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Recovery:</strong> I work directly with the infrastructure team to wipe the machines completely and restore them strictly from offline, immutable backups.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-phishing"></div>
 <h3 id="phishing-email">Phishing &amp; Email</h3>
 <div class="admonition note">
 <p class="admonition-title">What is Phishing?</p>
@@ -10586,6 +10773,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> I logically purge the email globally, block the sender domain, and force a password reset or host isolation if the user was compromised.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-ddos"></div>
 <h3 id="ddos-attack">DDoS Attack</h3>
 <div class="admonition note">
 <p class="admonition-title">What is a DDoS Attack?</p>
@@ -10617,6 +10805,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Layer 7 Response:</strong> For Layer 7 attacks, I deploy strict WAF rate-limiting, block malicious User-Agents, implement geoblocking, and continuously monitor application health.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-brute-force"></div>
 <h3 id="brute-force-spray">Brute Force &amp; Spray</h3>
 <div class="admonition note">
 <p class="admonition-title">What is a Brute Force / Password Spray Attack?</p>
@@ -10648,6 +10837,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If confirmed as a brute-force or spray attack, I block the attacking IP, secure the affected account, escalate to L2, and document the incident.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-crowdstrike"></div>
 <h3 id="crowdstrike-edr-alert">CrowdStrike (EDR) Alert</h3>
 <div class="admonition note">
 <p class="admonition-title">What is a CrowdStrike Alert?</p>
@@ -10678,6 +10868,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If malicious, I instantly initiate Network Containment via CrowdStrike, kill the process, and escalate all IOCs to the IR team while documenting the ticket.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-impossible-travel"></div>
 <h3 id="impossible-travel">Impossible Travel</h3>
 <div class="admonition note">
 <p class="admonition-title">What is Impossible Travel?</p>
@@ -10708,6 +10899,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If confirmed as a compromised account, I disable the user, revoke active sessions, force an immediate password reset, and investigate for any exfiltrated data.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-powershell"></div>
 <h3 id="suspicious-powershell">Suspicious PowerShell</h3>
 <div class="admonition note">
 <p class="admonition-title">What is Suspicious PowerShell?</p>
@@ -10739,6 +10931,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If confirmed malicious, I isolate the host via EDR, escalate the decoded IOCs to L2, and document the incident.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-data-exfil"></div>
 <h3 id="data-exfiltration">Data Exfiltration</h3>
 <div class="admonition note">
 <p class="admonition-title">What is Data Exfiltration?</p>
@@ -10769,6 +10962,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If unauthorized, I block the destination IP on the firewall, isolate the host, and critically escalate to Legal and IR due to severe data breach implications.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-sqli"></div>
 <h3 id="sql-injection-waf">SQL Injection (WAF)</h3>
 <div class="admonition note">
 <p class="admonition-title">What is SQL Injection (SQLi)?</p>
@@ -10800,6 +10994,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If the app is vulnerable, I block the attacking IP, switch the WAF to blocking mode, and escalate to AppSec to fix the code using parameterized queries.</li>
 </ul>
 </div>
+<div id="guide-page-alerts-priv-esc"></div>
 <h3 id="privilege-escalation">Privilege Escalation</h3>
 <div class="admonition note">
 <p class="admonition-title">What is Privilege Escalation?</p>
@@ -10831,7 +11026,9 @@ All the victim computers update their ARP cache and start sending their internet
 </div>
 </section>
 <section class="pdf-guide-section" data-pdf-section-group="1200-quick-points" data-pdf-section-title="⚡ 1200 Quick Points">
+<div id="guide-section-1200-quick-points"></div>
 <h2 id="1200-quick-points">⚡ 1200 Quick Points</h2>
+<div id="guide-page-quick-basics"></div>
 <h3 id="core-basics-1100">Core Basics (1–100)</h3>
 <p class="page-lead">This section is designed for fast revision. Each point gives you a short concept summary with practical context so you can revise quickly before interviews.</p>
 <div class="admonition note">
@@ -11499,6 +11696,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tbody>
 </table>
 <p><em>(Points 101-1200 continue in the quick-point categories. Use the navigation to move through each domain.)</em></p>
+<div id="guide-page-quick-fundamentals"></div>
 <h3 id="identity-auth-101200">Identity &amp; Auth (101–200)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: Point &amp; Concept → Interview Answer → Example / Tool</p>
@@ -12043,6 +12241,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-attacks"></div>
 <h3 id="attacker-tactics-201300">Attacker Tactics (201–300)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: concept, answer, example, or tool</p>
@@ -12587,6 +12786,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-tools"></div>
 <h3 id="tools-commands-301400">Tools &amp; Commands (301–400)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: concept, answer, example, or tool</p>
@@ -13131,6 +13331,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-practices"></div>
 <h3 id="security-practices-401500">Security Practices (401–500)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: Point &amp; Concept → Interview Answer → Example / Tool</p>
@@ -13673,6 +13874,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-domains"></div>
 <h3 id="domains-kill-chain-501600">Domains &amp; Kill Chain (501–600)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: Point &amp; Concept → Interview Answer → Example / Tool</p>
@@ -14204,6 +14406,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-cloud"></div>
 <h3 id="cloud-infrastructure-601700">Cloud &amp; Infrastructure (601–700)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: Point &amp; Concept → Interview Answer → Example / Tool</p>
@@ -14739,6 +14942,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-cryptography"></div>
 <h3 id="cryptography-701800">Cryptography (701–800)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: concept, answer, example, or tool</p>
@@ -15019,6 +15223,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-laws"></div>
 <h3 id="laws-global-standards-801900">Laws &amp; Global Standards (801–900)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: concept, answer, example, or tool</p>
@@ -15299,6 +15504,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-advanced"></div>
 <h3 id="advanced-topics-9011000">Advanced Topics (901–1000)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: concept, answer, example, or tool</p>
@@ -15829,6 +16035,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-incident"></div>
 <h3 id="incident-dr-operations-10011100">Incident &amp; DR Operations (1001–1100)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: Point &amp; Concept → Interview Answer → Example / Tool</p>
@@ -16359,6 +16566,7 @@ All the victim computers update their ARP cache and start sending their internet
 </tr>
 </tbody>
 </table>
+<div id="guide-page-quick-expert"></div>
 <h3 id="expert-edge-11011200">Expert Edge (1101–1200)</h3>
 <div class="admonition note">
 <p class="admonition-title">Format: Point &amp; Concept → Interview Answer → Example / Tool</p>

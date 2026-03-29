@@ -82,6 +82,10 @@
   margin: 0 0 1.15rem;
 }
 
+.pdf-builder__settings {
+  margin: 0 0 1.15rem;
+}
+
 .pdf-builder__mode {
   display: grid;
   grid-template-columns: auto 1fr;
