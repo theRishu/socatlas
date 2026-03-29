@@ -69,7 +69,7 @@ PORT=3000 sh start.sh
 ## 📦 Production Build
 
 ### Create the deployable static site
-This generates the production output in the `./site` directory.
+This generates the production output in `./site` and syncs the static Vercel directory in `./public`.
 ```bash
 sh build.sh
 # or
@@ -129,7 +129,7 @@ sh build.sh
 
 ## ☁️ Deployment & CI/CD
 SOCAtlas is optimized for:
-- **Vercel**: Serves the generated `site/` directory as a static deployment via `vercel.json` and `build.sh` with the framework preset forced to `Other`.
+- **Vercel**: Serves the committed `public/` directory as a static deployment with no build step and no runtime functions.
 - **GitHub Pages**: Deployed via GitHub Actions to the `gh-pages` branch on every push to `main`.
 
 ---

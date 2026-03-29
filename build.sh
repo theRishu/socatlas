@@ -4,6 +4,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 SITE_DIR="$ROOT_DIR/site"
+PUBLIC_DIR="$ROOT_DIR/public"
 
 cd "$ROOT_DIR"
 
@@ -34,5 +35,13 @@ find . -mindepth 2 -name "*.html" -print0 | while IFS= read -r -d '' file; do
     fi
 done
 cd "$ROOT_DIR"
+
+echo "📦 Syncing static output to public/ for Vercel..."
+mkdir -p "$PUBLIC_DIR"
+if command -v rsync &> /dev/null; then
+    rsync -a --delete "$SITE_DIR"/ "$PUBLIC_DIR"/
+else
+    cp -R "$SITE_DIR"/. "$PUBLIC_DIR"/
+fi
 
 echo "✅ Build Complete."
