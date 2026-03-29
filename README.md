@@ -1,16 +1,17 @@
 <div align="center">
-  <h1>🛡️ SOC Atlas</h1>
+  <h1>🛡️ SOCAtlas</h1>
   <p><b>The ultimate cybersecurity operations, alert playbook, and interview guide.</b></p>
 </div>
 
 <br>
 
-Welcome to **SOC Atlas**, a comprehensive, open-source cybersecurity knowledge base. This repository holds highly structured playbooks, deep technical walkthroughs, and 1200 high-yield revision points designed specifically for Security Operations Center (SOC) Analysts, Security Engineers, and Infosec students.
+Welcome to **SOCAtlas**, a comprehensive, open-source cybersecurity knowledge base. This repository holds highly structured playbooks, deep technical walkthroughs, and 1200 high-yield revision points designed specifically for Security Operations Center (SOC) Analysts, Security Engineers, and Infosec students.
 
 ## 🌐 View the Live Website
-You do not need to download or install anything to read the documentation. You can view the fully interactive, hosted version of **SOC Atlas** directly in your browser right here:
+You do not need to download or install anything to read the documentation. You can view the fully interactive, hosted version of **SOCAtlas** directly in your browser right here:
 
-👉 **[https://theRishu.github.io/soc-atlas/](https://theRishu.github.io/soc-atlas/)**
+👉 **[https://socatlas.vercel.app/](https://socatlas.vercel.app/)**
+*(Backup: [https://theRishu.github.io/soc-atlas/](https://theRishu.github.io/soc-atlas/))*
 
 ---
 
@@ -20,14 +21,16 @@ You do not need to download or install anything to read the documentation. You c
 * **⚡ 1200 Quick Points:** Rapid-revision concepts spanning Cloud Security, Cryptography, Defensive Frameworks (NIST/ISO), and SIEM tooling.
 * **🌐 Security Fundamentals:** Beautifully structured breakdowns of the CIA Triad, Zero Trust architecture, and core network protocols.
 
-## 🚀 Running Locally
-This documentation platform is built using [Zensical](https://pypi.org/project/zensical/), compiling pure markdown into extremely fast, static HTML.
-
-To serve the project locally on your machine, simply execute the startup script:
+To serve the project locally, just run:
 ```bash
-./start.sh
+sh start.sh
 ```
-This will automatically launch a high-performance local server instance on port `8087`.
+This single command automatically installs dependencies and starts the server on port `8087`.
+
+Designed to run seamlessly across:
+- **Local Development** (via `sh start.sh`)
+- **Vercel** (Automatic production builds)
+- **GitHub Pages** (Static hosting ready)
 
 ## 🏗️ Design & Architecture
 The UI is styled using a custom V3 "Stripe-inspired" design system, utilizing absolute high-contrast typography, crisp border radiuses, and elegant "Blurple" and Slate color schemes optimized for deep reading.

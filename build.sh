@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
-# SOC Atlas - Production Build Script
+# SOCAtlas - High-Performance Build Pipe
 set -e
 
-echo "🛡️  Compiling SOC Atlas into ultra-fast HTML..."
+echo "🛡️  Compiling SOCAtlas into ultra-fast HTML..."
 
-# Enforce dependency installation safely
-python3 -m pip install -r requirements.txt
+# Enforce clean dependencies
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
 
-# Locate binary paths universally across MacOS / Ubuntu CI
-ZENSICAL_BIN="$(python3 -c 'import site; print(site.USER_BASE)')/bin/zensical"
-if [ ! -f "$ZENSICAL_BIN" ]; then
-    ZENSICAL_BIN=$(which zensical || echo "zensical")
+# Detection: Find the right engine (Zensical or MkDocs)
+if python3 -c "import zensical" &> /dev/null && python3 -m zensical build --help &> /dev/null; then
+    echo "📦  Building with Zensical Engine..."
+    python3 -m zensical build -f zensical.yml
+else
+    echo "🔄  Zensical binary not found. Falling back to MkDocs Material..."
+    python3 -m mkdocs build -f zensical.yml -d site
 fi
-
-# Run the build command
-$ZENSICAL_BIN build -f zensical.yml
 
 echo "✅ Compilation successful! The 'site/' folder is ready for global hosting."

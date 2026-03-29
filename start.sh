@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# SOC Atlas - Local Development Script
+# SOCAtlas - Local Development Script
 # Built to work universally for anyone downloading this repository.
 set -e
 
-echo "🛡️  Starting SOC Atlas Local Server..."
+echo "🛡️  Starting SOCAtlas Local Server..."
 
 # Check if Python is installed
 if ! command -v python3 &> /dev/null; then
@@ -22,7 +22,7 @@ if ! python3 -m zensical serve --help &> /dev/null; then
     python3 -m pip install --user --upgrade zensical
 fi
 
-echo "🌐 SOC Atlas is running at: http://127.0.0.1:$PORT"
+echo "🌐 SOCAtlas is running at: http://127.0.0.1:$PORT"
 echo "──────────────────────────────────────────"
 
 # Execute the core static site generator server
