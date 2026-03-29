@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
-# SOCAtlas - High-Performance Build Pipe
+# SOCAtlas - Robust Build Pipe for Vercel and CI
 set -e
 
 echo "🛡️  Compiling SOCAtlas into ultra-fast HTML..."
 
-# Enforce clean dependencies
-python3 -m venv venv
-source venv/bin/activate
+# Use existing pip if in CI/Vercel, otherwise create venv
+if [ -z "$VERCEL" ]; then
+    echo "📦 Local build: Setting up virtual environment..."
+    python3 -m venv venv
+    source venv/bin/activate
+fi
+
+# Ensure dependencies are present
+echo "🔧 Installing dependencies..."
 pip install --upgrade pip
 pip install -r requirements.txt
 
 # Detection: Find the right engine (Zensical or MkDocs)
-if python3 -c "import zensical" &> /dev/null && python3 -m zensical build --help &> /dev/null; then
+if python3 -c "import zensical" &> /dev/null; then
     echo "📦  Building with Zensical Engine..."
     python3 -m zensical build -f zensical.yml
 else
@@ -36,4 +42,4 @@ find . -name "*.html" -mindepth 2 | while read -r file; do
 done
 cd ..
 
-echo "✅ Build Complete: All documentation is now natively available at the root level."
+echo "✅ Build Complete."
