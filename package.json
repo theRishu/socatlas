@@ -2,7 +2,8 @@
   "name": "socatlas",
   "version": "1.0.0",
   "scripts": {
-    "build": "sh build.sh",
+    "build": "echo \"Static site already prepared in public/ for Vercel.\"",
+    "build:site": "sh build.sh",
     "dev": "sh dev.sh",
     "preview": "sh start.sh",
     "search": "./search.sh"

@@ -73,7 +73,7 @@ This generates the production output in `./site` and syncs the static Vercel dir
 ```bash
 sh build.sh
 # or
-npm run build
+npm run build:site
 ```
 
 ### Deploy output
