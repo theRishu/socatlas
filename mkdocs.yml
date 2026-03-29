@@ -67,6 +67,12 @@ markdown_extensions:
 plugins:
   - search
 
+extra_css:
+  - assets/pdf-builder.css
+
+extra_javascript:
+  - assets/pdf-builder.js
+
 nav:
   - Home: index.md
   - 🏛️ Fundamentals:

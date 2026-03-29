@@ -51,6 +51,8 @@
       
     
     
+      <link rel="stylesheet" href="assets/pdf-builder.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -2679,11 +2681,14 @@
 
 <h1 id="welcome-to-socatlas">Welcome to SOCAtlas</h1>
 <p class="page-lead">SOCAtlas helps you master cybersecurity concepts in a clear order and revise them instantly before interviews or operational shifts. It is built for SOC analysts, engineers, students, and anyone who demands practical explanations with real attack scenarios and tools.</p>
+<!-- complete-guide:omit:start -->
 <div class="hero-actions">
 <p><a class="md-button md-button--primary" href="fundamentals/introduction.html">Start With Fundamentals</a>
 <a class="md-button" href="quick/basics.html">Open 1200 Quick Points</a>
-<a class="md-button" href="complete-guide.html?download=1">Download Full Guide PDF</a></p>
+<a class="md-button" href="#pdf-builder">Customize PDF</a></p>
 </div>
+<!-- complete-guide:omit:end -->
+
 <div class="admonition note">
 <p class="admonition-title">What you will find here</p>
 <ul>
@@ -2693,6 +2698,10 @@
 <li>1200 quick-revision points organized by domain</li>
 </ul>
 </div>
+<!-- complete-guide:omit:start -->
+<section id="pdf-builder" class="pdf-builder" data-pdf-builder data-config="assets/pdf-sections.json"></section>
+<!-- complete-guide:omit:end -->
+
 <h2 id="choose-your-starting-point">Choose your starting point</h2>
 <div class="grid cards">
 <ul>
@@ -2924,6 +2933,8 @@
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="assets/pdf-builder.js"></script>
       
     
   </body>

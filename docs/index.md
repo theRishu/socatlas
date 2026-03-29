@@ -3,17 +3,23 @@
 SOCAtlas helps you master cybersecurity concepts in a clear order and revise them instantly before interviews or operational shifts. It is built for SOC analysts, engineers, students, and anyone who demands practical explanations with real attack scenarios and tools.
 { .page-lead }
 
+<!-- complete-guide:omit:start -->
 <div class="hero-actions" markdown>
 [Start With Fundamentals](fundamentals/introduction.md){ .md-button .md-button--primary }
 [Open 1200 Quick Points](quick/basics.md){ .md-button }
-[Download Full Guide PDF](complete-guide.md?download=1){ .md-button }
+[Customize PDF](#pdf-builder){ .md-button }
 </div>
+<!-- complete-guide:omit:end -->
 
 !!! note "What you will find here"
     - core concepts explained in plain, interview-ready language
     - networking, threats, detection, governance, and cloud notes
     - real examples, tools, and attack scenarios for every topic
     - 1200 quick-revision points organized by domain
+
+<!-- complete-guide:omit:start -->
+<section id="pdf-builder" class="pdf-builder" data-pdf-builder data-config="assets/pdf-sections.json"></section>
+<!-- complete-guide:omit:end -->
 
 ## Choose your starting point
 

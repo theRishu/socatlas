@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="assets/pdf-builder.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -6847,16 +6849,88 @@
 
 <script>
 (() => {
+  const SECTION_SELECTOR = 'h2[data-pdf-section]';
+
+  const parseSelection = () => {
+    const raw = new URLSearchParams(window.location.search).get("sections");
+    if (!raw) {
+      return [];
+    }
+
+    return [...new Set(
+      raw
+        .split(",")
+        .map((value) => value.trim().toLowerCase())
+        .filter(Boolean)
+    )];
+  };
+
+  const applySelection = (selected) => {
+    if (!selected.length) {
+      return;
+    }
+
+    const headings = Array.from(document.querySelectorAll(SECTION_SELECTOR));
+    const selectedSet = new Set(selected);
+    const labels = [];
+
+    headings.forEach((heading, index) => {
+      const slug = heading.dataset.pdfSection;
+      const keep = selectedSet.has(slug);
+      const nextHeading = headings[index + 1] || null;
+
+      if (keep) {
+        labels.push(heading.textContent.trim());
+      }
+
+      let node = heading;
+      while (node && node !== nextHeading) {
+        node.hidden = !keep;
+        node = node.nextElementSibling;
+      }
+    });
+
+    if (!labels.length) {
+      return;
+    }
+
+    const title = document.querySelector(".md-typeset h1");
+    if (!title) {
+      return;
+    }
+
+    let note = document.getElementById("pdf-selection-summary");
+    if (!note) {
+      note = document.createElement("p");
+      note.id = "pdf-selection-summary";
+      note.style.margin = "0.75rem 0 1.25rem";
+      note.style.padding = "0.85rem 1rem";
+      note.style.border = "1px solid rgba(99, 91, 255, 0.2)";
+      note.style.borderRadius = "0.8rem";
+      note.style.background = "rgba(99, 91, 255, 0.08)";
+      note.style.fontWeight = "600";
+      title.insertAdjacentElement("afterend", note);
+    }
+
+    note.textContent = `Included in this PDF: ${labels.join(", ")}`;
+  };
+
   const triggerPrint = () => {
     window.setTimeout(() => window.print(), 500);
   };
 
-  if (new URLSearchParams(window.location.search).get("download") === "1") {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", triggerPrint, { once: true });
-    } else {
+  const init = () => {
+    applySelection(parseSelection());
+
+    if (new URLSearchParams(window.location.search).get("download") === "1") {
       triggerPrint();
     }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
   }
 })();
 </script>
@@ -6864,10 +6938,6 @@
 <h1 id="socatlas-complete-guide">SOCAtlas Complete Guide</h1>
 <h3 id="home">Home</h3>
 <p class="page-lead">SOCAtlas helps you master cybersecurity concepts in a clear order and revise them instantly before interviews or operational shifts. It is built for SOC analysts, engineers, students, and anyone who demands practical explanations with real attack scenarios and tools.</p>
-<div class="hero-actions">
-<p><a class="md-button md-button--primary" href="fundamentals/introduction.html">Start With Fundamentals</a>
-<a class="md-button" href="quick/basics.html">Open 1200 Quick Points</a></p>
-</div>
 <div class="admonition note">
 <p class="admonition-title">What you will find here</p>
 <ul>
@@ -7025,7 +7095,7 @@
 <p><strong>Learning mode:</strong> Start with the guide pages under Fundamentals, Networking, Threats, and Detection. They give you context, examples, and structure.
 <strong>Revision mode:</strong> Switch to the quick-point pages when you want shorter answers you can review rapidly.</p>
 </div>
-<h2 id="fundamentals">🏛️ Fundamentals</h2>
+<h2 data-pdf-section="fundamentals" id="fundamentals">🏛️ Fundamentals</h2>
 <h3 id="introduction-to-cybersecurity">Introduction to Cybersecurity</h3>
 <p class="page-lead">Cybersecurity is the practice of protecting computers, networks, systems, applications, and data from digital attacks, unauthorized access, damage, and theft.</p>
 <div class="admonition note">
@@ -7376,7 +7446,7 @@
 <blockquote>
 <p><strong>Answer:</strong> Use password-hashing algorithms such as bcrypt, scrypt, or Argon2. They are intentionally slow and often use salting, which makes large-scale guessing attacks more expensive.</p>
 </blockquote>
-<h2 id="networking">🌐 Networking</h2>
+<h2 data-pdf-section="networking" id="networking">🌐 Networking</h2>
 <h3 id="networking-basics">Networking Basics</h3>
 <p class="page-lead">Networking is the foundation that lets devices communicate, share data, and reach services inside an organization and across the internet.</p>
 <div class="admonition note">
@@ -8061,7 +8131,7 @@
 <blockquote>
 <p>A forward proxy represents the client, while a reverse proxy represents the server.</p>
 </blockquote>
-<h2 id="major-attacks-directory">🏴‍☠️ Major Attacks Directory</h2>
+<h2 data-pdf-section="major-attacks-directory" id="major-attacks-directory">🏴‍☠️ Major Attacks Directory</h2>
 <h3 id="vulnerabilities-risk">Vulnerabilities &amp; Risk</h3>
 <p class="page-lead">These terms are closely related, but they are not interchangeable. Knowing the difference helps you describe how security problems are found, prioritized, and addressed.</p>
 <div class="admonition note">
@@ -8585,7 +8655,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Fix:</strong> Route traffic through global Cloud Anti-DDoS providers (Cloudflare), implement strict rate-limiting, and use Anycast routing.</li>
 </ul>
 </div>
-<h2 id="detection-defense">🛡️ Detection &amp; Defense</h2>
+<h2 data-pdf-section="detection-defense" id="detection-defense">🛡️ Detection &amp; Defense</h2>
 <h3 id="ids-ips">IDS &amp; IPS</h3>
 <p class="page-lead">An IDS, or Intrusion Detection System, monitors activity and raises alerts when it sees suspicious behavior. An IPS, or Intrusion Prevention System, goes a step further by blocking or stopping that activity automatically.</p>
 <div class="admonition note">
@@ -9549,7 +9619,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p>Because incident response is not finished when systems come back online. The lessons learned phase is what turns an incident into improved detection, better playbooks, and stronger prevention.</p>
 </blockquote>
-<h2 id="governance-compliance">⚖️ Governance &amp; Compliance</h2>
+<h2 data-pdf-section="governance-compliance" id="governance-compliance">⚖️ Governance &amp; Compliance</h2>
 <h3 id="compliance-regulatory-floor">Compliance &amp; Regulatory Floor</h3>
 <p class="page-lead">Compliance means following laws, regulations, standards, or contractual requirements related to security and data protection. It is important, but compliance alone does not automatically mean an organization is secure.</p>
 <div class="admonition note">
@@ -9947,7 +10017,7 @@ All the victim computers update their ARP cache and start sending their internet
 <blockquote>
 <p>It is the process of mapping your current detections and telemetry to ATT&amp;CK techniques to see which behaviors you can detect and which ones you are missing.</p>
 </blockquote>
-<h2 id="soc-alerts-scenarios">🚨 SOC Alerts &amp; Scenarios</h2>
+<h2 data-pdf-section="soc-alerts-scenarios" id="soc-alerts-scenarios">🚨 SOC Alerts &amp; Scenarios</h2>
 <h3 id="general-alert-handling">General Alert Handling</h3>
 <div class="admonition note">
 <p class="admonition-title">What is an Alert?</p>
@@ -10314,7 +10384,7 @@ All the victim computers update their ARP cache and start sending their internet
 <li><strong>Contain &amp; Escalate:</strong> If confirmed malicious, I disable the compromised account immediately, isolate the host, escalate to L2, and document the incident.</li>
 </ul>
 </div>
-<h2 id="1200-quick-points">⚡ 1200 Quick Points</h2>
+<h2 data-pdf-section="1200-quick-points" id="1200-quick-points">⚡ 1200 Quick Points</h2>
 <h3 id="core-basics-1100">Core Basics (1–100)</h3>
 <p class="page-lead">This section is designed for fast revision. Each point gives you a short concept summary with practical context so you can revise quickly before interviews.</p>
 <div class="admonition note">
@@ -16433,6 +16503,8 @@ All the victim computers update their ARP cache and start sending their internet
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="assets/pdf-builder.js"></script>
       
     
   </body>

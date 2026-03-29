@@ -52,16 +52,88 @@
 
 <script>
 (() => {
+  const SECTION_SELECTOR = 'h2[data-pdf-section]';
+
+  const parseSelection = () => {
+    const raw = new URLSearchParams(window.location.search).get("sections");
+    if (!raw) {
+      return [];
+    }
+
+    return [...new Set(
+      raw
+        .split(",")
+        .map((value) => value.trim().toLowerCase())
+        .filter(Boolean)
+    )];
+  };
+
+  const applySelection = (selected) => {
+    if (!selected.length) {
+      return;
+    }
+
+    const headings = Array.from(document.querySelectorAll(SECTION_SELECTOR));
+    const selectedSet = new Set(selected);
+    const labels = [];
+
+    headings.forEach((heading, index) => {
+      const slug = heading.dataset.pdfSection;
+      const keep = selectedSet.has(slug);
+      const nextHeading = headings[index + 1] || null;
+
+      if (keep) {
+        labels.push(heading.textContent.trim());
+      }
+
+      let node = heading;
+      while (node && node !== nextHeading) {
+        node.hidden = !keep;
+        node = node.nextElementSibling;
+      }
+    });
+
+    if (!labels.length) {
+      return;
+    }
+
+    const title = document.querySelector(".md-typeset h1");
+    if (!title) {
+      return;
+    }
+
+    let note = document.getElementById("pdf-selection-summary");
+    if (!note) {
+      note = document.createElement("p");
+      note.id = "pdf-selection-summary";
+      note.style.margin = "0.75rem 0 1.25rem";
+      note.style.padding = "0.85rem 1rem";
+      note.style.border = "1px solid rgba(99, 91, 255, 0.2)";
+      note.style.borderRadius = "0.8rem";
+      note.style.background = "rgba(99, 91, 255, 0.08)";
+      note.style.fontWeight = "600";
+      title.insertAdjacentElement("afterend", note);
+    }
+
+    note.textContent = `Included in this PDF: ${labels.join(", ")}`;
+  };
+
   const triggerPrint = () => {
     window.setTimeout(() => window.print(), 500);
   };
 
-  if (new URLSearchParams(window.location.search).get("download") === "1") {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", triggerPrint, { once: true });
-    } else {
+  const init = () => {
+    applySelection(parseSelection());
+
+    if (new URLSearchParams(window.location.search).get("download") === "1") {
       triggerPrint();
     }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
   }
 })();
 </script>
@@ -73,16 +145,13 @@
 SOCAtlas helps you master cybersecurity concepts in a clear order and revise them instantly before interviews or operational shifts. It is built for SOC analysts, engineers, students, and anyone who demands practical explanations with real attack scenarios and tools.
 { .page-lead }
 
-<div class="hero-actions" markdown>
-[Start With Fundamentals](fundamentals/introduction.md){ .md-button .md-button--primary }
-[Open 1200 Quick Points](quick/basics.md){ .md-button }
-</div>
 
 !!! note "What you will find here"
     - core concepts explained in plain, interview-ready language
     - networking, threats, detection, governance, and cloud notes
     - real examples, tools, and attack scenarios for every topic
     - 1200 quick-revision points organized by domain
+
 
 #### Choose your starting point
 
@@ -163,7 +232,7 @@ Follow this four-step structure and you will sound confident and clear in any te
     **Learning mode:** Start with the guide pages under Fundamentals, Networking, Threats, and Detection. They give you context, examples, and structure.
     **Revision mode:** Switch to the quick-point pages when you want shorter answers you can review rapidly.
 
-## 🏛️ Fundamentals
+## 🏛️ Fundamentals { data-pdf-section="fundamentals" }
 
 ### Introduction to Cybersecurity
 
@@ -374,7 +443,7 @@ Hashing converts data into a fixed-length value called a hash or digest. Unlike 
 ###### How do you slow down brute-force attacks against password hashes?
 > **Answer:** Use password-hashing algorithms such as bcrypt, scrypt, or Argon2. They are intentionally slow and often use salting, which makes large-scale guessing attacks more expensive.
 
-## 🌐 Networking
+## 🌐 Networking { data-pdf-section="networking" }
 
 ### Networking Basics
 
@@ -684,7 +753,7 @@ In a real environment, these controls often appear together:
 ###### What is the difference between a forward proxy and a reverse proxy?
 > A forward proxy represents the client, while a reverse proxy represents the server.
 
-## 🏴‍☠️ Major Attacks Directory
+## 🏴‍☠️ Major Attacks Directory { data-pdf-section="major-attacks-directory" }
 
 ### Vulnerabilities & Risk
 
@@ -1040,7 +1109,7 @@ An attacker rents an "IoT Botnet" made up of 100,000 compromised smart cameras. 
     *   **Impact:** Complete service outage, loss of revenue, and massive network downtime.
     *   **Fix:** Route traffic through global Cloud Anti-DDoS providers (Cloudflare), implement strict rate-limiting, and use Anycast routing.
 
-## 🛡️ Detection & Defense
+## 🛡️ Detection & Defense { data-pdf-section="detection-defense" }
 
 ### IDS & IPS
 
@@ -1550,7 +1619,7 @@ Incident response is the structured process security teams follow to prepare for
 ###### Why are lessons learned important?
 > Because incident response is not finished when systems come back online. The lessons learned phase is what turns an incident into improved detection, better playbooks, and stronger prevention.
 
-## ⚖️ Governance & Compliance
+## ⚖️ Governance & Compliance { data-pdf-section="governance-compliance" }
 
 ### Compliance & Regulatory Floor
 
@@ -1807,7 +1876,7 @@ MITRE ATT&CK documents attacker tactics and techniques based on real-world obser
 ###### What is MITRE gap analysis?
 > It is the process of mapping your current detections and telemetry to ATT&CK techniques to see which behaviors you can detect and which ones you are missing.
 
-## 🚨 SOC Alerts & Scenarios
+## 🚨 SOC Alerts & Scenarios { data-pdf-section="soc-alerts-scenarios" }
 
 ### General Alert Handling
 
@@ -2224,7 +2293,7 @@ Finally, I **escalate the incident** to the L2 and IR teams with the exact timel
     *   **Investigate:** I analyze the EDR process tree and verify Active Directory logs to see the extent of their administrative access.
     *   **Contain & Escalate:** If confirmed malicious, I disable the compromised account immediately, isolate the host, escalate to L2, and document the incident.
 
-## ⚡ 1200 Quick Points
+## ⚡ 1200 Quick Points { data-pdf-section="1200-quick-points" }
 
 ### Core Basics (1–100)
 
