@@ -10,5 +10,11 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": true
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/$1/index.html"
+    }
+  ]
 }
