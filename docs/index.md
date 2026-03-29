@@ -10,7 +10,7 @@ SOCAtlas helps you master cybersecurity concepts in a clear order and revise the
 [Download as PDF](#pdf-builder){ .md-button }
 </div>
 
-Choose sections, switch between color or paper-friendly output, and let Chrome open `Save as PDF` for the cleanest export.
+Choose sections, switch between color or paper-friendly output, and let Chrome open `Save as PDF` for the cleanest export. A recommended starter pack is loaded first so users can download faster.
 <!-- complete-guide:omit:end -->
 
 !!! note "What you will find here"

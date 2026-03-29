@@ -27,11 +27,18 @@ echo -e "${PURPLE}────────────────────�
 
 count=0
 
+# Fallback to standard grep if ripgrep (rg) is not found
+if command -v rg &> /dev/null; then
+    SEARCH_CMD="rg -i -F --no-filename --no-line-number --color never"
+else
+    SEARCH_CMD="grep -rihF"
+fi
+
 while IFS= read -r line; do
     clean_line=$(printf '%s\n' "$line" | sed -E 's/^[[:space:]]*\|?[[:space:]]*//; s/[[:space:]]*\|[[:space:]]*/  ➜  /g; s/[[:space:]]*$//')
     echo -e "${NC}🔹 ${clean_line}${NC}"
     count=$((count + 1))
-done < <(rg -i -F --no-filename --no-line-number --color never "$search_term" "$docs_dir" || true)
+done < <($SEARCH_CMD "$search_term" "$docs_dir" || true)
 
 if [ $count -eq 0 ]; then
     echo -e "${RED}❌ No matching points found for '$search_term'.${NC}"

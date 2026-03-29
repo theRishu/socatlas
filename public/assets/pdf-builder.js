@@ -3,6 +3,7 @@
   const STORAGE_KEY = "socatlas-pdf-sections";
   const MODE_STORAGE_KEY = "socatlas-pdf-mode";
   const IMAGE_STORAGE_KEY = "socatlas-pdf-images";
+  const RECOMMENDED_PRESET_ID = "interview-core";
   const PRESETS = [
     {
       id: "interview-core",
@@ -62,23 +63,34 @@
     return `${count} ${count === 1 ? singular : plural}`;
   }
 
+  function getDefaultSelection(sections) {
+    const preset = PRESETS.find((item) => item.id === RECOMMENDED_PRESET_ID);
+    if (!preset) {
+      return sections.map((section) => section.slug);
+    }
+
+    const defaults = resolvePresetSlugs(sections, preset);
+    return defaults.length ? defaults : sections.map((section) => section.slug);
+  }
+
   function readSavedSelection(sections) {
     try {
+      const fallback = getDefaultSelection(sections);
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
-        return sections.map((section) => section.slug);
+        return fallback;
       }
 
       const saved = JSON.parse(raw);
       if (!Array.isArray(saved) || !saved.length) {
-        return sections.map((section) => section.slug);
+        return fallback;
       }
 
       const valid = new Set(sections.map((section) => section.slug));
       const selected = saved.filter((slug) => valid.has(slug));
-      return selected.length ? selected : sections.map((section) => section.slug);
+      return selected.length ? selected : fallback;
     } catch {
-      return sections.map((section) => section.slug);
+      return getDefaultSelection(sections);
     }
   }
 
@@ -157,6 +169,7 @@
           data-pdf-preset="${escapeHtml(preset.id)}"
           data-pdf-preset-slugs="${escapeHtml(slugs.join(","))}"
         >
+          ${preset.id === RECOMMENDED_PRESET_ID ? '<span class="pdf-builder__preset-badge">Recommended</span>' : ""}
           <span class="pdf-builder__preset-title">${escapeHtml(preset.label)}</span>
           <span class="pdf-builder__preset-meta">${escapeHtml(preset.description)}</span>
           <span class="pdf-builder__preset-count">${pluralize(slugs.length, "section", "sections")} • ${pluralize(topicCount, "topic", "topics")}</span>
@@ -266,19 +279,36 @@
             <span class="pdf-builder__stat-label">Output</span>
             <strong class="pdf-builder__stat-value" data-pdf-mode-label>Color PDF</strong>
           </div>
+          <div class="pdf-builder__stat">
+            <span class="pdf-builder__stat-label">Images</span>
+            <strong class="pdf-builder__stat-value" data-pdf-images-label>Included</strong>
+          </div>
         </div>
         <p class="pdf-builder__summary" data-pdf-summary></p>
+        <div class="pdf-builder__next" data-pdf-next></div>
         <div class="pdf-builder__badges" data-pdf-selection></div>
+      </div>
+
+      <div class="pdf-builder__section-header">
+        <div>
+          <p class="pdf-builder__section-eyebrow">Custom Sections</p>
+          <h3 class="pdf-builder__section-title">Choose What To Include</h3>
+        </div>
+        <label class="pdf-builder__filter">
+          <span class="pdf-builder__filter-label">Find a section</span>
+          <input type="search" placeholder="Filter sections like networking or alerts" data-pdf-filter>
+        </label>
       </div>
 
       <div class="pdf-builder__grid">
         ${options}
       </div>
+      <p class="pdf-builder__filter-empty" data-pdf-filter-empty hidden>No matching sections for that filter yet.</p>
 
       <div class="pdf-builder__actions">
         <div class="pdf-builder__actions-main">
           <a class="md-button pdf-builder__action" href="complete-guide.html" target="_blank" rel="noopener" data-pdf-preview>
-            Preview guide
+            Preview selection
           </a>
           <a class="md-button md-button--primary pdf-builder__action" href="complete-guide.html?download=1" target="_blank" rel="noopener" data-pdf-download>
             Open Save as PDF
@@ -303,11 +333,15 @@
     const sectionCount = root.querySelector("[data-pdf-sections-count]");
     const topicCountNode = root.querySelector("[data-pdf-topics-count]");
     const modeLabel = root.querySelector("[data-pdf-mode-label]");
+    const imagesLabelNode = root.querySelector("[data-pdf-images-label]");
+    const nextNode = root.querySelector("[data-pdf-next]");
     const empty = root.querySelector("[data-pdf-empty]");
     const preview = root.querySelector("[data-pdf-preview]");
     const download = root.querySelector("[data-pdf-download]");
     const copyButton = root.querySelector("[data-pdf-copy]");
     const imagesToggle = root.querySelector("[data-pdf-images]");
+    const filterInput = root.querySelector("[data-pdf-filter]");
+    const filterEmpty = root.querySelector("[data-pdf-filter-empty]");
     const previewBase = preview.getAttribute("href") || "complete-guide.html";
     const copyButtonLabel = "Copy setup link";
 
@@ -331,6 +365,26 @@
         button.toggleAttribute("data-active", active);
         button.setAttribute("aria-pressed", active ? "true" : "false");
       });
+    };
+
+    const applyFilter = () => {
+      const term = (filterInput.value || "").trim().toLowerCase();
+      let visibleCount = 0;
+
+      checkboxes.forEach((checkbox) => {
+        const option = checkbox.closest(".pdf-builder__option");
+        if (!option) {
+          return;
+        }
+
+        const matches = !term || option.textContent.toLowerCase().includes(term);
+        option.hidden = !matches;
+        if (matches) {
+          visibleCount += 1;
+        }
+      });
+
+      filterEmpty.hidden = visibleCount !== 0;
     };
 
     const update = () => {
@@ -364,10 +418,15 @@
       sectionCount.textContent = String(selectedValues.length);
       topicCountNode.textContent = String(topicCount);
       modeLabel.textContent = currentModeLabel;
+      imagesLabelNode.textContent = images ? "Included" : "Text only";
 
       summary.textContent = selectedValues.length
         ? `${pluralize(selectedValues.length, "section", "sections")} selected for a ${currentModeLabel.toLowerCase()} export, ${imagesLabel}.`
         : "No sections selected yet.";
+
+      nextNode.textContent = mode === "paper"
+        ? "Next: Chrome opens print preview. Choose Save as PDF and turn Background graphics off for the cleanest printer-friendly export."
+        : "Next: Chrome opens print preview. Choose Save as PDF and keep Background graphics on for the best-looking color export.";
 
       badgeContainer.innerHTML = selectedSections.length
         ? selectedSections
@@ -391,6 +450,7 @@
 
       updateSelectionStyles();
       updatePresets(selectedValues);
+      applyFilter();
       saveSelection(selectedValues);
       saveMode(mode);
       saveImages(images);
@@ -456,6 +516,7 @@
     });
 
     imagesToggle.addEventListener("change", update);
+    filterInput.addEventListener("input", applyFilter);
 
     updateSelectionStyles();
     update();
