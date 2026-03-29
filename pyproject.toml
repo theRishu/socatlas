@@ -1,0 +1,15 @@
+[project]
+name = "socatlas"
+version = "0.1.0"
+description = "High-performance cybersecurity guide"
+dependencies = [
+    "zensical",
+    "mkdocs-material",
+    "pymdown-extensions"
+]
+
+[project.scripts]
+app = "mkdocs:main"
+
+[tool.setuptools]
+py-modules = []

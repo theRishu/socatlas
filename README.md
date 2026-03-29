@@ -15,25 +15,51 @@ You do not need to download or install anything to read the documentation. You c
 
 ---
 
+## 🏗️ Getting Started
+
+To run SOCAtlas locally or search the knowledge base from your command line, follow these instructions:
+
+### 1. 🚀 Quick Start (Local Preview)
+Use this command to build the project and serve it locally on port `8087`. This uses the production-ready static output.
+```bash
+sh start.sh
+```
+
+### 2. ⚡ Live Development Mode
+If you are adding new content or editing existing articles, use this command. It provides **hot-reloading**: as soon as you save a `.md` file, the site refreshes in your browser.
+```bash
+sh dev.sh
+```
+
+### 3. 🔎 Instant CLI Search
+Search across the **1200 Quick Points** directly from your terminal. No browser required.
+```bash
+chmod +x search.sh
+./search.sh "firewall"
+```
+
+### 4. 📦 Build for Production
+To manually trigger a production-ready build (outputs to the `./site` directory):
+```bash
+sh build.sh
+```
+
+---
+
 ## 🌟 Key Features
 * **🚨 SOC Alerts & Playbooks:** Step-by-step triage, investigation, and containment workflows for EDR events, Malware, Ransomware, DDoS, Impossible Travel, and Privilege Escalation.
 * **🏴‍☠️ Major Attacks Directory:** Clear technical breakdowns of critical attack vectors (SQLi, XSS, CSRF, SSRF, ARP Spoofing) mapped directly across the OSI Model.
 * **⚡ 1200 Quick Points:** Rapid-revision concepts spanning Cloud Security, Cryptography, Defensive Frameworks (NIST/ISO), and SIEM tooling.
 * **🌐 Security Fundamentals:** Beautifully structured breakdowns of the CIA Triad, Zero Trust architecture, and core network protocols.
 
-To serve the project locally, just run:
-```bash
-sh start.sh
-```
-This single command automatically installs dependencies and starts the server on port `8087`.
+---
 
-Designed to run seamlessly across:
-- **Local Development** (via `sh start.sh`)
-- **Vercel** (Automatic production builds)
-- **GitHub Pages** (Static hosting ready)
+## ☁️ Deployment & CI/CD
+SOCAtlas is optimized for:
+- **Vercel**: Automatically handles production builds via `vercel.json` and `build.sh`.
+- **GitHub Pages**: Deployed via GitHub Actions to the `gh-pages` branch on every push to `main`.
 
-## 🏗️ Design & Architecture
-The UI is styled using a custom V3 "Stripe-inspired" design system, utilizing absolute high-contrast typography, crisp border radiuses, and elegant "Blurple" and Slate color schemes optimized for deep reading.
+---
 
 ## 🤝 Contributing
 We believe that cybersecurity knowledge should be universally accessible. Whether it's adding new major attack walkthroughs, refining SOC alert triage steps, or expanding the quick revision points, pull requests are heavily encouraged!
