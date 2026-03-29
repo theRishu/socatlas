@@ -184,11 +184,11 @@
 
     root.innerHTML = `
       <div class="pdf-builder__header">
-        <p class="pdf-builder__eyebrow">Custom PDF</p>
-        <h2 class="pdf-builder__title">Build the exact PDF you want</h2>
+        <p class="pdf-builder__eyebrow">Download PDF</p>
+        <h2 class="pdf-builder__title">Choose What Goes Into Your PDF</h2>
         <p class="pdf-builder__intro">
-          Use a smart preset or hand-pick the sections you want. Then choose a rich color export
-          or a cleaner paper-friendly print style.
+          Click <strong>Download as PDF</strong>, choose what you want to include, and download a real PDF file.
+          Use a smart preset or hand-pick the sections, then choose color or paper-friendly output.
         </p>
       </div>
 
@@ -205,7 +205,7 @@
         <label class="pdf-builder__mode">
           <input type="radio" name="pdf-mode" value="paper" ${selectedMode === "paper" ? "checked" : ""}>
           <span class="pdf-builder__mode-title">Paper-friendly</span>
-          <span class="pdf-builder__mode-meta">Cleaner black-and-white styling that saves ink on paper.</span>
+          <span class="pdf-builder__mode-meta">Pure black-and-white output with accent colors removed.</span>
         </label>
       </div>
 
@@ -238,7 +238,7 @@
             Preview selection
           </a>
           <a class="md-button md-button--primary pdf-builder__action" href="complete-guide.html?download=1" target="_blank" rel="noopener" data-pdf-download>
-            Download PDF
+            Download Real PDF
           </a>
         </div>
         <div class="pdf-builder__actions-secondary">
@@ -248,7 +248,7 @@
         </div>
       </div>
 
-      <p class="pdf-builder__hint">Your section and print-style choices stay saved on this device.</p>
+      <p class="pdf-builder__hint">Downloads a real PDF file. Paper-friendly removes accent colors and is tuned for clean printing.</p>
       <p class="pdf-builder__empty" data-pdf-empty hidden>Select at least one section to build a PDF.</p>
     `;
 

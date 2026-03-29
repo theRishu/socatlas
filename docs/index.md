@@ -7,7 +7,7 @@ SOCAtlas helps you master cybersecurity concepts in a clear order and revise the
 <div class="hero-actions" markdown>
 [Start With Fundamentals](fundamentals/introduction.md){ .md-button .md-button--primary }
 [Open 1200 Quick Points](quick/basics.md){ .md-button }
-[Customize PDF](#pdf-builder){ .md-button }
+[Download as PDF](#pdf-builder){ .md-button }
 </div>
 <!-- complete-guide:omit:end -->
 

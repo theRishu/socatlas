@@ -6937,6 +6937,54 @@ html[data-pdf-export="download"] .md-content__inner {
   background: rgba(10, 191, 83, 0.08);
 }
 
+html[data-pdf-export="download"] .pdf-export-shell {
+  position: fixed;
+  top: 0;
+  left: -100000px;
+  width: 1200px;
+  padding: 0;
+  margin: 0;
+  background: #ffffff;
+  z-index: -1;
+  pointer-events: none;
+}
+
+html[data-pdf-export="download"] .pdf-export-canvas,
+html[data-pdf-export="download"] .pdf-export-canvas * {
+  animation: none !important;
+  transition: none !important;
+}
+
+html[data-pdf-export="download"] .pdf-export-canvas,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset p,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset li,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset td,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset th,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+  line-height: 1.55 !important;
+}
+
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset code,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset pre,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset pre code {
+  font-family: "Courier New", Courier, monospace !important;
+}
+
+html[data-pdf-export="download"] .pdf-export-canvas,
+html[data-pdf-export="download"] .pdf-export-canvas .md-content__inner {
+  background: #ffffff !important;
+}
+
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset h1,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset h2,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset h3,
+html[data-pdf-export="download"] .pdf-export-canvas .md-typeset h4 {
+  line-height: 1.22 !important;
+  letter-spacing: 0 !important;
+}
+
 @media print {
   .md-header,
   .md-tabs,
@@ -6989,6 +7037,7 @@ html[data-pdf-export="download"] .md-content__inner {
 (() => {
   const SECTION_SELECTOR = '[data-pdf-section-group]';
   const HTML2PDF_CDN = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
+  const EMOJI_RE = /[\p{Extended_Pictographic}️]/gu;
 
   const parseSelection = () => {
     const raw = new URLSearchParams(window.location.search).get("sections");
@@ -7098,6 +7147,9 @@ html[data-pdf-export="download"] .md-content__inner {
     return `socatlas-${selected[0]}-${selected.length}-sections-${mode}.pdf`;
   };
 
+  const stripEmoji = (value) =>
+    value.replace(EMOJI_RE, "").replace(/\s{2,}/g, " ").trim();
+
   const loadHtml2Pdf = () =>
     new Promise((resolve, reject) => {
       if (window.html2pdf) {
@@ -7149,6 +7201,24 @@ html[data-pdf-export="download"] .md-content__inner {
     );
   };
 
+  const waitForImagesWithin = async (root) => {
+    const images = Array.from(root.querySelectorAll("img"));
+    await Promise.all(
+      images.map(
+        (image) =>
+          new Promise((resolve) => {
+            if (image.complete) {
+              resolve();
+              return;
+            }
+
+            image.addEventListener("load", resolve, { once: true });
+            image.addEventListener("error", resolve, { once: true });
+          })
+      )
+    );
+  };
+
   const waitForLayout = () =>
     new Promise((resolve) => {
       requestAnimationFrame(() => {
@@ -7156,7 +7226,37 @@ html[data-pdf-export="download"] .md-content__inner {
       });
     });
 
+  const buildExportClone = (target) => {
+    const shell = document.createElement("div");
+    shell.className = "pdf-export-shell";
+
+    const clone = target.cloneNode(true);
+    clone.classList.add("pdf-export-canvas");
+
+    clone.querySelectorAll("#pdf-download-status").forEach((node) => node.remove());
+
+    if (parseMode() === "paper") {
+      clone.querySelectorAll("[data-pdf-section-title]").forEach((section) => {
+        if (section.dataset.pdfSectionTitle) {
+          section.dataset.pdfSectionTitle = stripEmoji(section.dataset.pdfSectionTitle);
+        }
+      });
+
+      clone
+        .querySelectorAll("h1, h2, h3, h4, h5, h6, .pdf-guide-note")
+        .forEach((node) => {
+          node.textContent = stripEmoji(node.textContent || "");
+        });
+    }
+
+    shell.appendChild(clone);
+    document.body.appendChild(shell);
+
+    return { shell, clone };
+  };
+
   const triggerDownload = async () => {
+    let exportShell = null;
     try {
       setStatus("Preparing your PDF file...");
       const html2pdf = await loadHtml2Pdf();
@@ -7169,6 +7269,10 @@ html[data-pdf-export="download"] .md-content__inner {
       document.documentElement.dataset.pdfExport = "download";
       await waitForFonts();
       await waitForImages();
+      await waitForLayout();
+      const exportNodes = buildExportClone(target);
+      exportShell = exportNodes.shell;
+      await waitForImagesWithin(exportNodes.clone);
       await waitForLayout();
 
       await html2pdf()
@@ -7188,12 +7292,18 @@ html[data-pdf-export="download"] .md-content__inner {
             orientation: "portrait",
           },
         })
-        .from(target)
+        .from(exportNodes.clone)
         .save();
 
+      if (exportShell) {
+        exportShell.remove();
+      }
       delete document.documentElement.dataset.pdfExport;
       setStatus("PDF downloaded. Check your browser downloads folder.");
     } catch (error) {
+      if (exportShell) {
+        exportShell.remove();
+      }
       delete document.documentElement.dataset.pdfExport;
       console.error(error);
       setStatus("Automatic PDF download failed. Opening the print dialog instead.");
