@@ -4,13 +4,13 @@ site_description: The ultimate cybersecurity operations and interview guide — 
 site_author: Security Expert
 
 theme:
-  variant: modern
+  name: material
   font:
     text: Inter
     code: JetBrains Mono
   language: en
   icon:
-    logo: lucide/shield-check
+    logo: material/shield-check
   features:
     - navigation.tabs
     - navigation.tabs.sticky
@@ -29,14 +29,14 @@ theme:
       primary: teal
       accent: indigo
       toggle:
-        icon: lucide/moon
+        icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: teal
       accent: indigo
       toggle:
-        icon: lucide/sun
+        icon: material/white-balance-sunny
         name: Switch to light mode
 
 markdown_extensions:

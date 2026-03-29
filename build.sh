@@ -1,36 +1,29 @@
 #!/usr/bin/env bash
-# SOCAtlas - Robust Build Pipe for Vercel and CI
-set -e
+# SOCAtlas - Production build script
+set -euo pipefail
+
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SITE_DIR="$ROOT_DIR/site"
+
+cd "$ROOT_DIR"
 
 echo "🛡️  Compiling SOCAtlas into ultra-fast HTML..."
 
-# Use existing pip if in CI/Vercel, otherwise create venv
-if [ -z "$VERCEL" ]; then
-    echo "📦 Local build: Setting up virtual environment..."
-    python3 -m venv venv
-    source venv/bin/activate
+if ! python3 -m mkdocs --version &> /dev/null; then
+    echo "📦 Installing build dependencies..."
+    python3 -m pip install --upgrade pip
+    python3 -m pip install -r requirements.txt
 fi
 
-# Ensure dependencies are present
-echo "🔧 Installing dependencies..."
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# Detection: Find the right engine (Zensical or MkDocs)
-if python3 -c "import zensical" &> /dev/null; then
-    echo "📦  Building with Zensical Engine..."
-    python3 -m zensical build -f zensical.yml
-else
-    echo "🔄  Zensical binary not found. Falling back to MkDocs Material..."
-    python3 -m mkdocs build -f zensical.yml -d site
-fi
+echo "🏗️  Building with MkDocs Material..."
+python3 -m mkdocs build -f mkdocs.yml -d "$SITE_DIR"
 
 # FINAL SOURCE-LEVEL FLATTENER: Physically move all nested docs to the root
 echo "📡 Relocating all documentation to the site root for absolute availability..."
-cd site
-find . -name "*.html" -mindepth 2 | while read -r file; do
+cd "$SITE_DIR"
+find . -mindepth 2 -name "*.html" -print0 | while IFS= read -r -d '' file; do
     filename=$(basename "$file")
-    
+
     # If it's a documentation file (not index.html), move it to root
     if [ "$filename" != "index.html" ]; then
         cp -f "$file" "$filename"
@@ -40,6 +33,6 @@ find . -name "*.html" -mindepth 2 | while read -r file; do
         cp -f "$file" "${dir_name}.html"
     fi
 done
-cd ..
+cd "$ROOT_DIR"
 
 echo "✅ Build Complete."

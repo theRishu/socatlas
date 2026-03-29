@@ -15,33 +15,106 @@ You do not need to download or install anything to read the documentation. You c
 
 ---
 
-## 🏗️ Getting Started
+## 🏗️ Local Setup
 
-To run SOCAtlas locally or search the knowledge base from your command line, follow these instructions:
+SOCAtlas is a Python-based static documentation site built with **MkDocs Material**. You do not need Node.js to run it locally.
 
-### 1. 🚀 Quick Start (Local Preview)
-Use this command to build the project and serve it locally on port `8087`. This uses the production-ready static output.
+### 1. Clone the repository
 ```bash
-sh start.sh
+git clone https://github.com/theRishu/socatlas
+cd socatlas
 ```
 
-### 2. ⚡ Live Development Mode
-If you are adding new content or editing existing articles, use this command. It provides **hot-reloading**: as soon as you save a `.md` file, the site refreshes in your browser.
+### 2. Create and activate a virtual environment
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+```bash
+python3 -m pip install --upgrade pip
+python3 -m pip install -r requirements.txt
+```
+
+---
+
+## 💻 Run Locally
+
+### Development mode with hot reload
+Use this while editing markdown content. The site is served at `http://127.0.0.1:8087`.
 ```bash
 sh dev.sh
+# or
+npm run dev
 ```
 
-### 3. 🔎 Instant CLI Search
-Search across the **1200 Quick Points** directly from your terminal. No browser required.
+### Production preview on your machine
+Use this when you want to preview the same static output that is deployed. This command builds the site into `./site` and then serves it locally on `http://127.0.0.1:8087`.
 ```bash
-chmod +x search.sh
-./search.sh "firewall"
+sh start.sh
+# or
+npm run preview
 ```
 
-### 4. 📦 Build for Production
-To manually trigger a production-ready build (outputs to the `./site` directory):
+### Change the local port
+All run scripts support a custom port:
+```bash
+PORT=3000 sh dev.sh
+PORT=3000 sh start.sh
+```
+
+---
+
+## 📦 Production Build
+
+### Create the deployable static site
+This generates the production output in the `./site` directory.
 ```bash
 sh build.sh
+# or
+npm run build
+```
+
+### Deploy output
+After the build finishes, deploy the contents of `./site` to your static hosting platform.
+
+---
+
+## 🔎 CLI Search
+
+Search across the **1200 Quick Points** directly from your terminal:
+```bash
+./search.sh "firewall"
+./search.sh "incident response"
+# or
+npm run search -- "firewall"
+```
+
+---
+
+## ⚡ Command Reference
+
+```bash
+# one-time setup
+git clone https://github.com/theRishu/socatlas
+cd socatlas
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
+python3 -m pip install -r requirements.txt
+
+# local development
+sh dev.sh
+
+# local production preview
+sh start.sh
+
+# production build
+sh build.sh
+
+# quick search
+./search.sh "firewall"
 ```
 
 ---
@@ -56,7 +129,7 @@ sh build.sh
 
 ## ☁️ Deployment & CI/CD
 SOCAtlas is optimized for:
-- **Vercel**: Automatically handles production builds via `vercel.json` and `build.sh`.
+- **Vercel**: Serves the generated `site/` directory as a static deployment via `vercel.json` and `build.sh` with the framework preset forced to `Other`.
 - **GitHub Pages**: Deployed via GitHub Actions to the `gh-pages` branch on every push to `main`.
 
 ---

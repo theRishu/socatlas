@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 # SOCAtlas - Live Development Server
 # Auto-reloads as you change markdown files.
-set -e
+set -euo pipefail
 
-PORT=8087
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PORT="${PORT:-8087}"
+
+cd "$ROOT_DIR"
 echo "🛡️  Starting SOCAtlas Hot-Reloading Development Server..."
 
 # Check dependencies
@@ -13,10 +16,12 @@ if ! python3 -m mkdocs --version &> /dev/null; then
 fi
 
 # Release port
-lsof -ti:$PORT | xargs kill -9 2>/dev/null || true
+if command -v lsof &> /dev/null; then
+    lsof -ti:"$PORT" | xargs kill -9 2>/dev/null || true
+fi
 
 echo "🌐 Development server starting at: http://127.0.0.1:$PORT"
 echo "──────────────────────────────────────────"
 
-# Run mkdocs serve using zensical.yml config
-python3 -m mkdocs serve -f zensical.yml -a 127.0.0.1:$PORT
+# Run mkdocs serve using the project config
+python3 -m mkdocs serve -f mkdocs.yml -a 127.0.0.1:$PORT

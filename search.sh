@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # SOCAtlas ELITE - Instant Knowledge Search
 # Usage: ./search.sh <keyword>
+set -euo pipefail
+
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 # Colors for premium CLI experience
 RED='\033[0;31m'
@@ -10,27 +13,25 @@ CYAN='\033[0;36m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
-if [ -z "$1" ]; then
+if [ "$#" -eq 0 ]; then
     echo -e "${CYAN}🛡️ SOCAtlas Elite Search Engine${NC}"
-    echo -e "Usage: ./search.sh ${BOLD}<keyword>${NC}"
+    echo -e "Usage: ./search.sh ${BOLD}<keyword or phrase>${NC}"
     exit 1
 fi
 
-search_term="$1"
-docs_dir="docs/quick"
+search_term="$*"
+docs_dir="$ROOT_DIR/docs/quick"
 
 echo -e "${TEAL}🔎 Searching for '${BOLD}$search_term${NC}${TEAL}' in 1200 Quick Points...${NC}"
 echo -e "${PURPLE}────────────────────────────────────────────────────────────────${NC}"
 
-# Search across all markdown files in the quick directory
 count=0
-grep -rEhi "\|.*$search_term.*\|" "$docs_dir" | while read -r line; do
-    # Clean up the markdown table row for terminal display
-    # We use sed to replace the | with a nicer arrow and add colors
-    clean_line=$(echo "$line" | sed 's/^|//; s/|$//; s/|/  ➜  /g' | xargs)
+
+while IFS= read -r line; do
+    clean_line=$(printf '%s\n' "$line" | sed -E 's/^[[:space:]]*\|?[[:space:]]*//; s/[[:space:]]*\|[[:space:]]*/  ➜  /g; s/[[:space:]]*$//')
     echo -e "${NC}🔹 ${clean_line}${NC}"
-    ((count++))
-done
+    count=$((count + 1))
+done < <(rg -i -F --no-filename --no-line-number --color never "$search_term" "$docs_dir" || true)
 
 if [ $count -eq 0 ]; then
     echo -e "${RED}❌ No matching points found for '$search_term'.${NC}"
