@@ -221,7 +221,8 @@
         <p class="pdf-builder__eyebrow">Download PDF</p>
         <h2 class="pdf-builder__title">Choose What Goes Into Your PDF</h2>
         <p class="pdf-builder__intro">
-          Click <strong>Download as PDF</strong>, choose what you want to include, and download a real PDF file.
+          Click <strong>Download as PDF</strong>, choose what you want to include, and Chrome will open its native
+          Save as PDF dialog for a more reliable export.
           Use a smart preset or hand-pick the sections, then choose color or paper-friendly output.
         </p>
       </div>
@@ -280,7 +281,7 @@
             Preview selection
           </a>
           <a class="md-button md-button--primary pdf-builder__action" href="complete-guide.html?download=1" target="_blank" rel="noopener" data-pdf-download>
-            Download Real PDF
+            Download as PDF
           </a>
         </div>
         <div class="pdf-builder__actions-secondary">
@@ -290,7 +291,7 @@
         </div>
       </div>
 
-      <p class="pdf-builder__hint">Downloads a real PDF file with a clickable contents page. Paper-friendly removes accent colors, and images can be turned off for a lighter export.</p>
+      <p class="pdf-builder__hint">Opens Chrome's Save as PDF dialog. Paper-friendly removes accent colors, and images can be turned off for a lighter export.</p>
       <p class="pdf-builder__empty" data-pdf-empty hidden>Select at least one section to build a PDF.</p>
     `;
 

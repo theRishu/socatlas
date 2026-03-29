@@ -268,11 +268,7 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <script>
 (() => {
   const SECTION_SELECTOR = '[data-pdf-section-group]';
-  const HTML2PDF_CDN = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
   const EMOJI_RE = /[\p{Extended_Pictographic}️]/gu;
-  const PDF_PAGE_WIDTH_MM = 210;
-  const PDF_PAGE_HEIGHT_MM = 297;
-  const PDF_MARGIN_MM = 10;
 
   const parseSelection = () => {
     const raw = new URLSearchParams(window.location.search).get("sections");
@@ -410,34 +406,20 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     return `socatlas-${selected[0]}-${selected.length}-sections-${mode}${imagesSuffix}.pdf`;
   };
 
+  const prepareDownloadTitle = () => {
+    const previousTitle = document.title;
+    document.title = buildFilename().replace(/\.pdf$/i, "");
+
+    return () => {
+      document.title = previousTitle;
+    };
+  };
+
   const stripEmoji = (value) =>
     value.replace(EMOJI_RE, "").replace(/\s{2,}/g, " ").trim();
 
-  const loadHtml2Pdf = () =>
-    new Promise((resolve, reject) => {
-      if (window.html2pdf) {
-        resolve(window.html2pdf);
-        return;
-      }
-
-      const existing = document.querySelector('script[data-pdf-lib="html2pdf"]');
-      if (existing) {
-        existing.addEventListener("load", () => resolve(window.html2pdf), { once: true });
-        existing.addEventListener("error", () => reject(new Error("Failed to load html2pdf")), { once: true });
-        return;
-      }
-
-      const script = document.createElement("script");
-      script.src = HTML2PDF_CDN;
-      script.async = true;
-      script.dataset.pdfLib = "html2pdf";
-      script.onload = () => resolve(window.html2pdf);
-      script.onerror = () => reject(new Error("Failed to load html2pdf"));
-      document.head.appendChild(script);
-    });
-
   const triggerPrint = () => {
-    window.setTimeout(() => window.print(), 500);
+    window.setTimeout(() => window.print(), 250);
   };
 
   const waitForFonts = async () => {
@@ -468,161 +450,12 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     );
   };
 
-  const waitForImagesWithin = async (root) => {
-    if (!parseImages()) {
-      return;
-    }
-
-    const images = Array.from(root.querySelectorAll("img"));
-    await Promise.all(
-      images.map(
-        (image) =>
-          new Promise((resolve) => {
-            if (image.complete) {
-              resolve();
-              return;
-            }
-
-            image.addEventListener("load", resolve, { once: true });
-            image.addEventListener("error", resolve, { once: true });
-          })
-      )
-    );
-  };
-
   const waitForLayout = () =>
     new Promise((resolve) => {
       requestAnimationFrame(() => {
         requestAnimationFrame(resolve);
       });
     });
-
-  const removeImages = (root) => {
-    const removedFigures = new Set();
-    root.querySelectorAll("figure, picture, img, svg").forEach((node) => {
-      if (node.tagName === "FIGURE") {
-        node.remove();
-        return;
-      }
-
-      const figure = node.closest("figure");
-      if (figure && root.contains(figure)) {
-        if (!removedFigures.has(figure)) {
-          removedFigures.add(figure);
-          figure.remove();
-        }
-        return;
-      }
-
-      node.remove();
-    });
-  };
-
-  const buildExportClone = (target) => {
-    const shell = document.createElement("div");
-    shell.className = "pdf-export-shell";
-
-    const clone = target.cloneNode(true);
-    clone.classList.add("pdf-export-canvas");
-    clone.setAttribute("data-md-color-scheme", "default");
-
-    if (document.body.dataset.mdColorPrimary) {
-      clone.setAttribute("data-md-color-primary", document.body.dataset.mdColorPrimary);
-    }
-
-    if (document.body.dataset.mdColorAccent) {
-      clone.setAttribute("data-md-color-accent", document.body.dataset.mdColorAccent);
-    }
-
-    clone.querySelectorAll("#pdf-download-status").forEach((node) => node.remove());
-
-    if (!parseImages()) {
-      removeImages(clone);
-    }
-
-    if (parseMode() === "paper") {
-      clone.querySelectorAll("[data-pdf-section-title]").forEach((section) => {
-        if (section.dataset.pdfSectionTitle) {
-          section.dataset.pdfSectionTitle = stripEmoji(section.dataset.pdfSectionTitle);
-        }
-      });
-
-      clone
-        .querySelectorAll("h1, h2, h3, h4, h5, h6, .pdf-guide-note")
-        .forEach((node) => {
-          node.textContent = stripEmoji(node.textContent || "");
-        });
-    }
-
-    shell.appendChild(clone);
-    document.body.appendChild(shell);
-
-    return { shell, clone };
-  };
-
-  const normalizeColorExportContainer = (container) => {
-    if (parseMode() !== "color") {
-      return;
-    }
-
-    const contentRoot =
-      container.querySelector(".pdf-export-canvas") ||
-      container.firstElementChild ||
-      container;
-    const defaultText = "rgba(0, 0, 0, 0.87)";
-    const mutedText = "rgba(0, 0, 0, 0.54)";
-    const linkText = "#009485";
-    const codeText = "#36464e";
-    const codeBg = "#f5f5f5";
-    const palette = {
-      "--md-default-fg-color": defaultText,
-      "--md-default-fg-color--light": mutedText,
-      "--md-default-fg-color--lighter": "rgba(0, 0, 0, 0.32)",
-      "--md-default-fg-color--lightest": "rgba(0, 0, 0, 0.12)",
-      "--md-default-bg-color": "#ffffff",
-      "--md-default-bg-color--light": "rgba(255, 255, 255, 0.7)",
-      "--md-default-bg-color--lighter": "rgba(255, 255, 255, 0.3)",
-      "--md-default-bg-color--lightest": "rgba(255, 255, 255, 0.12)",
-      "--md-typeset-color": defaultText,
-      "--md-typeset-a-color": linkText,
-      "--md-code-fg-color": codeText,
-      "--md-code-bg-color": codeBg,
-      "--md-admonition-fg-color": defaultText,
-      "--md-admonition-bg-color": "#ffffff",
-    };
-
-    contentRoot.setAttribute("data-md-color-scheme", "default");
-    contentRoot.setAttribute("data-md-color-primary", document.body.dataset.mdColorPrimary || "teal");
-    contentRoot.setAttribute("data-md-color-accent", document.body.dataset.mdColorAccent || "indigo");
-    contentRoot.style.colorScheme = "light";
-    contentRoot.style.background = "#ffffff";
-    contentRoot.style.color = defaultText;
-
-    Object.entries(palette).forEach(([name, value]) => {
-      contentRoot.style.setProperty(name, value);
-    });
-
-    contentRoot
-      .querySelectorAll("p, li, td, th, dt, dd, blockquote, span, strong, em, label, figcaption, h1, h2, h3, h4, h5, h6")
-      .forEach((node) => {
-        node.style.color = defaultText;
-      });
-
-    contentRoot.querySelectorAll("a").forEach((node) => {
-      node.style.color = linkText;
-    });
-
-    contentRoot.querySelectorAll("code, pre, kbd, samp").forEach((node) => {
-      node.style.color = codeText;
-      if (node.tagName !== "CODE" || node.closest("pre")) {
-        node.style.backgroundColor = codeBg;
-      }
-    });
-
-    contentRoot.querySelectorAll(".admonition, details, table, th, td, blockquote").forEach((node) => {
-      node.style.color = defaultText;
-    });
-  };
 
   const prepareColorExportState = () => {
     if (parseMode() !== "color") {
@@ -675,155 +508,40 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
     };
   };
 
-  const collectPdfNavigation = (container) => {
-    const contentRoot =
-      container.querySelector(".pdf-export-canvas") ||
-      container.firstElementChild ||
-      container;
-    const contentWidth =
-      contentRoot.scrollWidth ||
-      contentRoot.getBoundingClientRect().width ||
-      1;
-    const printableWidthMm = PDF_PAGE_WIDTH_MM - PDF_MARGIN_MM * 2;
-    const printableHeightMm = PDF_PAGE_HEIGHT_MM - PDF_MARGIN_MM * 2;
-    const pageHeightPx = contentWidth * (printableHeightMm / printableWidthMm);
-
-    return Array.from(contentRoot.querySelectorAll(SECTION_SELECTOR))
-      .filter((section) => !section.hidden)
-      .map((section) => ({
-        title: stripEmoji(section.dataset.pdfSectionTitle || "Section"),
-        pageNumber: Math.max(1, Math.floor(section.offsetTop / pageHeightPx) + 1),
-      }));
-  };
-
-  const injectPdfContents = (pdf, sections) => {
-    if (!sections.length || typeof pdf.insertPage !== "function") {
-      return;
-    }
-
-    const entriesPerPage = 14;
-    const insertedPages = Math.max(1, Math.ceil(sections.length / entriesPerPage));
-
-    for (let page = 0; page < insertedPages; page += 1) {
-      pdf.insertPage(page + 1);
-    }
-
-    const modeLabel = parseMode() === "paper" ? "Paper-friendly" : "Color PDF";
-    const imagesLabel = parseImages() ? "With images" : "Text only";
-
-    for (let page = 0; page < insertedPages; page += 1) {
-      const pageNumber = page + 1;
-      pdf.setPage(pageNumber);
-      pdf.setTextColor(15, 23, 42);
-      pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(22);
-      pdf.text(page === 0 ? "SOCAtlas PDF Contents" : "SOCAtlas PDF Contents (cont.)", 18, 22);
-
-      pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(10.5);
-      pdf.setTextColor(71, 85, 105);
-      pdf.text(`Jump directly inside this PDF. ${modeLabel}. ${imagesLabel}.`, 18, 30);
-
-      const slice = sections.slice(page * entriesPerPage, (page + 1) * entriesPerPage);
-      let y = 44;
-
-      slice.forEach((section) => {
-        const targetPage = section.pageNumber + insertedPages;
-        pdf.setTextColor(17, 24, 39);
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(12);
-        pdf.text(section.title, 18, y);
-
-        pdf.setFont("helvetica", "normal");
-        pdf.text(String(targetPage), 188, y, { align: "right" });
-        pdf.setDrawColor(220, 226, 232);
-        pdf.line(18, y + 2.4, 190, y + 2.4);
-
-        if (typeof pdf.link === "function") {
-          pdf.link(18, y - 5.5, 172, 8, { pageNumber: targetPage });
-        }
-
-        y += 14;
-      });
-    }
-  };
-
   const triggerDownload = async () => {
     let restoreColorExport = () => {};
-    try {
-      setStatus("Preparing your PDF file...");
-      const html2pdf = await loadHtml2Pdf();
-      const target = document.querySelector(".md-content__inner");
-
-      if (!target) {
-        throw new Error("PDF content root not found");
+    let restoreTitle = () => {};
+    let cleanedUp = false;
+    const cleanup = () => {
+      if (cleanedUp) {
+        return;
       }
 
+      cleanedUp = true;
+      restoreColorExport();
+      restoreTitle();
+      delete document.documentElement.dataset.pdfExport;
+    };
+
+    try {
+      setStatus("Opening Chrome print dialog. Choose Save as PDF.");
       document.documentElement.dataset.pdfExport = "download";
       restoreColorExport = prepareColorExportState();
+      restoreTitle = prepareDownloadTitle();
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       await waitForLayout();
       await waitForFonts();
       await waitForImages();
       await waitForLayout();
-
-      const worker = html2pdf()
-        .set({
-          filename: buildFilename(),
-          margin: [PDF_MARGIN_MM, PDF_MARGIN_MM, PDF_MARGIN_MM, PDF_MARGIN_MM],
-          enableLinks: false,
-          pagebreak: {
-            mode: ["css", "legacy"],
-            avoid: [
-              "p",
-              "blockquote",
-              "pre",
-              ".admonition",
-              "details",
-              "img",
-              "h1",
-              "h2",
-              "h3",
-              "h4",
-              ".pdf-guide-note",
-            ],
-          },
-          image: { type: "jpeg", quality: 0.96 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: "#ffffff",
-            scrollX: 0,
-            scrollY: 0,
-          },
-          jsPDF: {
-            unit: "mm",
-            format: "a4",
-            orientation: "portrait",
-          },
-        })
-        .from(target);
-
-      await worker.toContainer();
-      const container = await worker.get("container");
-      normalizeColorExportContainer(container);
-      await waitForLayout();
-      const pdfNavigation = collectPdfNavigation(container);
-      await worker.toCanvas();
-      await worker.toPdf();
-      const pdf = await worker.get("pdf");
-      injectPdfContents(pdf, pdfNavigation);
-      await worker.save();
-
-      restoreColorExport();
-      delete document.documentElement.dataset.pdfExport;
-      setStatus("PDF downloaded. Check your browser downloads folder.");
-    } catch (error) {
-      restoreColorExport();
-      delete document.documentElement.dataset.pdfExport;
-      console.error(error);
-      setStatus("Automatic PDF download failed. Opening the print dialog instead.");
+      window.addEventListener("afterprint", () => {
+        cleanup();
+        setStatus("Use Save as PDF in Chrome if the file was not saved yet.");
+      }, { once: true });
       triggerPrint();
+    } catch (error) {
+      cleanup();
+      console.error(error);
+      setStatus("Could not open the Chrome print dialog. Press Ctrl/Cmd+P to save as PDF.");
     }
   };
 
