@@ -108,6 +108,7 @@ html[data-pdf-mode="color"] * {
 <script>
 (() => {
   const SECTION_SELECTOR = '[data-pdf-section-group]';
+  const HTML2PDF_CDN = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js";
 
   const parseSelection = () => {
     const raw = new URLSearchParams(window.location.search).get("sections");
@@ -127,6 +128,9 @@ html[data-pdf-mode="color"] * {
     const mode = new URLSearchParams(window.location.search).get("mode");
     return mode === "paper" ? "paper" : "color";
   };
+
+  const isDownloadRequested = () =>
+    new URLSearchParams(window.location.search).get("download") === "1";
 
   const applySelection = (selected) => {
     if (!selected.length) {
@@ -178,16 +182,125 @@ html[data-pdf-mode="color"] * {
     document.documentElement.dataset.pdfMode = parseMode();
   };
 
+  const ensureStatusNote = () => {
+    let note = document.getElementById("pdf-download-status");
+    if (note) {
+      return note;
+    }
+
+    const title = document.querySelector(".md-typeset h1");
+    if (!title) {
+      return null;
+    }
+
+    note = document.createElement("p");
+    note.id = "pdf-download-status";
+    note.setAttribute("data-html2canvas-ignore", "true");
+    note.style.margin = "0.75rem 0 1.25rem";
+    note.style.padding = "0.85rem 1rem";
+    note.style.border = "1px solid rgba(10, 191, 83, 0.24)";
+    note.style.borderRadius = "0.8rem";
+    note.style.background = "rgba(10, 191, 83, 0.08)";
+    note.style.fontWeight = "600";
+    title.insertAdjacentElement("afterend", note);
+    return note;
+  };
+
+  const setStatus = (message) => {
+    const note = ensureStatusNote();
+    if (note) {
+      note.textContent = message;
+    }
+  };
+
+  const buildFilename = () => {
+    const selected = parseSelection();
+    const mode = parseMode();
+
+    if (!selected.length) {
+      return `socatlas-complete-guide-${mode}.pdf`;
+    }
+
+    if (selected.length <= 2) {
+      return `socatlas-${selected.join("-")}-${mode}.pdf`;
+    }
+
+    return `socatlas-${selected[0]}-${selected.length}-sections-${mode}.pdf`;
+  };
+
+  const loadHtml2Pdf = () =>
+    new Promise((resolve, reject) => {
+      if (window.html2pdf) {
+        resolve(window.html2pdf);
+        return;
+      }
+
+      const existing = document.querySelector('script[data-pdf-lib="html2pdf"]');
+      if (existing) {
+        existing.addEventListener("load", () => resolve(window.html2pdf), { once: true });
+        existing.addEventListener("error", () => reject(new Error("Failed to load html2pdf")), { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = HTML2PDF_CDN;
+      script.async = true;
+      script.dataset.pdfLib = "html2pdf";
+      script.onload = () => resolve(window.html2pdf);
+      script.onerror = () => reject(new Error("Failed to load html2pdf"));
+      document.head.appendChild(script);
+    });
+
   const triggerPrint = () => {
     window.setTimeout(() => window.print(), 500);
+  };
+
+  const triggerDownload = async () => {
+    try {
+      setStatus("Preparing your PDF file...");
+      const html2pdf = await loadHtml2Pdf();
+      const target = document.querySelector(".md-content__inner");
+
+      if (!target) {
+        throw new Error("PDF content root not found");
+      }
+
+      await html2pdf()
+        .set({
+          filename: buildFilename(),
+          margin: [10, 10, 10, 10],
+          pagebreak: { mode: ["css", "legacy"] },
+          image: { type: "jpeg", quality: 0.96 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+          },
+          jsPDF: {
+            unit: "mm",
+            format: "a4",
+            orientation: "portrait",
+          },
+        })
+        .from(target)
+        .save();
+
+      setStatus("PDF downloaded. Check your browser downloads folder.");
+    } catch (error) {
+      console.error(error);
+      setStatus("Automatic PDF download failed. Opening the print dialog instead.");
+      triggerPrint();
+    }
   };
 
   const init = () => {
     applyMode();
     applySelection(parseSelection());
 
-    if (new URLSearchParams(window.location.search).get("download") === "1") {
-      triggerPrint();
+    if (isDownloadRequested()) {
+      window.setTimeout(() => {
+        triggerDownload();
+      }, 350);
     }
   };
 
