@@ -10,11 +10,22 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
+  "trailingSlash": true,
+  "redirects": [
     {
-      "source": "/(.*)",
-      "destination": "/$1/index.html"
+      "source": "/risk_threat_intel",
+      "destination": "/governance/risk_threat_intel/",
+      "permanent": true
+    },
+    {
+      "source": "/cyber_threats",
+      "destination": "/threats/cyber_threats/",
+      "permanent": true
+    },
+    {
+      "source": "/ioc_ioa_mitre",
+      "destination": "/governance/ioc_ioa_mitre/",
+      "permanent": true
     }
   ],
   "headers": [
