@@ -15,6 +15,7 @@ DOCS_DIR = ROOT_DIR / "docs"
 CONFIG_PATH = ROOT_DIR / "mkdocs.yml"
 OUTPUT_PATH = DOCS_DIR / "complete-guide.md"
 SECTIONS_PATH = DOCS_DIR / "assets" / "pdf-sections.json"
+UNSET = object()
 
 LINK_RE = re.compile(r'(!?\[[^\]]*\])\(([^)]+)\)')
 GUIDE_OMIT_START = "<!-- complete-guide:omit:start -->"
@@ -130,7 +131,7 @@ html[data-pdf-mode="color"] * {
 
 <script>
 (() => {
-  const SECTION_SELECTOR = 'h2[data-pdf-section]';
+  const SECTION_SELECTOR = '[data-pdf-section-group]';
 
   const parseSelection = () => {
     const raw = new URLSearchParams(window.location.search).get("sections");
@@ -156,24 +157,19 @@ html[data-pdf-mode="color"] * {
       return;
     }
 
-    const headings = Array.from(document.querySelectorAll(SECTION_SELECTOR));
+    const sections = Array.from(document.querySelectorAll(SECTION_SELECTOR));
     const selectedSet = new Set(selected);
     const labels = [];
 
-    headings.forEach((heading, index) => {
-      const slug = heading.dataset.pdfSection;
+    sections.forEach((section) => {
+      const slug = section.dataset.pdfSectionGroup;
       const keep = selectedSet.has(slug);
-      const nextHeading = headings[index + 1] || null;
 
       if (keep) {
-        labels.push(heading.textContent.trim());
+        labels.push(section.dataset.pdfSectionTitle || slug);
       }
 
-      let node = heading;
-      while (node && node !== nextHeading) {
-        node.hidden = !keep;
-        node = node.nextElementSibling;
-      }
+      section.hidden = !keep;
     });
 
     if (!labels.length) {
@@ -390,7 +386,21 @@ def generate():
     sections = build_section_index(entries)
 
     parts = [INTRO.rstrip()]
-    current_section = None
+    current_section = UNSET
+
+    def open_section(section_name):
+        label = "Start Here" if section_name is None else section_name
+        slug = slugify(label)
+        parts.append("")
+        parts.append(
+            f'<section class="pdf-guide-section" data-pdf-section-group="{slug}" data-pdf-section-title="{label}" markdown="1">'
+        )
+        parts.append("")
+        parts.append(f"## {label}")
+
+    def close_section():
+        parts.append("")
+        parts.append("</section>")
 
     for section, title, source in entries:
         if source == OUTPUT_PATH.name:
@@ -404,17 +414,18 @@ def generate():
         content = strip_first_h1_and_shift(content, shift=2)
 
         if section != current_section:
-            parts.append("")
-            if section is None:
-                parts.append("## Start Here { data-pdf-section=\"start-here\" }")
-            else:
-                parts.append(f"## {section} {{ data-pdf-section=\"{slugify(section)}\" }}")
+            if current_section is not UNSET:
+                close_section()
+            open_section(section)
             current_section = section
 
         parts.append("")
         parts.append(f"### {title}")
         parts.append("")
         parts.append(content)
+
+    if current_section is not UNSET:
+        close_section()
 
     OUTPUT_PATH.write_text("\n".join(parts).strip() + "\n")
     SECTIONS_PATH.write_text(json.dumps(sections, indent=2) + "\n")

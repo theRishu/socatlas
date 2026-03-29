@@ -107,7 +107,7 @@ html[data-pdf-mode="color"] * {
 
 <script>
 (() => {
-  const SECTION_SELECTOR = 'h2[data-pdf-section]';
+  const SECTION_SELECTOR = '[data-pdf-section-group]';
 
   const parseSelection = () => {
     const raw = new URLSearchParams(window.location.search).get("sections");
@@ -133,24 +133,19 @@ html[data-pdf-mode="color"] * {
       return;
     }
 
-    const headings = Array.from(document.querySelectorAll(SECTION_SELECTOR));
+    const sections = Array.from(document.querySelectorAll(SECTION_SELECTOR));
     const selectedSet = new Set(selected);
     const labels = [];
 
-    headings.forEach((heading, index) => {
-      const slug = heading.dataset.pdfSection;
+    sections.forEach((section) => {
+      const slug = section.dataset.pdfSectionGroup;
       const keep = selectedSet.has(slug);
-      const nextHeading = headings[index + 1] || null;
 
       if (keep) {
-        labels.push(heading.textContent.trim());
+        labels.push(section.dataset.pdfSectionTitle || slug);
       }
 
-      let node = heading;
-      while (node && node !== nextHeading) {
-        node.hidden = !keep;
-        node = node.nextElementSibling;
-      }
+      section.hidden = !keep;
     });
 
     if (!labels.length) {
@@ -205,6 +200,10 @@ html[data-pdf-mode="color"] * {
 </script>
 
 # SOCAtlas Complete Guide
+
+<section class="pdf-guide-section" data-pdf-section-group="start-here" data-pdf-section-title="Start Here" markdown="1">
+
+## Start Here
 
 ### Home
 
@@ -298,7 +297,11 @@ Follow this four-step structure and you will sound confident and clear in any te
     **Learning mode:** Start with the guide pages under Fundamentals, Networking, Threats, and Detection. They give you context, examples, and structure.
     **Revision mode:** Switch to the quick-point pages when you want shorter answers you can review rapidly.
 
-## 🏛️ Fundamentals { data-pdf-section="fundamentals" }
+</section>
+
+<section class="pdf-guide-section" data-pdf-section-group="fundamentals" data-pdf-section-title="🏛️ Fundamentals" markdown="1">
+
+## 🏛️ Fundamentals
 
 ### Introduction to Cybersecurity
 
@@ -509,7 +512,11 @@ Hashing converts data into a fixed-length value called a hash or digest. Unlike 
 ###### How do you slow down brute-force attacks against password hashes?
 > **Answer:** Use password-hashing algorithms such as bcrypt, scrypt, or Argon2. They are intentionally slow and often use salting, which makes large-scale guessing attacks more expensive.
 
-## 🌐 Networking { data-pdf-section="networking" }
+</section>
+
+<section class="pdf-guide-section" data-pdf-section-group="networking" data-pdf-section-title="🌐 Networking" markdown="1">
+
+## 🌐 Networking
 
 ### Networking Basics
 
@@ -819,7 +826,11 @@ In a real environment, these controls often appear together:
 ###### What is the difference between a forward proxy and a reverse proxy?
 > A forward proxy represents the client, while a reverse proxy represents the server.
 
-## 🏴‍☠️ Major Attacks Directory { data-pdf-section="major-attacks-directory" }
+</section>
+
+<section class="pdf-guide-section" data-pdf-section-group="major-attacks-directory" data-pdf-section-title="🏴‍☠️ Major Attacks Directory" markdown="1">
+
+## 🏴‍☠️ Major Attacks Directory
 
 ### Vulnerabilities & Risk
 
@@ -1175,7 +1186,11 @@ An attacker rents an "IoT Botnet" made up of 100,000 compromised smart cameras. 
     *   **Impact:** Complete service outage, loss of revenue, and massive network downtime.
     *   **Fix:** Route traffic through global Cloud Anti-DDoS providers (Cloudflare), implement strict rate-limiting, and use Anycast routing.
 
-## 🛡️ Detection & Defense { data-pdf-section="detection-defense" }
+</section>
+
+<section class="pdf-guide-section" data-pdf-section-group="detection-defense" data-pdf-section-title="🛡️ Detection & Defense" markdown="1">
+
+## 🛡️ Detection & Defense
 
 ### IDS & IPS
 
@@ -1685,7 +1700,11 @@ Incident response is the structured process security teams follow to prepare for
 ###### Why are lessons learned important?
 > Because incident response is not finished when systems come back online. The lessons learned phase is what turns an incident into improved detection, better playbooks, and stronger prevention.
 
-## ⚖️ Governance & Compliance { data-pdf-section="governance-compliance" }
+</section>
+
+<section class="pdf-guide-section" data-pdf-section-group="governance-compliance" data-pdf-section-title="⚖️ Governance & Compliance" markdown="1">
+
+## ⚖️ Governance & Compliance
 
 ### Compliance & Regulatory Floor
 
@@ -1942,7 +1961,11 @@ MITRE ATT&CK documents attacker tactics and techniques based on real-world obser
 ###### What is MITRE gap analysis?
 > It is the process of mapping your current detections and telemetry to ATT&CK techniques to see which behaviors you can detect and which ones you are missing.
 
-## 🚨 SOC Alerts & Scenarios { data-pdf-section="soc-alerts-scenarios" }
+</section>
+
+<section class="pdf-guide-section" data-pdf-section-group="soc-alerts-scenarios" data-pdf-section-title="🚨 SOC Alerts & Scenarios" markdown="1">
+
+## 🚨 SOC Alerts & Scenarios
 
 ### General Alert Handling
 
@@ -2359,7 +2382,11 @@ Finally, I **escalate the incident** to the L2 and IR teams with the exact timel
     *   **Investigate:** I analyze the EDR process tree and verify Active Directory logs to see the extent of their administrative access.
     *   **Contain & Escalate:** If confirmed malicious, I disable the compromised account immediately, isolate the host, escalate to L2, and document the incident.
 
-## ⚡ 1200 Quick Points { data-pdf-section="1200-quick-points" }
+</section>
+
+<section class="pdf-guide-section" data-pdf-section-group="1200-quick-points" data-pdf-section-title="⚡ 1200 Quick Points" markdown="1">
+
+## ⚡ 1200 Quick Points
 
 ### Core Basics (1–100)
 
@@ -3724,3 +3751,5 @@ are replaced rather than changed once they have been deployed. | Triggering a Te
 | 1198. Server-Side Request Forgery vs CSRF | SSRF tricks the *server* into making a malicious request on the attacker's behalf; CSRF tricks the *user's browser* into making a malicious request. | SSRF attacks internal cloud APIs; CSRF steals money from a logged-in user |
 | 1199. FIDO2 / Passkeys | The modern standard for passwordless authentication, using public-key cryptography and local biometrics (FaceID/TouchID) to completely eliminate phishing. | Logging into a website using your phone's fingerprint sensor; the private key never leaves the device's secure enclave |
 | 1200. Continuous Improvement / Post-Mortem | The hallmark of a mature security programme: acknowledging that perfection is impossible, learning deeply from every incident, and engineering out the root causes. | Conducting a blameless post-mortem after an outage to ensure the automated detection rule is fixed for next time |
+
+</section>
