@@ -10,33 +10,23 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": true,
-  "redirects": [
+  "trailingSlash": false,
+  "rewrites": [
     {
       "source": "/risk_threat_intel",
-      "destination": "/governance/risk_threat_intel/",
-      "permanent": true
+      "destination": "/governance/risk_threat_intel.html"
+    },
+    {
+      "source": "/osi_tcpip",
+      "destination": "/networking/osi_tcpip.html"
     },
     {
       "source": "/cyber_threats",
-      "destination": "/threats/cyber_threats/",
-      "permanent": true
+      "destination": "/threats/cyber_threats.html"
     },
     {
       "source": "/ioc_ioa_mitre",
-      "destination": "/governance/ioc_ioa_mitre/",
-      "permanent": true
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
+      "destination": "/governance/ioc_ioa_mitre.html"
     }
   ]
 }
