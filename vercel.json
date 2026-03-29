@@ -10,23 +10,5 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    {
-      "source": "/risk_threat_intel",
-      "destination": "/governance/risk_threat_intel.html"
-    },
-    {
-      "source": "/osi_tcpip",
-      "destination": "/networking/osi_tcpip.html"
-    },
-    {
-      "source": "/cyber_threats",
-      "destination": "/threats/cyber_threats.html"
-    },
-    {
-      "source": "/ioc_ioa_mitre",
-      "destination": "/governance/ioc_ioa_mitre.html"
-    }
-  ]
+  "trailingSlash": false
 }
