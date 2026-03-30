@@ -1,4 +1,4 @@
-/* --- SOCAtlas Pure Technical Polish --- */
+/* --- SOCAtlas Pure Technical CSS --- */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
@@ -14,11 +14,8 @@
 .md-header { background-color: var(--md-primary-fg-color); }
 h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
 
-/* Clear/Remove Mastery Styles */
-#soc-mastery-loader, .guided-footer-card, .mastery-dashboard, .quick-stats-card { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; overflow: hidden !important; }
-
-/* Modern Documentation Formatting */
-.md-typeset table:not([class]) { border-radius: 0.75rem; border: 1px solid #e2e8f0; }
-
-/* Sidebar Checkmark (Silent) */
-.nav-check { font-weight: 800; font-size: 0.9em; margin-left: 0.25rem; }
+/* Purge all custom UI relics */
+#soc-mastery-loader, [id^="guided-ctrl"], .mastery-dashboard, .quick-stats-card, #soc-splash-overlay, .soc-splash-overlay { 
+  display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; 
+  margin: 0 !important; padding: 0 !important; opacity: 0 !important; pointer-events: none !important;
+}
