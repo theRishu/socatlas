@@ -7,37 +7,6 @@ copyright: '&copy; 2025 SOCAtlas · Built for analysts, by analysts'
 
 theme:
   name: material
-  font:
-    text: Inter
-    code: JetBrains Mono
-  language: en
-  icon:
-    logo: material/shield-check
-  features:
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.top
-    - navigation.footer
-    - navigation.tracking
-    - navigation.indexes
-    - navigation.expand
-    - search.suggest
-    - search.highlight
-    - content.code.copy
-  palette:
-    - scheme: default
-      primary: teal
-      accent: indigo
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
-    - scheme: slate
-      primary: teal
-      accent: indigo
-      toggle:
-        icon: material/white-balance-sunny
-        name: Switch to light mode
 
 markdown_extensions:
   - admonition
@@ -68,11 +37,11 @@ plugins:
   - search
 
 extra_css:
-  - assets/site-polish.css
   - assets/pdf-builder.css
   - assets/mobile-overflow-fixes.css
 
 extra_javascript:
+  - assets/default-theme.js
   - assets/pdf-builder.js
   - assets/mobile-table-cards.js
 

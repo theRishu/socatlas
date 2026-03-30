@@ -53,20 +53,6 @@ body {
     padding-bottom: 2.2rem;
   }
 
-  .page-lead {
-    line-height: 1.65;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero-actions .md-button {
-    width: 100%;
-    text-align: center;
-  }
-
   .md-typeset .grid.cards > ul {
     grid-template-columns: 1fr;
   }
