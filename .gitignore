@@ -1,4 +1,5 @@
 site/
+public/
 .cache/
 .DS_Store
 __pycache__/

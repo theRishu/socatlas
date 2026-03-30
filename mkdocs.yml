@@ -7,6 +7,16 @@ copyright: '&copy; 2025 SOCAtlas · Built for analysts, by analysts'
 
 theme:
   name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
 
 markdown_extensions:
   - admonition
