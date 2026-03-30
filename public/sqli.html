@@ -6,11 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The ultimate cybersecurity operations and interview guide — 1200 quick points, real alerts, and Major Attacks.">
+        <meta name="description" content="SOCAtlas — 1200 interview-ready cybersecurity quick points, real SOC alert playbooks, major attack breakdowns, and complete study guides for analysts and engineers.">
       
       
-        <meta name="author" content="Security Expert">
+        <meta name="author" content="SOCAtlas">
       
+      
+        <link rel="canonical" href="https://socatlas.vercel.app/alerts/sqli.html">
       
       
         <link rel="prev" href="data_exfil.html">
@@ -52,6 +54,8 @@
         <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../assets/site-polish.css">
     
       <link rel="stylesheet" href="../assets/pdf-builder.css">
     
@@ -2033,10 +2037,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#sql-injection-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        SQL Injection Types
       
     </span>
   </a>
@@ -2044,10 +2048,82 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#what-to-check-soc-l1-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        What to Check (SOC L1 Checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#investigation-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Investigation Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Investigation Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-was-the-attack-successful" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Was the Attack Successful?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-analyze-the-payload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Analyze the Payload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-scope-the-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Scope the Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-contain-and-remediate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Contain and Remediate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2548,10 +2624,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#sql-injection-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        SQL Injection Types
       
     </span>
   </a>
@@ -2559,10 +2635,82 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#what-to-check-soc-l1-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        What to Check (SOC L1 Checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#investigation-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Investigation Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Investigation Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-was-the-attack-successful" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Was the Attack Successful?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-analyze-the-payload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Analyze the Payload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-scope-the-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Scope the Attack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-contain-and-remediate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Contain and Remediate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2587,35 +2735,201 @@
 
 
 <h1 id="sql-injection-waf-alert">💉 SQL Injection (WAF Alert)</h1>
+<p class="page-lead">SQL injection remains one of the most critical and widespread web application vulnerabilities. A WAF alert for SQLi means someone is actively attempting to manipulate your database through user input. Every SOC analyst needs to understand this deeply.</p>
 <div class="admonition note">
-<p class="admonition-title">What is SQL Injection (SQLi)?</p>
-<p>SQL Injection is a web security vulnerability that allows an attacker to interfere with the queries that an application makes to its database. Alerts usually fire on the Web Application Firewall (WAF) when malicious SQL characters (<code>'</code>, <code>1=1</code>, <code>UNION</code>) are detected in an HTTP GET/POST request.</p>
+<p class="admonition-title">What triggers a WAF SQLi alert?</p>
+<p>A Web Application Firewall (WAF) inspects incoming HTTP requests for patterns matching known SQL injection payloads — quotes, SQL keywords (<code>UNION</code>, <code>SELECT</code>, <code>DROP</code>), comment sequences (<code>--</code>, <code>#</code>, <code>/**/</code>), and encoded variants. When a matching pattern is detected, the WAF logs the event and either <strong>blocks</strong> or <strong>alerts</strong> depending on the policy mode.</p>
 </div>
-<h3 id="what-to-check-soc-l1">What to check (SOC L1):</h3>
+<hr />
+<h2 id="sql-injection-types">SQL Injection Types</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Technique</th>
+<th>Example Payload</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Classic/In-band</strong></td>
+<td>Error-based or union-based — results returned directly</td>
+<td><code>' UNION SELECT username, password FROM users --</code></td>
+</tr>
+<tr>
+<td><strong>Blind Boolean</strong></td>
+<td>No output — infer data from True/False responses</td>
+<td><code>' AND 1=1 --</code> vs <code>' AND 1=2 --</code></td>
+</tr>
+<tr>
+<td><strong>Blind Time-based</strong></td>
+<td>No output — use delays to infer data</td>
+<td><code>'; WAITFOR DELAY '0:0:5' --</code></td>
+</tr>
+<tr>
+<td><strong>Out-of-band</strong></td>
+<td>Data sent to attacker-controlled server</td>
+<td>DNS or HTTP callback with extracted data</td>
+</tr>
+<tr>
+<td><strong>Second-order</strong></td>
+<td>Payload stored, executed later in another query</td>
+<td>Username saved with payload, used later in a different context</td>
+</tr>
+<tr>
+<td><strong>Stacked Queries</strong></td>
+<td>Multiple queries in one input</td>
+<td><code>'; DROP TABLE users; --</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="what-to-check-soc-l1-checklist">What to Check (SOC L1 Checklist)</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Check</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔴 First</td>
+<td><strong>WAF action</strong></td>
+<td>Was the request Blocked or did it Pass through?</td>
+</tr>
+<tr>
+<td>🔴 First</td>
+<td><strong>HTTP response code</strong></td>
+<td>Did the server return 200 (success) vs 400/500 (error)? 200 = potential success</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>Payload content</strong></td>
+<td>What SQL payload was sent? Manual or automated tool signature?</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>Target endpoint</strong></td>
+<td>Which URL parameter or form field was attacked?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>Source IP and frequency</strong></td>
+<td>Single IP or distributed? Automated scan rate?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>User agent</strong></td>
+<td><code>sqlmap</code>, <code>Havij</code>, automated scanner vs real browser</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>Volume of requests</strong></td>
+<td>Automated scanning shows hundreds of attempts per minute</td>
+</tr>
+<tr>
+<td>🟢 Fourth</td>
+<td><strong>Application server logs</strong></td>
+<td>Did the database log any unusual queries around the same time?</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="investigation-workflow">Investigation Workflow</h2>
+<h3 id="step-1-was-the-attack-successful">Step 1 — Was the Attack Successful?</h3>
+<p>This is the most critical question. Check:</p>
 <ul>
-<li><strong>Alert Type &amp; Severity</strong> (Low/Medium/High/Critical)</li>
-<li><strong>Timestamp</strong> of the event</li>
-<li><strong>Source IP</strong> (Attacker) &amp; <strong>Destination IP</strong> (Web Server)</li>
-<li><strong>Targeted URL path</strong></li>
-<li>The exact attack payload (Did they type <code>' OR 1=1</code>?)</li>
-<li>Did the WAF block the request automatically?</li>
-<li>Did the website server reply with a 500 Error (failed) or 200 OK (success)?</li>
+<li><strong>WAF action</strong>: If "Block" — request never reached the app. Lower urgency</li>
+<li><strong>HTTP 200 response to injection payload</strong>: The server processed and responded normally — <strong>escalate</strong></li>
+<li><strong>Application/database error messages</strong>: <code>SQL syntax error</code>, <code>ORA-</code>, <code>SQLSTATE</code> in response body = database touched</li>
+<li><strong>Response size anomaly</strong>: If a response is much larger than baseline for that endpoint, UNION injection may have returned data</li>
 </ul>
-<h3 id="interview-answer">Interview Answer</h3>
-<p><strong>Q: How do you handle a SQL Injection alert from the WAF?</strong></p>
-<p>When a SQL Injection alert triggers, I first <strong>review the WAF logs</strong> to check the source IP, the exact malicious payload injected into the web request, the targeted URI path, and most importantly, whether the WAF successfully 'Blocked' the payload or merely 'Alerted' on it.</p>
-<p>Next, I look at the <strong>HTTP response code</strong> returned by the backend web server. If I see a 500 Internal Server error, the payload likely broke the SQL syntax, meaning the app is vulnerable but the attack failed. If I see a 200 OK with an unusually large response size, the attacker may have successfully dumped the database using a <code>UNION SELECT</code> attack.</p>
-<p>If the WAF missed it and the payload hit the backend, I immediately coordinate with the database team to <strong>check the SQL execution logs</strong> and determine if any sensitive data was actually returned to the attacker.</p>
-<p>For <strong>containment</strong>, if the WAF was only holding in 'Monitor' mode, I immediately switch it to 'Blocking' mode for that specific signature. I then dynamically block the attacker's source IP across the external load balancer.</p>
-<p>Finally, I <strong>escalate the vulnerability</strong> to the AppSec team with the raw HTTP logs so they can implement parameterized queries in the vulnerable code, and I document the incident in the ticketing system.</p>
+<h3 id="step-2-analyze-the-payload">Step 2 — Analyze the Payload</h3>
+<p>Understand what the attacker was trying to achieve:
+- <strong>Authentication bypass</strong>: <code>' OR '1'='1</code> — trying to log in without a password
+- <strong>Data extraction</strong>: <code>UNION SELECT</code> — trying to dump database tables
+- <strong>Database fingerprinting</strong>: <code>@@version</code>, <code>user()</code>, <code>database()</code> — reconnaissance
+- <strong>Privilege escalation in DB</strong>: <code>xp_cmdshell</code> (MSSQL), <code>LOAD_FILE</code> (MySQL) — OS command execution
+- <strong>Data destruction</strong>: <code>DROP TABLE</code>, <code>DELETE FROM</code> — destructive attacks (rare but critical)</p>
+<h3 id="step-3-scope-the-attack">Step 3 — Scope the Attack</h3>
+<ul>
+<li>Is this a single URL or a full application scan? (High request volume = automated SQLMap)</li>
+<li>Did the attacker progress from simple probes to successful extraction?</li>
+<li>Are there successful authentication events to the app from the same IP around the same time?</li>
+<li>Were any database backup jobs, export operations, or unusual reads detected?</li>
+</ul>
+<h3 id="step-4-contain-and-remediate">Step 4 — Contain and Remediate</h3>
+<ul>
+<li>If WAF blocked: block the source IP, review WAF rules for gaps</li>
+<li>If successful: <strong>notify the application team immediately</strong> — this is a data breach scenario</li>
+<li>Pull and preserve all web server and DB logs for forensics</li>
+<li>Identify and patch the vulnerable parameter in the application code</li>
+<li>Check for OS-level compromise (xp_cmdshell exploitation can lead to full server takeover)</li>
+</ul>
+<hr />
+<h2 id="interview-questions-answers">Interview Questions &amp; Answers</h2>
+<p><strong>Q1. What is SQL injection and how does it work?</strong></p>
+<blockquote>
+<p>"SQL injection is a web application vulnerability where an attacker inserts malicious SQL code into user-controlled input fields — like login forms, search boxes, or URL parameters — that are not properly validated or sanitized. When the application builds a SQL query by concatenating the user input directly, the injected SQL code changes the structure of the query and is executed by the database engine. For example, a login form checking <code>SELECT * FROM users WHERE username='INPUT' AND password='INPUT2'</code> can be bypassed with the username <code>' OR '1'='1' --</code> which makes the WHERE clause always true and comments out the password check."</p>
+</blockquote>
+<p><strong>Q2. What is the difference between a WAF block and an alert, and why does it matter?</strong></p>
+<blockquote>
+<p>"A WAF configured in 'block' mode determines the request matches an attack pattern and drops it before it reaches the application server — the attacker receives a 403 error. In 'detect' (alert-only) mode, the WAF logs the malicious request and raises an alert, but the request still passes through to the application. This matters enormously for incident response: if the WAF was in detect mode, the application received and potentially processed the injection payload — the attack may have succeeded. An HTTP 200 response to an injection payload in detect mode requires immediate investigation as a potential data breach."</p>
+</blockquote>
+<p><strong>Q3. How do you determine if a SQL injection attempt was successful?</strong></p>
+<blockquote>
+<p>"I look for three indicators: First, the HTTP response code — a 200 response to an injection payload means the server processed the request without error, which is suspicious. Second, response body size anomaly — if a UNION injection worked, the response will be significantly larger than normal for that endpoint because extra database rows were returned. Third, application and database error messages in the response — while error messages usually indicate a failed injection attempt, they reveal the database type and query structure. I also check the database server's audit logs for unusual queries or large data reads occurring in the same window."</p>
+</blockquote>
+<p><strong>Q4. What is a prepared statement and how does it prevent SQL injection?</strong></p>
+<blockquote>
+<p>"A prepared statement, also called a parameterized query, separates SQL code from user data at the database driver level. Instead of: <code>'SELECT * FROM users WHERE id=' + user_input</code>, a prepared statement sends the query structure first: <code>'SELECT * FROM users WHERE id=?'</code>, and then binds the user input as a typed parameter separately. The database engine then treats the bound data as literal data — never as executable code — regardless of what characters it contains. This completely prevents SQL injection because there is no path for the attacker's input to be interpreted as SQL syntax."</p>
+</blockquote>
+<p><strong>Q5. What is SQLMap and what are the signs that it was used in an attack?</strong></p>
+<blockquote>
+<p>"SQLMap is an open-source automated SQL injection tool that systematically tests parameters for injection vulnerabilities and automatically extracts database data. Signs of SQLMap in WAF logs: the requests have a characteristic <code>*</code> injection marker pattern; there are hundreds or thousands of GET/POST requests to the same endpoint in sequence; the requests enumerate different SQL payloads in a recognizable progression (error-based, boolean-based, time-based); the User-Agent may contain 'sqlmap' (though attackers can change this); and the request timing follows an automated rather than human pattern. SQLMap usage is the equivalent of a locksmith testing every key on your lock."</p>
+</blockquote>
+<p><strong>Q6. What is blind SQL injection and why is it more dangerous than classic injection?</strong></p>
+<blockquote>
+<p>"Classic SQL injection shows results directly in the response, making it easy to detect from error messages or extra data returned. Blind SQL injection extracts data without visible output, making it harder to detect. Boolean-blind injection works by asking the database yes/no questions: <code>' AND SUBSTRING(password,1,1)='a' --</code> — if true, the page loads normally; if false, the page changes, allowing the attacker to extract the password one character at a time. Time-based blind injection uses <code>SLEEP()</code> or <code>WAITFOR DELAY</code> — a time delay in the response confirms the condition was true. Blind injection is stealthier because the attacker doesn't need to see the output, but WAFs can still detect the payload patterns."</p>
+</blockquote>
+<p><strong>Q7. What is the OWASP Top Ten and where does SQL injection rank?</strong></p>
+<blockquote>
+<p>"The OWASP Top Ten is a widely referenced list of the most critical web application security risks. SQL injection falls under 'A03:2021 – Injection', which includes SQL, NoSQL, OS, and LDAP injection attacks. Injection was ranked #1 for many years and remains in the top three. The OWASP Top Ten is the standard reference for web application security discussions and is tested in most application security certifications and interviews."</p>
+</blockquote>
+<p><strong>Q8. Can SQL injection lead to full server compromise?</strong></p>
+<blockquote>
+<p>"Yes — in certain configurations, SQL injection can escalate to operating system access. On Microsoft SQL Server, the stored procedure <code>xp_cmdshell</code> executes operating system commands with the SQL Server service account's permissions. If the service account has elevated OS privileges, an attacker can use <code>xp_cmdshell</code> to run arbitrary OS commands — read files, create users, install malware, or establish persistence. This escalation path means an SQLi vulnerability on a poorly configured MSSQL database can become a full server compromise. MySQL's <code>LOAD_FILE</code> and <code>INTO OUTFILE</code> allow reading and writing arbitrary files if the DB user has FILE privileges."</p>
+</blockquote>
+<p><strong>Q9. What does a WAF protect against and what are its limitations?</strong></p>
+<blockquote>
+<p>"A WAF protects against known web attack patterns — SQL injection, XSS, CSRF, directory traversal, command injection — by inspecting HTTP/HTTPS traffic against a ruleset. Its limitations include: WAF bypass techniques (encoding, obfuscation, HTTP parameter pollution) can evade signature-based rules; it cannot protect against business logic flaws, broken access control, or API abuse that doesn't match known patterns; and without TLS inspection it cannot see the content of HTTPS requests unless it terminates the TLS. A WAF is one layer — it doesn't replace secure application code. Parameterized queries in the code are the real fix; WAF is detection and a speed bump."</p>
+</blockquote>
+<p><strong>Q10. What is second-order SQL injection?</strong></p>
+<blockquote>
+<p>"Second-order injection, also called stored SQL injection, occurs when a payload is safely stored in the database initially — either because input validation is applied on entry — but is later retrieved and used without sanitization in a different context where a SQL query is constructed. For example, a username <code>admin'--</code> might be stored safely, but when a passwordreset query is built using that stored username without parameterization, the stored payload executes. It's harder to detect than classic injection because the payload is harmless when inserted and only activates when retrieved and used in a vulnerable second query."</p>
+</blockquote>
+<p><strong>Q11. What is NoSQL injection?</strong></p>
+<blockquote>
+<p>"NoSQL injection attacks target non-relational databases like MongoDB, CouchDB, or Redis by injecting operator expressions rather than SQL syntax. MongoDB queries use JSON-like operators. If an application builds a MongoDB query by concatenating user input: <code>{'username': userInput, 'password': passInput}</code>, an attacker can inject <code>{'$gt': ''}</code> as the password value to create the condition <code>{'password': {'$gt': ''}}</code> which matches any password — bypassing authentication. NoSQL injection is increasingly important to understand as more applications use document databases."</p>
+</blockquote>
+<p><strong>Q12. What is a WAF bypass technique?</strong></p>
+<blockquote>
+<p>"WAF bypass techniques modify injection payloads to match the attacker's intent but evade the WAF's signature patterns. Common techniques include: URL encoding (<code>%27</code> instead of <code>'</code>); double URL encoding (<code>%2527</code>); case variation (<code>sElEcT</code> instead of <code>SELECT</code> against case-sensitive rules); comment obfuscation (<code>SE/**/LECT</code> — inline comments break keyword signatures); using alternate whitespace characters or newlines; HTTP parameter pollution (sending duplicate parameters); and using equivalent syntax (like <code>||</code> instead of <code>OR</code> in Oracle). Modern WAFs with ML-based detection are harder to bypass than purely signature-based rules."</p>
+</blockquote>
 <hr />
 <div class="admonition success">
 <p class="admonition-title">Very Short Version (Easy to Remember)</p>
-<ul>
-<li><strong>Triage:</strong> I review the WAF logs to see the specific malicious payload and verify if the WAF actually 'Blocked' or just 'Monitored' the request.</li>
-<li><strong>Investigate:</strong> I analyze the backend HTTP response code and database logs to verify if a database dump actually succeeded.</li>
-<li><strong>Contain &amp; Escalate:</strong> If the app is vulnerable, I block the attacking IP, switch the WAF to blocking mode, and escalate to AppSec to fix the code using parameterized queries.</li>
-</ul>
+<ol>
+<li><strong>WAF blocked?</strong> → log, block IP, no breach. <strong>WAF detected-only?</strong> → investigate for success</li>
+<li><strong>HTTP 200 + injection payload</strong> = potentially successful = treat as breach</li>
+<li><strong>Response size anomaly</strong> = UNION injection may have dumped data</li>
+<li><strong>SQLMap signs</strong> = hundreds of requests per minute, sequential payloads, automation pattern</li>
+<li><strong>Fix</strong> = parameterized queries (prepared statements) — WAF is just a speed bump</li>
+<li><strong>xp_cmdshell</strong> risk = SQLi on MSSQL with poor config → full OS compromise</li>
+<li><strong>OWASP A03:2021</strong> = Injection — always in the top three web vulnerabilities</li>
+</ol>
 </div>
 
 
@@ -2690,6 +3004,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 SOCAtlas · Built for analysts, by analysts
+    </div>
   
   
     Made with

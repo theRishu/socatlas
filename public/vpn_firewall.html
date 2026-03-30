@@ -6,11 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The ultimate cybersecurity operations and interview guide — 1200 quick points, real alerts, and Major Attacks.">
+        <meta name="description" content="SOCAtlas — 1200 interview-ready cybersecurity quick points, real SOC alert playbooks, major attack breakdowns, and complete study guides for analysts and engineers.">
       
       
-        <meta name="author" content="Security Expert">
+        <meta name="author" content="SOCAtlas">
       
+      
+        <link rel="canonical" href="https://socatlas.vercel.app/networking/vpn_firewall.html">
       
       
         <link rel="prev" href="aaa_dns_dhcp.html">
@@ -52,6 +54,8 @@
         <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../assets/site-polish.css">
     
       <link rel="stylesheet" href="../assets/pdf-builder.css">
     
@@ -849,45 +853,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#vpn" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        VPN
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="VPN">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-organizations-use-vpns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why organizations use VPNs
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#common-vpn-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common VPN types
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#firewall" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -900,10 +865,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#common-firewall-types" class="md-nav__link">
+  <a href="#firewall-rule-actions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common firewall types
+        Firewall Rule Actions
       
     </span>
   </a>
@@ -911,10 +876,110 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#real-world-firewall-uses" class="md-nav__link">
+  <a href="#firewalla-consumer-smb-firewall" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Real-world firewall uses
+        Firewalla — Consumer &amp; SMB Firewall
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Firewalla — Consumer &amp; SMB Firewall">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firewalla-rule-actions-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewalla Rule Actions in Practice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewalla-deny-rule-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewalla Deny Rule — Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewalla-drop-rule-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewalla Drop Rule — Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewalla-reject-rule-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewalla REJECT Rule — Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-firewall-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Firewall Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-firewall-rule-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-world Firewall Rule Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vpn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPN
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VPN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-vpn-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common VPN Types
       
     </span>
   </a>
@@ -942,7 +1007,7 @@
   <a href="#types-of-proxy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Types of proxy
+        Types of Proxy
       
     </span>
   </a>
@@ -955,10 +1020,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vpn-versus-firewall-versus-proxy" class="md-nav__link">
+  <a href="#vpn-vs-firewall-vs-proxy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VPN versus firewall versus proxy
+        VPN vs Firewall vs Proxy
       
     </span>
   </a>
@@ -966,63 +1031,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-they-work-together" class="md-nav__link">
+  <a href="#interview-questions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How they work together
+        Interview Questions
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-interview-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common interview questions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common interview questions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-is-a-dmz" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is a DMZ?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#does-a-vpn-stop-malware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Does a VPN stop malware?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#what-is-the-difference-between-a-forward-proxy-and-a-reverse-proxy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is the difference between a forward proxy and a reverse proxy?
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2704,45 +2719,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#vpn" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        VPN
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="VPN">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-organizations-use-vpns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why organizations use VPNs
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#common-vpn-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common VPN types
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#firewall" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2755,10 +2731,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#common-firewall-types" class="md-nav__link">
+  <a href="#firewall-rule-actions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common firewall types
+        Firewall Rule Actions
       
     </span>
   </a>
@@ -2766,10 +2742,110 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#real-world-firewall-uses" class="md-nav__link">
+  <a href="#firewalla-consumer-smb-firewall" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Real-world firewall uses
+        Firewalla — Consumer &amp; SMB Firewall
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Firewalla — Consumer &amp; SMB Firewall">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firewalla-rule-actions-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewalla Rule Actions in Practice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewalla-deny-rule-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewalla Deny Rule — Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewalla-drop-rule-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewalla Drop Rule — Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewalla-reject-rule-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewalla REJECT Rule — Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-firewall-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Firewall Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-firewall-rule-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-world Firewall Rule Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vpn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPN
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VPN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-vpn-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common VPN Types
       
     </span>
   </a>
@@ -2797,7 +2873,7 @@
   <a href="#types-of-proxy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Types of proxy
+        Types of Proxy
       
     </span>
   </a>
@@ -2810,10 +2886,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vpn-versus-firewall-versus-proxy" class="md-nav__link">
+  <a href="#vpn-vs-firewall-vs-proxy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VPN versus firewall versus proxy
+        VPN vs Firewall vs Proxy
       
     </span>
   </a>
@@ -2821,63 +2897,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-they-work-together" class="md-nav__link">
+  <a href="#interview-questions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How they work together
+        Interview Questions
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-interview-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common interview questions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common interview questions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-is-a-dmz" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is a DMZ?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#does-a-vpn-stop-malware" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Does a VPN stop malware?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#what-is-the-difference-between-a-forward-proxy-and-a-reverse-proxy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is the difference between a forward proxy and a reverse proxy?
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2898,105 +2924,239 @@
 
 
 
-<h1 id="vpn-firewall-and-proxy">VPN, firewall, and proxy</h1>
+<h1 id="vpn-firewall-and-proxy">VPN, Firewall, and Proxy</h1>
 <p class="page-lead">VPNs, firewalls, and proxies all deal with network traffic, but they solve different problems. A firewall filters traffic, a VPN encrypts traffic, and a proxy forwards traffic on behalf of a client or server.</p>
 <div class="admonition note">
 <p class="admonition-title">Interview answer</p>
-<p><em>"A firewall controls and filters network traffic based on rules. A VPN creates an encrypted tunnel over an untrusted network. A proxy acts as an intermediary between a client and a destination. They are different controls, but they often work together in network security."</em></p>
+<p><em>"A firewall controls and filters network traffic based on rules — it decides what can pass and what gets blocked. A VPN creates an encrypted tunnel over an untrusted network to protect data in transit and enable secure remote access. A proxy acts as an intermediary between a client and a destination, forwarding requests on behalf of one side. They are different controls, but they are often layered together in a real network security architecture."</em></p>
 </div>
-<h2 id="vpn">VPN</h2>
-<p>A VPN, or Virtual Private Network, creates a secure encrypted tunnel between two points over the internet.</p>
-<h3 id="why-organizations-use-vpns">Why organizations use VPNs</h3>
-<ul>
-<li>Secure remote employee access</li>
-<li>Protect traffic on untrusted networks such as public Wi-Fi</li>
-<li>Connect branch offices securely</li>
-<li>Hide internal addressing from the public internet</li>
-</ul>
-<h3 id="common-vpn-types">Common VPN types</h3>
+<hr />
+<h2 id="firewall">Firewall</h2>
+<p>A firewall is a security control that monitors and filters traffic based on predefined rules. It sits at the boundary between network segments and decides what traffic is allowed or blocked based on IP address, port, protocol, direction, and connection state.</p>
+<h3 id="firewall-rule-actions">Firewall Rule Actions</h3>
 <table>
 <thead>
 <tr>
-<th>Type</th>
-<th>Best use case</th>
-<th>Notes</th>
+<th>Action</th>
+<th>What It Does</th>
+<th>When to Use</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Remote Access VPN</td>
-<td>Individual users connecting to company resources</td>
-<td>Common for remote work</td>
+<td><strong>Allow / Permit</strong></td>
+<td>Traffic matching this rule is forwarded normally</td>
+<td>Explicitly approved traffic flows</td>
 </tr>
 <tr>
-<td>Site-to-Site VPN</td>
-<td>Connecting two networks or offices</td>
-<td>Often built with IPsec</td>
+<td><strong>Deny</strong></td>
+<td>Traffic is silently dropped — no notification sent to sender</td>
+<td>Default-deny posture for most rules</td>
 </tr>
 <tr>
-<td>SSL or TLS VPN</td>
-<td>Browser-based or application-level secure access</td>
-<td>Often easier for remote users</td>
+<td><strong>Drop</strong></td>
+<td>Same as Deny — packet is discarded</td>
+<td>Often used interchangeably with Deny</td>
+</tr>
+<tr>
+<td><strong>Reject</strong></td>
+<td>Traffic is blocked AND the sender receives an ICMP "destination unreachable" error</td>
+<td>When you want the sender to know the connection was refused</td>
+</tr>
+<tr>
+<td><strong>Log</strong></td>
+<td>Traffic is recorded without blocking</td>
+<td>Auditing and monitoring specific flows</td>
 </tr>
 </tbody>
 </table>
-<h2 id="firewall">Firewall</h2>
-<p>A firewall is a security control that monitors and filters traffic based on predefined rules.</p>
-<h3 id="common-firewall-types">Common firewall types</h3>
+<div class="admonition tip">
+<p class="admonition-title">Deny vs. Reject</p>
+<p><strong>Deny/Drop</strong> is usually preferred over <strong>Reject</strong> — with Deny, the sender gets no response (stealth), making it harder for attackers to probe what's behind the firewall. <strong>Reject</strong> gives an active response that helps attackers understand the network topology.</p>
+</div>
+<h3 id="firewalla-consumer-smb-firewall">Firewalla — Consumer &amp; SMB Firewall</h3>
+<p><strong>Firewalla</strong> is a smart network security device designed for homes, small businesses, and power users. It combines firewall, IDS/IPS, VPN, and traffic analytics in a compact device connected to your router.</p>
+<h4 id="firewalla-rule-actions-in-practice">Firewalla Rule Actions in Practice</h4>
+<table>
+<thead>
+<tr>
+<th>Rule Type</th>
+<th>What Firewalla Does</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Block (Deny)</strong></td>
+<td>Silently drops matching traffic — no response sent</td>
+<td>Block all outbound traffic from a child's device after 10PM</td>
+</tr>
+<tr>
+<td><strong>Allow</strong></td>
+<td>Explicitly permits traffic that would otherwise be blocked</td>
+<td>Allow a specific IP to bypass the ad-blocker rule</td>
+</tr>
+<tr>
+<td><strong>VPN Route</strong></td>
+<td>Directs specific traffic through the VPN tunnel</td>
+<td>Route streaming traffic through US VPN exit</td>
+</tr>
+<tr>
+<td><strong>Alarm</strong></td>
+<td>Generates an alert without blocking</td>
+<td>Watch a device but don't block it yet</td>
+</tr>
+</tbody>
+</table>
+<h4 id="firewalla-deny-rule-example">Firewalla Deny Rule — Example</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># Firewalla Block Rule (via Firewalla App or API):
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a># Block a specific device from accessing the internet during a defined period
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a># Device: 192.168.1.105 (a specific IoT device)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a># Action: Block (deny all outbound)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a># Schedule: Always / or 10PM–7AM
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Rule Name:   &quot;Block IoT Camera Outbound&quot;
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Source:      192.168.1.105 (device MAC: aa:bb:cc:dd:ee:ff)
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Destination: Internet (all external IPs)
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>Action:      BLOCK
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>Direction:   Outbound
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>Schedule:    Always active
+</code></pre></div>
+<p><strong>What happens:</strong> The Firewalla device drops any packet from <code>192.168.1.105</code> destined for an external IP without sending a response. The IoT camera cannot phone home to its manufacturer's servers.</p>
+<h4 id="firewalla-drop-rule-example">Firewalla Drop Rule — Example</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a># Firewalla Drop Rule — Block a known malicious IP
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a># Firewalla automatically blocks discovered threats via its intelligence feeds
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a># Manual rule via Rules → Add Rule:
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Rule Name:   &quot;Drop Malicious C2 Traffic&quot;
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Source:      Any (all internal devices)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Destination: 185.220.101.45 (known Tor exit / C2 IP)
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Action:      DROP
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Direction:   Both (inbound and outbound)
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>Schedule:    Always active
+</code></pre></div>
+<p><strong>What happens:</strong> Any internal device attempting to communicate with <code>185.220.101.45</code> has its packets silently dropped. No connection is established. The behavior shows up in Firewalla's flow monitor as blocked.</p>
+<h4 id="firewalla-reject-rule-example">Firewalla REJECT Rule — Example</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a># Firewalla Rule — Reject (send RST) for internal service
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a># Used when you want the client to know immediately the service is unavailable
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a># Example: Block Telnet access to internal router but notify the client
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Rule Name:   &quot;Reject Telnet to Router&quot;
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Source:      Any LAN device
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Destination: 192.168.1.1 (router management IP)
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>Port:        TCP 23 (Telnet)
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>Action:      REJECT
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Direction:   Inbound to router
+</code></pre></div>
+<p><strong>What happens:</strong> Any LAN device trying to Telnet to the router receives a TCP RST immediately, effectively saying "connection refused." The device knows the service is blocked, allowing monitoring software to log the attempt clearly.</p>
+<h3 id="common-firewall-types">Common Firewall Types</h3>
 <table>
 <thead>
 <tr>
 <th>Type</th>
-<th>What it checks</th>
+<th>What It Checks</th>
 <th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Packet Filtering</td>
-<td>IP, port, and protocol</td>
-<td>Basic ACL filtering</td>
+<td>IP, port, and protocol (stateless)</td>
+<td>Basic ACL on a router</td>
 </tr>
 <tr>
 <td>Stateful Inspection</td>
-<td>Tracks connection state</td>
+<td>Tracks connection state — knows if a packet is part of an established session</td>
 <td>Enterprise perimeter firewall</td>
 </tr>
 <tr>
-<td>Application Layer Firewall</td>
-<td>Inspects application traffic</td>
-<td>WAF filtering HTTP requests</td>
+<td>Application Layer (WAF)</td>
+<td>Inspects HTTP/HTTPS request content</td>
+<td>Cloudflare WAF, ModSecurity</td>
 </tr>
 <tr>
-<td>Next-Generation Firewall</td>
-<td>Adds deep inspection, app awareness, IDS/IPS features</td>
-<td>Palo Alto, Fortinet</td>
+<td>Next-Generation Firewall (NGFW)</td>
+<td>Deep packet inspection, app awareness, user identity, IPS</td>
+<td>Palo Alto, Fortinet FortiGate, Cisco FTD</td>
+</tr>
+<tr>
+<td>Host-based Firewall</td>
+<td>Runs on the endpoint itself</td>
+<td>Windows Defender Firewall, <code>ufw</code>, <code>iptables</code></td>
 </tr>
 </tbody>
 </table>
-<h3 id="real-world-firewall-uses">Real-world firewall uses</h3>
-<ul>
-<li>Blocking inbound RDP from the internet</li>
-<li>Allowing HTTPS but denying Telnet</li>
-<li>Restricting traffic between internal network segments</li>
-<li>Blocking malicious IP addresses during incident response</li>
-</ul>
-<h2 id="proxy">Proxy</h2>
-<p>A proxy sits between a client and a destination and forwards requests on behalf of someone else.</p>
-<h3 id="types-of-proxy">Types of proxy</h3>
+<h3 id="real-world-firewall-rule-examples">Real-world Firewall Rule Examples</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a># iptables examples (Linux):
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>iptables -A INPUT -p tcp --dport 22 -s 10.0.0.0/24 -j ACCEPT   # Allow SSH from internal network
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>iptables -A INPUT -p tcp --dport 22 -j DROP                      # Drop all other SSH (deny by default)
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>iptables -A INPUT -p tcp --dport 3389 -j DROP                    # Block all inbound RDP
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>iptables -A OUTPUT -d 185.220.101.45 -j DROP                     # Block outbound to known C2
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a># Palo Alto (example rule logic):
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a># Name: Block-Inbound-RDP
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a># Source: any (internet)
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a># Destination: DMZ servers
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a># Application: ms-rdp
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a># Action: deny (log at end)
+</code></pre></div>
+<hr />
+<h2 id="vpn">VPN</h2>
+<p>A VPN (Virtual Private Network) creates an encrypted tunnel between two endpoints over the public internet, protecting data in transit and enabling secure remote access.</p>
+<h3 id="common-vpn-types">Common VPN Types</h3>
 <table>
 <thead>
 <tr>
 <th>Type</th>
-<th>Sits in front of</th>
-<th>Main purpose</th>
+<th>Best Use</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Remote Access VPN</td>
+<td>Individual employees connecting to company</td>
+<td>IPsec/IKEv2, SSL-VPN, WireGuard</td>
+</tr>
+<tr>
+<td>Site-to-Site VPN</td>
+<td>Connecting two offices over the internet</td>
+<td>IPsec tunnel between gateways</td>
+</tr>
+<tr>
+<td>SSL/TLS VPN</td>
+<td>Browser-based access, easy to deploy</td>
+<td>No client software required</td>
+</tr>
+<tr>
+<td>Split-Tunnel VPN</td>
+<td>Only corporate traffic goes through VPN</td>
+<td>User's Netflix doesn't route through corp</td>
+</tr>
+<tr>
+<td>Full-Tunnel VPN</td>
+<td>All traffic routes through VPN</td>
+<td>Maximum visibility and control for corp</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="proxy">Proxy</h2>
+<p>A proxy sits between a client and a destination and forwards requests on behalf of one side.</p>
+<h3 id="types-of-proxy">Types of Proxy</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Sits In Front Of</th>
+<th>Main Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Forward Proxy</td>
 <td>Users or clients</td>
-<td>Filtering, anonymity, caching</td>
+<td>Filtering, anonymity, caching, content control</td>
 </tr>
 <tr>
 <td>Reverse Proxy</td>
@@ -3005,12 +3165,18 @@
 </tr>
 <tr>
 <td>Transparent Proxy</td>
-<td>User traffic without manual client setup</td>
-<td>Filtering and caching</td>
+<td>All user traffic (no client config needed)</td>
+<td>Web filtering without user setup</td>
+</tr>
+<tr>
+<td>HTTPS Inspection Proxy</td>
+<td>All TLS traffic (break-and-inspect)</td>
+<td>Decrypt, inspect for malware/DLP, re-encrypt</td>
 </tr>
 </tbody>
 </table>
-<h2 id="vpn-versus-firewall-versus-proxy">VPN versus firewall versus proxy</h2>
+<hr />
+<h2 id="vpn-vs-firewall-vs-proxy">VPN vs Firewall vs Proxy</h2>
 <table>
 <thead>
 <tr>
@@ -3023,56 +3189,74 @@
 <tbody>
 <tr>
 <td>Encrypts traffic</td>
-<td>Yes</td>
-<td>No</td>
-<td>Usually no</td>
+<td>✅ Yes</td>
+<td>❌ No</td>
+<td>Sometimes (with TLS inspection)</td>
 </tr>
 <tr>
 <td>Filters traffic</td>
 <td>Limited</td>
-<td>Yes</td>
-<td>Yes, often at application level</td>
+<td>✅ Yes (primary function)</td>
+<td>✅ Yes (application layer)</td>
 </tr>
 <tr>
 <td>Hides client IP</td>
-<td>Yes</td>
-<td>No</td>
-<td>Often yes</td>
+<td>✅ Yes</td>
+<td>❌ No</td>
+<td>✅ Often</td>
 </tr>
 <tr>
-<td>Protects a full network path</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
+<td>Protects full network path</td>
+<td>✅ Yes</td>
+<td>✅ Yes</td>
+<td>❌ Partial</td>
 </tr>
 <tr>
-<td>Common use case</td>
-<td>Secure remote access</td>
-<td>Traffic control and protection</td>
-<td>Web filtering and intermediary access</td>
+<td>Operates at which layer</td>
+<td>Layer 3 (Network)</td>
+<td>Layer 3–7</td>
+<td>Layer 7 (Application)</td>
 </tr>
 </tbody>
 </table>
-<h2 id="how-they-work-together">How they work together</h2>
-<p>In a real environment, these controls often appear together:</p>
-<ol>
-<li>A remote employee connects through a VPN.</li>
-<li>Their traffic passes through a firewall that enforces security rules.</li>
-<li>Web access may be routed through a proxy for filtering, inspection, or caching.</li>
-</ol>
-<h2 id="common-interview-questions">Common interview questions</h2>
-<h4 id="what-is-a-dmz">What is a DMZ?</h4>
+<hr />
+<h2 id="interview-questions">Interview Questions</h2>
+<p><strong>Q1. What is the difference between Deny and Reject in a firewall rule?</strong></p>
 <blockquote>
-<p>A DMZ, or demilitarized zone, is a separate network segment used for internet-facing systems such as web or mail servers. It helps isolate exposed services from the internal network.</p>
+<p>"Deny (or Drop) silently discards the packet — the sender receives no response and doesn't know why the connection failed. This is the preferred default because it gives attackers less information about the network. Reject actively sends back an ICMP 'destination unreachable' or TCP RST, telling the sender the connection was actively refused. Reject can be useful for internal networks where you want legitimate software to fail gracefully rather than hanging on a timeout, but it should be avoided on internet-facing interfaces."</p>
 </blockquote>
-<h4 id="does-a-vpn-stop-malware">Does a VPN stop malware?</h4>
+<p><strong>Q2. What does a Firewalla block rule actually do at the network level?</strong></p>
 <blockquote>
-<p>No. A VPN encrypts traffic, but it does not stop a malicious file from being downloaded. You still need controls like EDR, email filtering, and web security.</p>
+<p>"A Firewalla block rule configures the device to drop matching packets silently — no response is sent back to the originating device. Firewalla sits inline on the network (typically connected between the router and switch, or operating in DHCP mode), so it has visibility into all traffic. When a device's packet matches a block rule by source IP, destination IP, port, or domain, Firewalla's Linux-based netfilter/iptables layer drops the packet without forwarding it. From the originating device's perspective, the connection simply times out."</p>
 </blockquote>
-<h4 id="what-is-the-difference-between-a-forward-proxy-and-a-reverse-proxy">What is the difference between a forward proxy and a reverse proxy?</h4>
+<p><strong>Q3. What is a default-deny firewall policy?</strong></p>
 <blockquote>
-<p>A forward proxy represents the client, while a reverse proxy represents the server.</p>
+<p>"A default-deny policy means all traffic is blocked by default, and only traffic explicitly permitted by an 'allow' rule is forwarded. This is the gold standard firewall posture. It's the opposite of a default-permit policy where everything is allowed unless explicitly blocked. Default-deny ensures that new services, ports, or protocols are always blocked until they are reviewed and intentionally opened — preventing accidental exposure of new attack surface."</p>
 </blockquote>
+<p><strong>Q4. What is stateful inspection and why is it important?</strong></p>
+<blockquote>
+<p>"Stateful inspection tracks the state of network connections in a state table. When an outbound connection is established — for example, a web browser connecting to a server on port 443 — the firewall records that connection in its state table. When the server's response packets arrive inbound, the firewall allows them because they match an established outbound connection, without needing an explicit inbound allow rule. This is how modern firewalls work — allowing return traffic automatically while blocking unsolicited inbound connections. A stateless packet filter lacks this capability and would require explicit rules for both directions."</p>
+</blockquote>
+<p><strong>Q5. What is a NGFW (Next-Generation Firewall) and what does it add over a traditional firewall?</strong></p>
+<blockquote>
+<p>"A Next-Generation Firewall adds Layer 7 application awareness and inspection to traditional stateful filtering. It can identify and control applications by their behavior rather than just port and protocol — distinguishing streaming video from business applications even if both use HTTPS port 443. NGFWs typically integrate: Deep Packet Inspection (DPI), SSL/TLS decryption and inspection, application control, user-identity integration (user-based rules rather than just IP-based), integrated IDS/IPS, URL categorization, and threat intelligence feeds. Examples: Palo Alto Networks with App-ID, Fortinet FortiGate, Cisco Firepower."</p>
+</blockquote>
+<p><strong>Q6. What is a DMZ and how is it implemented with firewalls?</strong></p>
+<blockquote>
+<p>"A DMZ — Demilitarized Zone — is a network segment that sits between the public internet and the internal corporate network, hosting public-facing services like web servers, mail servers, and DNS servers. It's implemented using two firewalls (or a single firewall with three interfaces): the external firewall allows internet traffic to reach only the DMZ on specific ports; the internal firewall allows only specific, necessary communication from the DMZ to internal systems. This ensures that if a DMZ server is compromised, the attacker needs to breach a second firewall to reach internal systems."</p>
+</blockquote>
+<hr />
+<div class="admonition success">
+<p class="admonition-title">Quick Summary</p>
+<ul>
+<li><strong>Allow</strong> = pass traffic | <strong>Deny/Drop</strong> = silent discard | <strong>Reject</strong> = active refusal with error</li>
+<li><strong>Stateful</strong> = tracks connection state automatically | <strong>Stateless</strong> = must define both directions</li>
+<li><strong>Firewalla Block</strong> = iptables DROP — silent, no response, preferred for security</li>
+<li><strong>NGFW</strong> = adds application awareness, DLP, IPS, SSL inspection to traditional firewall</li>
+<li><strong>DMZ</strong> = isolated segment between internet and internal network, two firewalls</li>
+<li><strong>Default-deny</strong> = block everything, permit only what's explicitly approved</li>
+</ul>
+</div>
 
 
 
@@ -3146,6 +3330,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 SOCAtlas · Built for analysts, by analysts
+    </div>
   
   
     Made with

@@ -6,11 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The ultimate cybersecurity operations and interview guide — 1200 quick points, real alerts, and Major Attacks.">
+        <meta name="description" content="SOCAtlas — 1200 interview-ready cybersecurity quick points, real SOC alert playbooks, major attack breakdowns, and complete study guides for analysts and engineers.">
       
       
-        <meta name="author" content="Security Expert">
+        <meta name="author" content="SOCAtlas">
       
+      
+        <link rel="canonical" href="https://socatlas.vercel.app/alerts/ransomware.html">
       
       
         <link rel="prev" href="malware.html">
@@ -52,6 +54,8 @@
         <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../assets/site-polish.css">
     
       <link rel="stylesheet" href="../assets/pdf-builder.css">
     
@@ -1809,10 +1813,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#recognizing-a-ransomware-attack" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        Recognizing a Ransomware Attack
       
     </span>
   </a>
@@ -1820,10 +1824,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#response-workflow-time-is-critical" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        Response Workflow (Time is Critical)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Response Workflow (Time is Critical)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-actions-first-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate Actions (First 5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-term-investigation-next-3060-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Short-term Investigation (Next 30–60 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eradication-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eradication &amp; Recovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2548,10 +2602,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#recognizing-a-ransomware-attack" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        Recognizing a Ransomware Attack
       
     </span>
   </a>
@@ -2559,10 +2613,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#response-workflow-time-is-critical" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        Response Workflow (Time is Critical)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Response Workflow (Time is Critical)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-actions-first-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate Actions (First 5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-term-investigation-next-3060-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Short-term Investigation (Next 30–60 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eradication-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eradication &amp; Recovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2587,34 +2691,148 @@
 
 
 <h1 id="ransomware-attack">🔒 Ransomware Attack</h1>
-<div class="admonition note">
-<p class="admonition-title">What is Ransomware?</p>
-<p>Ransomware is a severe type of malware that uses strong cryptography to encrypt an organisation's files, databases, or systems, making them inaccessible. The attacker then extorts the victim, demanding a ransom payment in exchange for the decryption key, and often threatens to leak stolen data publicly (double extortion).</p>
+<p class="page-lead">Ransomware is one of the most destructive and high-stakes incidents a SOC can face. Speed of containment in the first minutes directly determines how much damage is done.</p>
+<div class="admonition danger">
+<p class="admonition-title">Ransomware is a CRITICAL severity incident</p>
+<p>Modern ransomware attacks often involve <strong>double extortion</strong> — the attacker steals data first, then encrypts it, then threatens to publish stolen data if the ransom isn't paid. This means containment alone is not enough. Treat every ransomware incident as a full data breach.</p>
 </div>
-<h3 id="what-to-check-soc-l1">What to check (SOC L1):</h3>
+<hr />
+<h2 id="recognizing-a-ransomware-attack">Recognizing a Ransomware Attack</h2>
+<table>
+<thead>
+<tr>
+<th>Indicator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mass file rename</strong></td>
+<td>Files suddenly have unfamiliar extensions (<code>.locked</code>, <code>.ryuk</code>, <code>.encrypted</code>)</td>
+</tr>
+<tr>
+<td><strong>Ransom note</strong></td>
+<td>Text files like <code>README.txt</code> or <code>HOW_TO_DECRYPT.html</code> appear on desktops</td>
+</tr>
+<tr>
+<td><strong>EDR alerts</strong></td>
+<td>Mass file modification, shadow copy deletion (<code>vssadmin delete shadows</code>)</td>
+</tr>
+<tr>
+<td><strong>SIEM volume spike</strong></td>
+<td>Thousands of file events in seconds from one process or user</td>
+</tr>
+<tr>
+<td><strong>Network anomaly</strong></td>
+<td>Unusual SMB traffic spreading laterally through file shares</td>
+</tr>
+<tr>
+<td><strong>Disabled backups</strong></td>
+<td>Backup agents killed, Windows VSS snapshots deleted</td>
+</tr>
+<tr>
+<td><strong>Failed logins then success</strong></td>
+<td>Credential compromise preceding encryption stage</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="response-workflow-time-is-critical">Response Workflow (Time is Critical)</h2>
+<h3 id="immediate-actions-first-5-minutes">Immediate Actions (First 5 minutes)</h3>
+<div class="admonition danger">
+<p class="admonition-title">Priority ONE: Stop the spread</p>
+<p>Every minute of hesitation allows the ransomware to encrypt more files and spread to more systems. Containment comes before investigation at this stage.</p>
+</div>
+<ol>
+<li><strong>Identify affected hosts</strong> from EDR dashboard— look for mass file modification alerts</li>
+<li><strong>Isolate affected hosts immediately</strong> via EDR (CrowdStrike: Contain Host / SentinelOne: Network Quarantine)</li>
+<li><strong>Alert your manager and the IR team</strong> — this is an escalation, not something L1 handles alone</li>
+<li><strong>Do NOT power off machines</strong> — you preserve forensic evidence and active processes</li>
+<li><strong>Check if domain controllers or file servers are affected</strong> — if yes, escalate to CRITICAL immediately</li>
+<li><strong>Identify the ransomware variant</strong> from the ransom note or encrypted file extension (check: <a href="https://id-ransomware.malwarehunterteam.com/">ID Ransomware</a>)</li>
+</ol>
+<h3 id="short-term-investigation-next-3060-minutes">Short-term Investigation (Next 30–60 minutes)</h3>
 <ul>
-<li><strong>Alert Type &amp; Severity</strong> (Low/Medium/High/Critical)</li>
-<li><strong>Timestamp</strong> of the event</li>
-<li><strong>Source IP &amp; Destination IP</strong></li>
-<li><strong>Username</strong> &amp; <strong>Affected System / Hostname</strong></li>
-<li>Did multiple files suddenly change to a weird extension (like <code>.locked</code>)?</li>
-<li>Is there a text file on the desktop demanding money (ransom note)?</li>
-<li>Are other computers on the network throwing similar alerts?</li>
+<li><strong>Find Patient Zero</strong> — which host was infected first? (earliest file encryption timestamp in EDR)</li>
+<li><strong>Determine initial access vector</strong> — phishing email? Exposed RDP? Compromised VPN credentials? Unpatched vulnerability?</li>
+<li><strong>Check for data exfiltration BEFORE encryption</strong> — review DNS logs, firewall egress for large data transfers to external IPs</li>
+<li><strong>Map the lateral movement path</strong> — how did it spread? SMB, PsExec, stolen credentials?</li>
+<li><strong>Identify all compromised accounts</strong> — revoke their sessions and reset credentials</li>
+<li><strong>Check backup integrity</strong> — are offline/immutable backups safe and restorable?</li>
 </ul>
-<h3 id="interview-answer">Interview Answer</h3>
-<p><strong>Q: How do you respond to a ransomware outbreak?</strong></p>
-<p>When a ransomware outbreak is detected, the absolute first priority is <strong>strict and immediate containment</strong>. I use the EDR to aggressively isolate any affected hosts from the network. If the outbreak is spreading rapidly, I work with the network team to drop internal routing or shut down VPN access to cut off lateral movement.</p>
-<p>Once containment is achieved, I begin the <strong>investigation</strong>. I look for the initial entry vector, such as a phishing email, unpatched external server, or compromised RDP credentials. I identify the specific ransomware variant and extract IOCs from the isolated systems.</p>
-<p>For <strong>eradication</strong>, I assume the infected hosts cannot be trusted again. I identify and revoke all compromised admin accounts and persistence mechanisms. I coordinate with the infrastructure team to wipe the affected systems completely.</p>
-<p>Finally, I work with the <strong>disaster recovery team</strong> to verify that offline, immutable backups are safe. We meticulously restore the affected services from clean backups onto rebuilt servers, monitoring closely for any signs of reinfection.</p>
+<h3 id="eradication-recovery">Eradication &amp; Recovery</h3>
+<ul>
+<li>Assume all affected systems are <strong>untrustworthy</strong> — rebuild from scratch, do not just remove the malware</li>
+<li><strong>Restore from the most recent clean backup</strong> that predates the infection</li>
+<li>Monitor restored systems closely for signs of reinfection (the persistence mechanism may survive)</li>
+<li><strong>Before restoring</strong>, identify and close the initial access vector so the attacker cannot re-enter</li>
+</ul>
+<hr />
+<h2 id="interview-questions-answers">Interview Questions &amp; Answers</h2>
+<p><strong>Q1. How do you respond when a ransomware outbreak is detected?</strong></p>
+<blockquote>
+<p>"My first priority is immediate containment — stopping the spread before it hits more systems. I use the EDR to isolate every affected host from the network. If it's spreading rapidly across file shares or reaching domain controllers, I escalate to CRITICAL immediately and loop in the IR lead and management. Once I've stopped the spread, I begin the investigation: finding Patient Zero, identifying the initial access vector, and determining whether data was exfiltrated before encryption. Recovery comes only after we've secured clean backups and closed the entry point."</p>
+</blockquote>
+<p><strong>Q2. What is 'double extortion' in a ransomware attack?</strong></p>
+<blockquote>
+<p>"Double extortion is a technique used by modern ransomware groups where they first steal sensitive data from the organization before deploying the encryption. They then demand two ransoms: one to get the decryption key, and one to prevent the stolen data from being published on a dark web leak site. Groups like REvil, LockBit, and Cl0p use this technique. It means even organizations with good backups face the threat of data exposure, which fundamentally changes the incident response strategy."</p>
+</blockquote>
+<p><strong>Q3. What is Patient Zero and why do you need to find it?</strong></p>
+<blockquote>
+<p>"Patient Zero is the first system that was infected — the origin point of the attack. Finding it tells us the initial access vector: was it a phishing email that was clicked, an exposed RDP service brute-forced, a VPN credential stuffed, or a software vulnerability exploited? Once we know how the attacker got in, we can close that door before recovery to prevent immediate reinfection. Without finding Patient Zero, recovery is just resetting the clock on the same attack."</p>
+</blockquote>
+<p><strong>Q4. Why do you NOT power off machines during a ransomware incident?</strong></p>
+<blockquote>
+<p>"Powering off a machine destroys volatile evidence — the contents of RAM, which may contain the decryption key, malware artifacts, active network connections, and running processes. It also makes forensic analysis harder because we lose the live state of the system. EDR network isolation is the correct approach: it cuts the host off from the network while preserving all local evidence for forensic investigation."</p>
+</blockquote>
+<p><strong>Q5. How do you determine if backups are safe to use for recovery?</strong></p>
+<blockquote>
+<p>"First, I check whether the ransomware targeted backup infrastructure — many strains specifically kill backup agents (Veeam, Windows Server Backup) and delete Volume Shadow Copies using <code>vssadmin delete shadows /all /quiet</code>. I verify that the backup predates the initial infection timestamp identified by the EDR. I also check that backup media is offline or immutable — cloud-based immutable storage (like AWS S3 Object Lock or Azure Immutable Blob Storage) or offline tape backups are resistant to ransomware. Finally, I test the restore in an isolated environment before deploying to production."</p>
+</blockquote>
+<p><strong>Q6. What is VSS shadow copy deletion and why is it significant?</strong></p>
+<blockquote>
+<p>"Volume Shadow Service (VSS) is a Windows feature that creates point-in-time snapshots of volumes — also called shadow copies. These are a fast local recovery method. Ransomware consistently deletes them as one of their first actions using the command <code>vssadmin delete shadows /all /quiet</code> or PowerShell equivalents, to prevent easy recovery without paying the ransom. Detecting this command execution in EDR or SIEM logs is a high-confidence indicator of ransomware activity and warrants immediate escalation."</p>
+</blockquote>
+<p><strong>Q7. How does ransomware commonly gain initial access?</strong></p>
+<blockquote>
+<p>"The most common ransomware initial access vectors are: phishing emails with malicious attachments or links (especially macro-enabled Office documents), exposed RDP services on port 3389 brute-forced or using purchased stolen credentials, VPN vulnerabilities or stolen VPN credentials, software supply chain compromise (like SolarWinds), and exploitation of unpatched internet-facing systems like Exchange or Citrix. Knowing the vector allows us to close it before recovery."</p>
+</blockquote>
+<p><strong>Q8. What is Ransomware-as-a-Service (RaaS)?</strong></p>
+<blockquote>
+<p>"RaaS is a business model where ransomware developers lease their malware toolkit to affiliate attackers through dark web portals in exchange for a percentage of ransoms collected — typically 20–30%. The developers handle malware updates and infrastructure; affiliates handle targeting, delivery, and negotiations. Groups like REvil, LockBit, and DarkSide operated as RaaS platforms. This model dramatically lowered the technical barrier to conducting ransomware attacks."</p>
+</blockquote>
+<p><strong>Q9. What is lateral movement in the context of ransomware?</strong></p>
+<blockquote>
+<p>"Lateral movement is how the attacker spreads from the initially compromised host to other systems across the network before deploying ransomware. Common techniques include using stolen admin credentials to access file shares via SMB, using PsExec to remotely execute commands on other hosts, exploiting trust relationships between systems, using tools like BloodHound to map Active Directory and find paths to high-value targets like domain controllers and file servers. Detecting and stopping lateral movement is critical — ransomware deployed from a domain controller hits everything."</p>
+</blockquote>
+<p><strong>Q10. What is the role of Active Directory in a ransomware attack?</strong></p>
+<blockquote>
+<p>"Active Directory is often the primary target during a ransomware attack because it controls authentication across the entire Windows environment. If an attacker compromises a domain admin account or the domain controller itself, they can push ransomware to every domain-joined machine using Group Policy, scheduled tasks, or PsExec at scale. This is why monitoring for unusual Domain Admin activity, Kerberoasting, and BloodHound-style enumeration is so critical in ransomware prevention."</p>
+</blockquote>
+<p><strong>Q11. What is your communication plan during a ransomware incident?</strong></p>
+<blockquote>
+<p>"During a ransomware incident, communication needs to be structured and controlled. Internally: alert the SOC lead immediately, escalate to the IR team and CISO within the first 15 minutes, brief IT management on scope and impact. Externally: legal and compliance teams determine if breach notification obligations apply under GDPR, HIPAA, or other regulations. Avoid discussing the incident on potentially compromised channels — use out-of-band communication like a separate phone or emergency Slack instance. Definitive decisions about ransom payment involve executive leadership and legal counsel."</p>
+</blockquote>
+<p><strong>Q12. Should an organization pay the ransom?</strong></p>
+<blockquote>
+<p>"This is a business and legal decision, not a SOC analyst decision. As an analyst, my job is to inform leadership of the facts: whether backups are viable, the scope of data stolen, which systems are affected, and the estimated recovery timeline both with and without a decryption key. Paying the ransom does not guarantee decryption, does not guarantee data won't be leaked anyway, and may violate OFAC sanctions if the ransomware group is a designated entity. The final decision rests with executive leadership and legal counsel."</p>
+</blockquote>
+<p><strong>Q13. What indicators in SIEM logs suggest ransomware activity?</strong></p>
+<blockquote>
+<p>"Key SIEM indicators include: mass file rename or delete events in a short window, <code>vssadmin delete shadows</code> or <code>wmic shadowcopy delete</code> command execution, disabling Windows Defender via registry or PowerShell, stopping backup services like Veeam, large volumes of SMB connections from one host to many others (lateral movement), connections to known ransomware C2 infrastructure, and encoded PowerShell execution. These events in combination are high-confidence ransomware precursors."</p>
+</blockquote>
 <hr />
 <div class="admonition success">
 <p class="admonition-title">Very Short Version (Easy to Remember)</p>
-<ul>
-<li><strong>Immediate Containment:</strong> I aggressively isolate infected hosts via EDR to immediately stop the spread.</li>
-<li><strong>Investigate &amp; Eradicate:</strong> I investigate the entry vector and reset any compromised administrative credentials.</li>
-<li><strong>Recovery:</strong> I work directly with the infrastructure team to wipe the machines completely and restore them strictly from offline, immutable backups.</li>
-</ul>
+<ol>
+<li><strong>Contain first</strong> — isolate via EDR, not power-off</li>
+<li><strong>Identify variant</strong> — ransom note, file extension, ID Ransomware</li>
+<li><strong>Find Patient Zero</strong> — earliest infection timestamp = initial access vector</li>
+<li><strong>Check exfiltration</strong> — was data stolen before encryption? (DNS/egress logs)</li>
+<li><strong>Verify backups</strong> — offline/immutable only; confirm they predate infection</li>
+<li><strong>Rebuild don't repair</strong> — wipe and restore, do not clean infected systems</li>
+<li><strong>Escalate everything</strong> — this is never an L1-only incident</li>
+</ol>
 </div>
 
 
@@ -2689,6 +2907,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 SOCAtlas · Built for analysts, by analysts
+    </div>
   
   
     Made with

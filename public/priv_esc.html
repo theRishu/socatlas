@@ -6,11 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The ultimate cybersecurity operations and interview guide — 1200 quick points, real alerts, and Major Attacks.">
+        <meta name="description" content="SOCAtlas — 1200 interview-ready cybersecurity quick points, real SOC alert playbooks, major attack breakdowns, and complete study guides for analysts and engineers.">
       
       
-        <meta name="author" content="Security Expert">
+        <meta name="author" content="SOCAtlas">
       
+      
+        <link rel="canonical" href="https://socatlas.vercel.app/alerts/priv_esc.html">
       
       
         <link rel="prev" href="sqli.html">
@@ -53,6 +55,8 @@
       
     
     
+      <link rel="stylesheet" href="../assets/site-polish.css">
+    
       <link rel="stylesheet" href="../assets/pdf-builder.css">
     
       <link rel="stylesheet" href="../assets/mobile-overflow-fixes.css">
@@ -82,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#privilege-escalation" class="md-skip">
+        <a href="#privilege-escalation-alert" class="md-skip">
           Skip to content
         </a>
       
@@ -2061,10 +2065,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#common-privilege-escalation-techniques" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        Common Privilege Escalation Techniques
       
     </span>
   </a>
@@ -2072,10 +2076,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#what-to-check-soc-l1-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        What to Check (SOC L1 Checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#investigation-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Investigation Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Investigation Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-understand-the-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1 — Understand the Escalation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-what-did-the-escalated-privilege-enable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2 — What Did the Escalated Privilege Enable?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-contain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3 — Contain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2548,10 +2613,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#common-privilege-escalation-techniques" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        Common Privilege Escalation Techniques
       
     </span>
   </a>
@@ -2559,10 +2624,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#what-to-check-soc-l1-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        What to Check (SOC L1 Checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#investigation-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Investigation Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Investigation Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-understand-the-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1 — Understand the Escalation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-what-did-the-escalated-privilege-enable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2 — What Did the Escalated Privilege Enable?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-contain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3 — Contain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2586,33 +2712,220 @@
 
 
 
-<h1 id="privilege-escalation">🪜 Privilege Escalation</h1>
+<h1 id="privilege-escalation-alert">🔑 Privilege Escalation Alert</h1>
+<p class="page-lead">Privilege escalation is when an attacker — or malware — gains higher access rights than they initially had. It is a critical step in almost every serious attack: without escalated privileges, the damage an attacker can cause is limited. With them, the entire environment is at risk.</p>
 <div class="admonition note">
-<p class="admonition-title">What is Privilege Escalation?</p>
-<p>Privilege escalation occurs when a threat actor, having compromised a low-level standard user account, successfully exploits a vulnerability or misconfiguration to gain elevated "Administrator", "root", or "SYSTEM" access.</p>
+<p class="admonition-title">The two types of privilege escalation</p>
+<p><strong>Vertical escalation</strong>: Going from a lower privilege level to a higher one — standard user → local admin → domain admin → SYSTEM. <strong>Horizontal escalation</strong>: Accessing another account at the same privilege level but with access to different resources — using one employee's account to access another employee's files.</p>
 </div>
-<h3 id="what-to-check-soc-l1">What to check (SOC L1):</h3>
+<hr />
+<h2 id="common-privilege-escalation-techniques">Common Privilege Escalation Techniques</h2>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Description</th>
+<th>MITRE ID</th>
+<th>Detection Signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Token Impersonation</strong></td>
+<td>Stealing a high-privilege token from another process</td>
+<td>T1134</td>
+<td>Unusual token manipulation API calls in EDR</td>
+</tr>
+<tr>
+<td><strong>UAC Bypass</strong></td>
+<td>Elevating from Admin (medium integrity) to High/SYSTEM without UAC prompt</td>
+<td>T1548</td>
+<td>Known bypass binaries: <code>fodhelper.exe</code>, <code>eventvwr.exe</code></td>
+</tr>
+<tr>
+<td><strong>Kernel Exploit</strong></td>
+<td>Exploiting OS kernel vulnerability to gain SYSTEM</td>
+<td>T1068</td>
+<td>Unexpected kernel module load, process running as SYSTEM</td>
+</tr>
+<tr>
+<td><strong>Unquoted Service Path</strong></td>
+<td>Exploiting improperly quoted service executable paths</td>
+<td>T1574</td>
+<td>Executable in unexpected location with elevated rights</td>
+</tr>
+<tr>
+<td><strong>DLL Hijacking</strong></td>
+<td>Placing a malicious DLL where a privileged process loads it</td>
+<td>T1574</td>
+<td>Unexpected DLL load from writable path</td>
+</tr>
+<tr>
+<td><strong>Sudo/SUID Abuse</strong></td>
+<td>Exploiting misconfigured sudo rules or SUID binaries on Linux</td>
+<td>T1548</td>
+<td><code>sudo -l</code> followed by unexpected command execution</td>
+</tr>
+<tr>
+<td><strong>Kerberoasting</strong></td>
+<td>Extracting and cracking service ticket hashes to get service account passwords</td>
+<td>T1558.003</td>
+<td>TGS-REQ events for many SPN accounts in rapid succession</td>
+</tr>
+<tr>
+<td><strong>Pass-the-Hash</strong></td>
+<td>Replaying NTLM hash to authenticate without knowing the plaintext</td>
+<td>T1550.002</td>
+<td>Network auth from unusual source using hash instead of password</td>
+</tr>
+<tr>
+<td><strong>Golden Ticket</strong></td>
+<td>Forged TGT using KRBTGT hash — grants domain-wide persistence</td>
+<td>T1558.001</td>
+<td>TGT with unusually long validity, non-existent PAC fields</td>
+</tr>
+<tr>
+<td><strong>AS-REP Roasting</strong></td>
+<td>Requesting encrypted credentials for accounts without Kerberos pre-auth</td>
+<td>T1558.004</td>
+<td>AS-REQ to many accounts without pre-auth</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="what-to-check-soc-l1-checklist">What to Check (SOC L1 Checklist)</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Check</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔴 First</td>
+<td><strong>What privilege level was achieved?</strong></td>
+<td>SYSTEM, Domain Admin, or Local Admin — each has different blast radius</td>
+</tr>
+<tr>
+<td>🔴 First</td>
+<td><strong>Which account escalated?</strong></td>
+<td>Service account? Standard user? Was base account already compromised?</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>Technique used</strong></td>
+<td>Token impersonation? UAC bypass? Kernel exploit?</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>What happened AFTER escalation?</strong></td>
+<td>Credential dumping, lateral movement, persistence creation?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>Which hosts are affected?</strong></td>
+<td>One host or did the escalated account touch multiple systems?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>Was a domain admin compromised?</strong></td>
+<td>If yes: escalate to Critical immediately</td>
+</tr>
+<tr>
+<td>🟢 Fourth</td>
+<td><strong>Were any new accounts created?</strong></td>
+<td>Check for backdoor admin accounts</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="investigation-workflow">Investigation Workflow</h2>
+<h3 id="phase-1-understand-the-escalation">Phase 1 — Understand the Escalation</h3>
 <ul>
-<li><strong>Alert Type &amp; Severity</strong> (Low/Medium/High/Critical)</li>
-<li><strong>Timestamp</strong> of the event</li>
-<li><strong>Source IP &amp; Destination IP</strong></li>
-<li><strong>Username</strong> &amp; <strong>Affected System / Hostname</strong></li>
-<li>Did the user recently get added to the <code>Domain Admins</code> or <code>Administrators</code> group?</li>
-<li>Did the EDR flag a process suddenly spawning under <code>NT AUTHORITY\SYSTEM</code>?</li>
+<li>What was the starting privilege level of the process or account?</li>
+<li>What is the ending privilege level?</li>
+<li>What technique was used? Check MITRE ATT&amp;CK Privilege Escalation tactic (TA0004)</li>
 </ul>
-<h3 id="interview-answer">Interview Answer</h3>
-<p><strong>Q: How do you handle a privilege escalation alert?</strong></p>
-<p>When a privilege escalation alert triggers, I first <strong>review the SIEM or identity logs</strong> to confirm which standard user account was flagged and what specific action caused the alert (like modifying a registry key or adding a user to a highly privileged group).</p>
-<p>Next, I <strong>investigate the host</strong> using EDR. I look at the process tree to see if the user exploited a known vulnerability (like running a malicious executable or script that bypasses UAC). I simultaneously check Active Directory logs (Event ID 4728) to verify if the attacker granted themselves permanent admin rights.</p>
-<p>If the escalation is confirmed malicious and not a planned IT change, I immediately <strong>contain the threat</strong>. I completely disable the compromised user account in AD and isolate the endpoint via the network to prevent the attacker from moving laterally using their newly acquired admin privileges.</p>
-<p>Finally, I <strong>escalate the incident</strong> to the L2 and IR teams with the exact timeline of the escalation, revert the unauthorized group changes in AD, and document the investigation steps in the ticketing system.</p>
+<h3 id="phase-2-what-did-the-escalated-privilege-enable">Phase 2 — What Did the Escalated Privilege Enable?</h3>
+<p>This is critical — the technique matters less than what was done with it:</p>
+<ul>
+<li><strong>Credential dumping</strong>: LSASS access, SAM hive read, DCSync attack</li>
+<li><strong>Disabling security tools</strong>: stopping EDR, removing AV, adding exclusions</li>
+<li><strong>Creating persistence</strong>: new admin accounts, scheduled tasks, services, registry modifications</li>
+<li><strong>Lateral movement</strong>: using elevated credentials to access other hosts</li>
+<li><strong>Ransomware staging</strong>: escalation often precedes full ransomware deployment</li>
+</ul>
+<h3 id="phase-3-contain">Phase 3 — Contain</h3>
+<ul>
+<li>Isolate the affected host via EDR</li>
+<li>Revoke all sessions for the compromised account(s)</li>
+<li>If domain admin was touched: escalate to Critical — consider emergency KRBTGT password reset (invalidates all domain Kerberos tickets)</li>
+<li>Check for and remove all persistence mechanisms created post-escalation</li>
+<li>Check all other hosts the escalated account accessed</li>
+</ul>
+<hr />
+<h2 id="interview-questions-answers">Interview Questions &amp; Answers</h2>
+<p><strong>Q1. What is privilege escalation and why does it matter in security?</strong></p>
+<blockquote>
+<p>"Privilege escalation is the process by which an attacker gains access rights beyond what was initially granted — moving from a standard user to local admin, from local admin to domain admin, or from a service account to SYSTEM. It matters because the initial foothold in most attacks involves limited access — a phishing email that compromises a standard user account has limited damage potential. But once the attacker escalates to admin or SYSTEM, they can dump credentials, disable security tools, move laterally across the entire network, and potentially compromise the entire Active Directory environment. Privilege escalation is the inflection point in an attack chain."</p>
+</blockquote>
+<p><strong>Q2. What is the difference between vertical and horizontal privilege escalation?</strong></p>
+<blockquote>
+<p>"Vertical escalation means gaining higher privileges than your starting level — a standard user becoming a local admin, or a local admin becoming a domain admin. It's the classic 'climbing the privilege ladder'. Horizontal escalation means accessing another account at the same or similar privilege level but with access to different resources — for example, one standard user accessing another standard user's files or email. Horizontal escalation is often associated with data theft rather than full system compromise, and is particularly relevant in access control bypass scenarios."</p>
+</blockquote>
+<p><strong>Q3. What is a UAC bypass and how does it work?</strong></p>
+<blockquote>
+<p>"User Account Control (UAC) is a Windows security feature that separates standard user and admin tokens even for accounts that are members of the Administrators group. When a high-privilege action is needed, UAC prompts the user to approve. A UAC bypass exploits specific auto-elevation behaviors in certain trusted Windows applications that are exempt from the UAC prompt. For example, <code>fodhelper.exe</code> reads a registry key before launching, which it does with elevated privileges. By writing a custom command to that registry key beforehand, a standard admin user can execute arbitrary code elevated to High integrity without any UAC prompt."</p>
+</blockquote>
+<p><strong>Q4. What is token impersonation?</strong></p>
+<blockquote>
+<p>"Windows uses access tokens to identify the security context of a process — what account it runs as and what privileges it has. Token impersonation is a technique where a process steals or duplicates the token of a higher-privileged process and then runs new processes under that token's identity. The <code>SeImpersonatePrivilege</code> — often held by service accounts — enables this. Tools like JuicyPotato, RoguePotato, and PrintSpoofer exploit this privilege to escalate service accounts to SYSTEM. EDR detects this through monitoring of Windows API calls like <code>DuplicateTokenEx</code> and <code>CreateProcessWithTokenW</code> in unusual contexts."</p>
+</blockquote>
+<p><strong>Q5. What is Kerberoasting?</strong></p>
+<blockquote>
+<p>"Kerberoasting targets service accounts in Active Directory. When a user requests a Kerberos service ticket for a service (TGS-REQ), the ticket is encrypted with the service account's NTLM hash. Any domain user can request service tickets for any service. An attacker extracts these tickets and cracks them offline — using Hashcat with a wordlist — to recover the plaintext service account password. Service accounts often have weak or non-expiring passwords, making them vulnerable. Detection: query logs show TGS-REQ events for many different Service Principal Names (SPNs) from one user in rapid succession — a pattern no legitimate user exhibits."</p>
+</blockquote>
+<p><strong>Q6. What is a Golden Ticket attack?</strong></p>
+<blockquote>
+<p>"A Golden Ticket is a forged Kerberos Ticket Granting Ticket (TGT) created using the KRBTGT account's hash — the most sensitive credential in an Active Directory domain. Once an attacker has the KRBTGT hash (via DCSync or directly from a domain controller), they can fabricate TGTs for any user, with any group membership, valid for any duration. A Mimikatz-generated Golden Ticket can be valid for 10 years and include Domain Admin SIDs. The standard mitigation is to reset the KRBTGT password <strong>twice</strong> in succession to invalidate all outstanding TGTs domain-wide — though this is disruptive."</p>
+</blockquote>
+<p><strong>Q7. What is DCSync and what privilege do you need to perform it?</strong></p>
+<blockquote>
+<p>"DCSync is a technique using Mimikatz that impersonates a domain controller and requests password hash replication data — the same data that legitimate DCs use to sync with each other — from the real domain controller. It extracts the NTLM hashes of every account in the domain, including the KRBTGT account, without requiring code execution on the DC itself. To perform DCSync, the account needs <code>DS-Replication-Get-Changes</code> and <code>DS-Replication-Get-Changes-All</code> rights, which are held by domain admins and certain backup/monitoring service accounts. DCSync is detected by monitoring 4662 events on Domain Controllers for replication rights being exercised by non-DC machine accounts."</p>
+</blockquote>
+<p><strong>Q8. What Windows Event IDs indicate privilege escalation?</strong></p>
+<blockquote>
+<p>"Key Event IDs include: 4672 — Special privileges assigned to new logon (indicates a privileged account logged in); 4673 — A privileged service was called; 4674 — An operation was attempted on a privileged object; 4688 — Process creation with elevated integrity level; 4728/4732/4756 — Member added to security/admin groups; 4768/4769 — Kerberos TGT and service ticket requests (for Kerberoasting and Golden Ticket detection); 4964 — Special groups assigned to new logon (tracks sensitive group membership at login time). The combination of 4672 followed by 4688 (privileged login then process creation) from an unexpected user or host is particularly significant."</p>
+</blockquote>
+<p><strong>Q9. What is Pass-the-Hash and how does it work?</strong></p>
+<blockquote>
+<p>"Pass-the-Hash (PtH) exploits NTLM authentication — which transmits a hash of the password rather than the plaintext — by replaying a previously captured NTLM hash to authenticate to a remote service without knowing the actual password. An attacker extracts a hash from memory using Mimikatz (<code>sekurlsa::logonpasswords</code>), then uses it to authenticate to SMB, RDP (NLA disabled), or other Windows services on other hosts. Mitigations: disable NTLM where possible, use Protected Users security group, deploy Credential Guard, enable SMB signing, and restrict lateral movement paths using local admin password solutions like LAPS."</p>
+</blockquote>
+<p><strong>Q10. What is LAPS and how does it prevent privilege escalation?</strong></p>
+<blockquote>
+<p>"LAPS — Local Administrator Password Solution — is a Microsoft tool that automatically manages and rotates local administrator account passwords across domain-joined machines, setting a unique random password for each machine and storing it securely in Active Directory with access controls. Without LAPS, organizations often have the same local admin password on every machine — so compromising one machine gives admin access to all machines (lateral movement via Pass-the-Hash or same-credential reuse). LAPS breaks this by ensuring each machine has a unique, rotated local admin password."</p>
+</blockquote>
+<p><strong>Q11. What is Sudo abuse on Linux and how do you detect it?</strong></p>
+<blockquote>
+<p>"On Linux, <code>sudo</code> allows specific users to execute commands as root or another user, governed by the <code>/etc/sudoers</code> configuration. Sudo abuse occurs when an attacker exploits an overly permissive sudoers rule or a vulnerability in a program that can be run via sudo to escalate to root. Common examples: <code>sudo vim</code> → <code>!sh</code> opens a root shell; <code>sudo find</code> with <code>-exec /bin/sh</code> spawns a privileged shell; misconfigured <code>NOPASSWD</code> rules requiring no password for privileged commands. Detection: <code>auth.log</code> or <code>journald</code> showing <code>sudo</code> invocations by unexpected users, <code>sudo -l</code> commands (listing available sudo rules is a reconnaissance step), and setuid binaries being executed in unusual ways."</p>
+</blockquote>
+<p><strong>Q12. What is the first thing you do when you suspect domain admin compromise?</strong></p>
+<blockquote>
+<p>"I immediately escalate to the highest urgency — domain admin compromise is a Critical incident. My first priority is stopping ongoing damage: I work with the Active Directory team to <strong>disable the compromised domain admin account and revoke all its Kerberos tickets</strong>. If a Golden Ticket is suspected, I advise the team on performing <strong>two sequential KRBTGT password resets</strong> — the first ends ongoing use of existing tickets, the second ensures previously rotated tickets also cease to be valid. Then I analyze the scope: what other systems did this account access? Were any changes made to AD — new admin accounts added, GPOs modified, trust relationships changed? I preserve all relevant logs and escalate to incident response leadership."</p>
+</blockquote>
 <hr />
 <div class="admonition success">
 <p class="admonition-title">Very Short Version (Easy to Remember)</p>
 <ul>
-<li><strong>Triage:</strong> I check SIEM logs to see which user escalated and how they did it (e.g., AD group change or exploiting a local service).</li>
-<li><strong>Investigate:</strong> I analyze the EDR process tree and verify Active Directory logs to see the extent of their administrative access.</li>
-<li><strong>Contain &amp; Escalate:</strong> If confirmed malicious, I disable the compromised account immediately, isolate the host, escalate to L2, and document the incident.</li>
+<li><strong>Vertical</strong> = higher privilege level (user → admin → SYSTEM)</li>
+<li><strong>Horizontal</strong> = same level, different account's resources</li>
+<li><strong>Post-escalation always matters more than the technique</strong> — what did they do next?</li>
+<li><strong>Golden Ticket</strong> = forged TGT using KRBTGT hash → domain-wide persistence</li>
+<li><strong>DCSync</strong> = extract all hashes without touching DC — requires <code>DS-Replication</code> rights</li>
+<li><strong>Kerberoasting</strong> = crack service ticket hashes offline → service account passwords</li>
+<li><strong>Domain admin compromised</strong> = Critical escalation, KRBTGT reset ×2, full IR engagement</li>
 </ul>
 </div>
 
@@ -2688,6 +3001,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 SOCAtlas · Built for analysts, by analysts
+    </div>
   
   
     Made with

@@ -6,11 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The ultimate cybersecurity operations and interview guide — 1200 quick points, real alerts, and Major Attacks.">
+        <meta name="description" content="SOCAtlas — 1200 interview-ready cybersecurity quick points, real SOC alert playbooks, major attack breakdowns, and complete study guides for analysts and engineers.">
       
       
-        <meta name="author" content="Security Expert">
+        <meta name="author" content="SOCAtlas">
       
+      
+        <link rel="canonical" href="https://socatlas.vercel.app/networking/basics.html">
       
       
         <link rel="prev" href="../fundamentals/hashing.html">
@@ -53,6 +55,8 @@
       
     
     
+      <link rel="stylesheet" href="../assets/site-polish.css">
+    
       <link rel="stylesheet" href="../assets/pdf-builder.css">
     
       <link rel="stylesheet" href="../assets/mobile-overflow-fixes.css">
@@ -82,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#networking-basics" class="md-skip">
+        <a href="#networking-basics-complete-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -765,10 +769,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#core-terms" class="md-nav__link">
+  <a href="#what-is-a-computer-network" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core terms
+        What Is a Computer Network?
       
     </span>
   </a>
@@ -776,10 +780,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-network-types" class="md-nav__link">
+  <a href="#network-types-by-size" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common network types
+        Network Types by Size
       
     </span>
   </a>
@@ -787,10 +791,215 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-protocols-and-ports" class="md-nav__link">
+  <a href="#network-architectures" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common protocols and ports
+        Network Architectures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Architectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-server-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client-Server Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#peer-to-peer-p2p-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer-to-Peer (P2P) Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Devices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Devices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Router
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gateway
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-point-ap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Point (AP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repeater" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repeater
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load Balancer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transmission-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transmission Media
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transmission Media">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wired-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wired Media
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireless-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wireless Media
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-topologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Topologies
       
     </span>
   </a>
@@ -798,10 +1007,138 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ipv4-and-ipv6" class="md-nav__link">
+  <a href="#ip-addressing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IPv4 and IPv6
+        IP Addressing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IP Addressing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipv4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPv4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPv6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subnetting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subnetting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-networking-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Networking Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Networking Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-layer-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Layer Protocols
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transport-layer-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transport Layer Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transport Layer Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcp-transmission-control-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TCP (Transmission Control Protocol)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#udp-user-datagram-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UDP (User Datagram Protocol)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-layer-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Layer Protocols
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nat-network-address-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NAT — Network Address Translation
       
     </span>
   </a>
@@ -809,10 +1146,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-private-ipv4-ranges" class="md-nav__link">
+  <a href="#dns-domain-name-system" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common private IPv4 ranges
+        DNS — Domain Name System
       
     </span>
   </a>
@@ -820,10 +1157,82 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-networking-matters-in-security" class="md-nav__link">
+  <a href="#dhcp-dynamic-host-configuration-protocol" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why Networking Matters in Security
+        DHCP — Dynamic Host Configuration Protocol
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wireless-networking-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wireless Networking Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wireless Networking Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wi-fi-encryption-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wi-Fi Encryption Standards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireless-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wireless Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vlans-virtual-lans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VLANs — Virtual LANs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-security-controls-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Security Controls Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2592,10 +3001,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#core-terms" class="md-nav__link">
+  <a href="#what-is-a-computer-network" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core terms
+        What Is a Computer Network?
       
     </span>
   </a>
@@ -2603,10 +3012,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-network-types" class="md-nav__link">
+  <a href="#network-types-by-size" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common network types
+        Network Types by Size
       
     </span>
   </a>
@@ -2614,10 +3023,215 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-protocols-and-ports" class="md-nav__link">
+  <a href="#network-architectures" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common protocols and ports
+        Network Architectures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Architectures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-server-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client-Server Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#peer-to-peer-p2p-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Peer-to-Peer (P2P) Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Devices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Devices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Router
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Switch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gateway
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-point-ap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Point (AP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repeater" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repeater
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load Balancer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transmission-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transmission Media
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transmission Media">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wired-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wired Media
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireless-media" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wireless Media
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-topologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Topologies
       
     </span>
   </a>
@@ -2625,10 +3239,138 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ipv4-and-ipv6" class="md-nav__link">
+  <a href="#ip-addressing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        IPv4 and IPv6
+        IP Addressing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IP Addressing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipv4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPv4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPv6
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subnetting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subnetting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-networking-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Networking Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Networking Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-layer-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Layer Protocols
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transport-layer-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transport Layer Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transport Layer Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcp-transmission-control-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TCP (Transmission Control Protocol)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#udp-user-datagram-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UDP (User Datagram Protocol)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-layer-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Layer Protocols
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nat-network-address-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NAT — Network Address Translation
       
     </span>
   </a>
@@ -2636,10 +3378,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-private-ipv4-ranges" class="md-nav__link">
+  <a href="#dns-domain-name-system" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common private IPv4 ranges
+        DNS — Domain Name System
       
     </span>
   </a>
@@ -2647,10 +3389,82 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-networking-matters-in-security" class="md-nav__link">
+  <a href="#dhcp-dynamic-host-configuration-protocol" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why Networking Matters in Security
+        DHCP — Dynamic Host Configuration Protocol
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wireless-networking-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wireless Networking Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wireless Networking Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wi-fi-encryption-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wi-Fi Encryption Standards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireless-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wireless Attacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vlans-virtual-lans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VLANs — Virtual LANs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-security-controls-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Security Controls Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2674,198 +3488,888 @@
 
 
 
-<h1 id="networking-basics">Networking basics</h1>
-<p class="page-lead">Networking is the foundation that lets devices communicate, share data, and reach services inside an organization and across the internet.</p>
+<h1 id="networking-basics-complete-guide">🌐 Networking Basics — Complete Guide</h1>
+<p class="page-lead">Networking is the backbone of every cyberattack and every defense. Every threat you investigate, every alert you triage, and every control you deploy operates over a network. This guide covers all the core networking concepts you need to know as a security professional.</p>
 <div class="admonition note">
 <p class="admonition-title">Interview answer</p>
-<p><em>"A network is a group of connected devices that exchange data using agreed protocols. In cybersecurity, networking matters because most attacks, detections, and defenses depend on how systems communicate."</em></p>
+<p><em>"A computer network is a group of interconnected devices that communicate using agreed protocols to share data and resources. In cybersecurity, networking knowledge is essential because attacks, detections, and defenses all depend on how devices communicate — understanding the network is prerequisite to understanding the threat."</em></p>
 </div>
-<h2 id="core-terms">Core terms</h2>
-<table>
-<thead>
-<tr>
-<th>Term</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>IP address</td>
-<td>Logical network address, such as <code>192.168.1.10</code></td>
-</tr>
-<tr>
-<td>MAC address</td>
-<td>Hardware address used on the local network</td>
-</tr>
-<tr>
-<td>Port</td>
-<td>Logical endpoint used by a service, such as 443 for HTTPS</td>
-</tr>
-<tr>
-<td>Protocol</td>
-<td>Agreed set of communication rules</td>
-</tr>
-<tr>
-<td>Packet</td>
-<td>Small unit of data sent across the network</td>
-</tr>
-<tr>
-<td>Router</td>
-<td>Connects networks and forwards traffic</td>
-</tr>
-<tr>
-<td>Switch</td>
-<td>Connects devices inside the same local network</td>
-</tr>
-<tr>
-<td>DNS</td>
-<td>Translates names into IP addresses</td>
-</tr>
-<tr>
-<td>DHCP</td>
-<td>Automatically assigns IP settings</td>
-</tr>
-</tbody>
-</table>
-<h2 id="common-network-types">Common network types</h2>
+<hr />
+<h2 id="what-is-a-computer-network">What Is a Computer Network?</h2>
+<p>A computer network connects devices so they can exchange data and share resources. Every network has three essential components:</p>
+<ul>
+<li><strong>Nodes</strong> — devices that send or receive data (computers, servers, phones, IoT devices, printers)</li>
+<li><strong>Links</strong> — the medium connecting nodes (wired: Ethernet, fiber; wireless: Wi-Fi, Bluetooth, cellular)</li>
+<li><strong>Protocols</strong> — agreed rules governing how data is formatted, transmitted, and acknowledged</li>
+</ul>
+<p>When data is sent, it is broken into small <strong>packets</strong>. Each packet travels independently through the network, may take different paths, and is reassembled at the destination. This is called <strong>packet switching</strong> — the fundamental mechanism of the internet.</p>
+<hr />
+<h2 id="network-types-by-size">Network Types by Size</h2>
 <table>
 <thead>
 <tr>
 <th>Type</th>
-<th>What it means</th>
+<th>Full Name</th>
+<th>Scope</th>
 <th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>LAN</td>
-<td>Local Area Network in a small area</td>
-<td>Home Wi-Fi or office floor</td>
+<td><strong>PAN</strong></td>
+<td>Personal Area Network</td>
+<td>A few meters — one person's devices</td>
+<td>Bluetooth headset to phone</td>
 </tr>
 <tr>
-<td>WAN</td>
-<td>Wide Area Network across large distances</td>
-<td>Branch offices linked across cities</td>
+<td><strong>LAN</strong></td>
+<td>Local Area Network</td>
+<td>A building or campus</td>
+<td>Office floor network, home Wi-Fi</td>
 </tr>
 <tr>
-<td>MAN</td>
-<td>Metropolitan Area Network across a city-scale area</td>
-<td>Campus or municipal fiber network</td>
+<td><strong>MAN</strong></td>
+<td>Metropolitan Area Network</td>
+<td>City-scale</td>
+<td>City-wide fiber connecting colleges</td>
 </tr>
 <tr>
-<td>VPN</td>
-<td>Encrypted tunnel over another network</td>
-<td>Remote worker connecting to company resources</td>
+<td><strong>WAN</strong></td>
+<td>Wide Area Network</td>
+<td>Country or global</td>
+<td>Corporate offices linked across countries</td>
+</tr>
+<tr>
+<td><strong>Internet</strong></td>
+<td>Interconnected Networks</td>
+<td>Global</td>
+<td>The global public internet</td>
+</tr>
+<tr>
+<td><strong>Intranet</strong></td>
+<td>Private internal internet</td>
+<td>Organization-wide</td>
+<td>Company's internal web portals</td>
+</tr>
+<tr>
+<td><strong>Extranet</strong></td>
+<td>Controlled external access</td>
+<td>Partners/vendors</td>
+<td>Supplier accessing a company's order system</td>
 </tr>
 </tbody>
 </table>
-<h2 id="common-protocols-and-ports">Common protocols and ports</h2>
+<hr />
+<h2 id="network-architectures">Network Architectures</h2>
+<h3 id="client-server-architecture">Client-Server Architecture</h3>
+<p>The most common model in enterprise environments. <strong>Servers</strong> provide services and resources; <strong>clients</strong> request them.</p>
+<ul>
+<li>Centralized management, authentication, and access control</li>
+<li>Examples: Active Directory domain, company email server, database server</li>
+<li>Security implications: compromising a server impacts all its clients</li>
+</ul>
+<h3 id="peer-to-peer-p2p-architecture">Peer-to-Peer (P2P) Architecture</h3>
+<p>Every device acts as both client and server — no central authority.</p>
+<ul>
+<li>Decentralized and resilient</li>
+<li>Harder to secure because there is no central enforcement point</li>
+<li>Examples: BitTorrent, blockchain networks</li>
+<li>Security risk: often abused for malware distribution and botnet C2</li>
+</ul>
+<hr />
+<h2 id="network-devices">Network Devices</h2>
+<h3 id="router">Router</h3>
+<p>Connects <strong>different networks</strong> and routes traffic between them using IP addresses.</p>
+<ul>
+<li>Operates at Layer 3 (Network layer)</li>
+<li>Maintains a routing table of known network paths</li>
+<li>Performs NAT (Network Address Translation) for home/office networks</li>
+<li><strong>Security role</strong>: enforces ACLs, implements routing policies, first line of perimeter control</li>
+</ul>
+<h3 id="switch">Switch</h3>
+<p>Connects devices <strong>within the same network</strong> and forwards traffic using MAC addresses.</p>
+<ul>
+<li>Operates at Layer 2 (Data Link layer)</li>
+<li>Learns MAC addresses and builds a MAC address table (CAM table)</li>
+<li>Sends frames only to the intended port — more efficient and secure than a hub</li>
+<li><strong>Security role</strong>: implements VLANs, port security, 802.1X authentication</li>
+</ul>
+<p><strong>Switch security attacks:</strong>
+- <strong>MAC flooding</strong>: fills the CAM table, forces switch to broadcast like a hub → eavesdropping
+- <strong>VLAN hopping</strong>: double-tagging exploit to access unauthorized VLANs</p>
+<h3 id="hub">Hub</h3>
+<p>Connects devices within a network but broadcasts all traffic to every port.</p>
+<ul>
+<li>Operates at Layer 1 (Physical layer)</li>
+<li><strong>No intelligence</strong> — cannot filter or direct traffic</li>
+<li>A security hazard: any connected device sees all traffic (passive sniffing)</li>
+<li>Largely obsolete — replaced by switches</li>
+</ul>
+<h3 id="bridge">Bridge</h3>
+<p>Connects two network segments and filters traffic between them using MAC addresses.</p>
+<ul>
+<li>Operates at Layer 2</li>
+<li>Reduces unnecessary traffic by only forwarding frames whose destination is on the other segment</li>
+<li>Predecessor to modern switches</li>
+</ul>
+<h3 id="gateway">Gateway</h3>
+<p>Connects networks using <strong>different protocols</strong> and translates between them.</p>
+<ul>
+<li>Operates at all layers (Layer 3 to Layer 7)</li>
+<li>Example: connecting a corporate IPv4 LAN to an IPv6 ISP</li>
+<li>Email gateways, API gateways, and security gateways act as policy enforcement points</li>
+</ul>
+<h3 id="access-point-ap">Access Point (AP)</h3>
+<p>Provides <strong>wireless connectivity</strong> by extending a wired network to Wi-Fi devices.</p>
+<ul>
+<li>Operates at Layer 2</li>
+<li>Creates wireless coverage areas (cells)</li>
+<li><strong>Security role</strong>: enforces WPA2/WPA3 encryption, implements MAC filtering, 802.1X RADIUS auth</li>
+<li><strong>Security risk</strong>: Rogue Access Points, Evil Twin attacks, weak WPA2 passphrase attacks</li>
+</ul>
+<h3 id="modem">Modem</h3>
+<p>Converts digital signals (from your computer) to analog signals (for transmission over phone lines or cable) and back.</p>
+<ul>
+<li>Bridges your home/office network to your ISP</li>
+<li>The word "modem" = <strong>mod</strong>ulator-<strong>dem</strong>odulator</li>
+<li>Home networks: router and modem often combined in one device</li>
+</ul>
+<h3 id="repeater">Repeater</h3>
+<p>Amplifies and regenerates a signal to extend the range of a network.</p>
+<ul>
+<li>Operates at Layer 1</li>
+<li>Does not filter or process traffic — just boosts the signal</li>
+<li>Used in long cable runs or Wi-Fi range extension</li>
+</ul>
+<h3 id="firewall">Firewall</h3>
+<p>Monitors and controls network traffic based on predefined security rules.</p>
+<ul>
+<li>Operates at Layer 3–7 depending on type</li>
+<li><strong>Packet filtering</strong>: inspects headers (IP, port, protocol)</li>
+<li><strong>Stateful inspection</strong>: tracks connection state</li>
+<li><strong>Next-Gen Firewall (NGFW)</strong>: application awareness, deep packet inspection, IPS</li>
+<li><strong>Deny</strong> = silent drop | <strong>Reject</strong> = active refusal | <strong>Allow</strong> = forward</li>
+</ul>
+<h3 id="load-balancer">Load Balancer</h3>
+<p>Distributes incoming traffic across multiple servers to prevent overload.</p>
+<ul>
+<li>Operates at Layer 4 (TCP) or Layer 7 (HTTP)</li>
+<li>Improves availability and performance</li>
+<li><strong>Security role</strong>: hides backend server IPs, can terminate TLS, absorbs some DDoS traffic</li>
+</ul>
+<hr />
+<h2 id="transmission-media">Transmission Media</h2>
+<h3 id="wired-media">Wired Media</h3>
+<table>
+<thead>
+<tr>
+<th>Medium</th>
+<th>Speed</th>
+<th>Max Distance</th>
+<th>Security Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Twisted Pair (Cat5e/Cat6)</strong></td>
+<td>1–10 Gbps</td>
+<td>100 meters</td>
+<td>Can be tapped if physical access is gained</td>
+</tr>
+<tr>
+<td><strong>Coaxial Cable</strong></td>
+<td>Up to 10 Gbps</td>
+<td>Varies</td>
+<td>Legacy; cable internet uses this</td>
+</tr>
+<tr>
+<td><strong>Fiber Optic</strong></td>
+<td>10–400+ Gbps</td>
+<td>Kilometers</td>
+<td>Very hard to tap without detection; immune to EMI</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wireless-media">Wireless Media</h3>
+<table>
+<thead>
+<tr>
+<th>Medium</th>
+<th>Standard</th>
+<th>Security Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Wi-Fi</strong></td>
+<td>802.11a/b/g/n/ac/ax</td>
+<td>WPA2/WPA3 — always use WPA3 where possible</td>
+</tr>
+<tr>
+<td><strong>Bluetooth</strong></td>
+<td>BT 4.0–5.3</td>
+<td>Bluejacking, Bluesnarfing attacks exist</td>
+</tr>
+<tr>
+<td><strong>Cellular (4G/5G)</strong></td>
+<td>LTE, NR</td>
+<td>Generally secure; SS7 vulnerabilities exist</td>
+</tr>
+<tr>
+<td><strong>NFC</strong></td>
+<td>ISO 14443</td>
+<td>Relay attacks are possible at close range</td>
+</tr>
+<tr>
+<td><strong>Infrared</strong></td>
+<td>IrDA</td>
+<td>Line-of-sight only; very limited range</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="network-topologies">Network Topologies</h2>
+<table>
+<thead>
+<tr>
+<th>Topology</th>
+<th>Description</th>
+<th>Advantages</th>
+<th>Disadvantages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bus</strong></td>
+<td>All devices share one cable</td>
+<td>Simple, cheap</td>
+<td>One break affects all; hard to troubleshoot</td>
+</tr>
+<tr>
+<td><strong>Star</strong></td>
+<td>All devices connect to a central hub/switch</td>
+<td>Easy to manage; one device failure isolated</td>
+<td>Central point of failure</td>
+</tr>
+<tr>
+<td><strong>Ring</strong></td>
+<td>Devices connected in a loop</td>
+<td>Predictable performance</td>
+<td>One break stops all traffic</td>
+</tr>
+<tr>
+<td><strong>Mesh</strong></td>
+<td>Every device connects to every other</td>
+<td>Highly redundant and resilient</td>
+<td>Expensive and complex</td>
+</tr>
+<tr>
+<td><strong>Tree</strong></td>
+<td>Hierarchical — parent-child structure</td>
+<td>Scalable</td>
+<td>Root failure cascades down</td>
+</tr>
+<tr>
+<td><strong>Hybrid</strong></td>
+<td>Combination of multiple topologies</td>
+<td>Flexible</td>
+<td>Complex to design and secure</td>
+</tr>
+</tbody>
+</table>
+<p>Most enterprise networks use a <strong>hierarchical star</strong> topology — access layer switches → distribution layer switches → core layer switches, with redundant links for resilience.</p>
+<hr />
+<h2 id="ip-addressing">IP Addressing</h2>
+<h3 id="ipv4">IPv4</h3>
+<ul>
+<li>32-bit address written in four octets: <code>192.168.1.100</code></li>
+<li>Provides approximately 4.3 billion unique addresses</li>
+<li><strong>Public IP</strong>: globally routable — assigned by your ISP</li>
+<li><strong>Private IP</strong>: not globally routable — used inside networks (NAT translates them)</li>
+</ul>
+<p><strong>Private IPv4 ranges (RFC 1918):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>CIDR</th>
+<th>Common Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>10.0.0.0 – 10.255.255.255</code></td>
+<td>/8</td>
+<td>Large enterprises</td>
+</tr>
+<tr>
+<td><code>172.16.0.0 – 172.31.255.255</code></td>
+<td>/12</td>
+<td>Medium networks</td>
+</tr>
+<tr>
+<td><code>192.168.0.0 – 192.168.255.255</code></td>
+<td>/16</td>
+<td>Home and small office</td>
+</tr>
+<tr>
+<td><code>127.0.0.0 – 127.255.255.255</code></td>
+<td>/8</td>
+<td>Loopback (localhost only)</td>
+</tr>
+<tr>
+<td><code>169.254.0.0 – 169.254.255.255</code></td>
+<td>/16</td>
+<td>Link-local (APIPA — no DHCP)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ipv6">IPv6</h3>
+<ul>
+<li>128-bit address written in hexadecimal groups: <code>2001:0db8:85a3::8a2e:0370:7334</code></li>
+<li>Provides 340 undecillion unique addresses — effectively unlimited</li>
+<li>No NAT needed — every device can have a public address</li>
+<li>Built-in IPsec support (though optional in practice)</li>
+<li><strong>Security note</strong>: IPv6 traffic may bypass IPv4-only security controls if dual-stack is enabled and not monitored</li>
+</ul>
+<h3 id="subnetting">Subnetting</h3>
+<p>Subnetting divides a network into smaller segments using a <strong>subnet mask</strong> or CIDR notation.</p>
+<table>
+<thead>
+<tr>
+<th>CIDR</th>
+<th>Subnet Mask</th>
+<th>Usable Hosts</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/24</td>
+<td>255.255.255.0</td>
+<td>254</td>
+<td>Standard office subnet</td>
+</tr>
+<tr>
+<td>/25</td>
+<td>255.255.255.128</td>
+<td>126</td>
+<td>Split a /24 in half</td>
+</tr>
+<tr>
+<td>/30</td>
+<td>255.255.255.252</td>
+<td>2</td>
+<td>Point-to-point links</td>
+</tr>
+<tr>
+<td>/32</td>
+<td>255.255.255.255</td>
+<td>1</td>
+<td>Single host route</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Security benefit of subnetting</strong>: network segmentation limits broadcast domains and reduces the blast radius of attacks. If an attacker compromises one subnet, they cannot automatically reach hosts on other subnets without passing through a router or firewall.</p>
+<hr />
+<h2 id="key-networking-protocols">Key Networking Protocols</h2>
+<h3 id="application-layer-protocols">Application Layer Protocols</h3>
 <table>
 <thead>
 <tr>
 <th>Protocol</th>
 <th>Port</th>
-<th>Main purpose</th>
+<th>Purpose</th>
+<th>Security Note</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>HTTP</td>
+<td><strong>HTTP</strong></td>
 <td>80</td>
-<td>Standard web traffic</td>
+<td>Web traffic (unencrypted)</td>
+<td>Never use on its own — use HTTPS</td>
 </tr>
 <tr>
-<td>HTTPS</td>
+<td><strong>HTTPS</strong></td>
 <td>443</td>
-<td>Encrypted web traffic</td>
+<td>Web traffic encrypted with TLS</td>
+<td>Standard for all web communication</td>
 </tr>
 <tr>
-<td>FTP</td>
+<td><strong>FTP</strong></td>
 <td>21</td>
-<td>File transfer</td>
+<td>File transfer (plaintext)</td>
+<td>Transmits passwords in clear — use SFTP</td>
 </tr>
 <tr>
-<td>SSH</td>
+<td><strong>SFTP</strong></td>
 <td>22</td>
-<td>Secure remote administration</td>
+<td>Secure file transfer over SSH</td>
+<td>Preferred over FTP</td>
 </tr>
 <tr>
-<td>SMTP</td>
-<td>25</td>
+<td><strong>SSH</strong></td>
+<td>22</td>
+<td>Secure remote CLI access</td>
+<td>Critical to protect — disable password auth, use keys</td>
+</tr>
+<tr>
+<td><strong>Telnet</strong></td>
+<td>23</td>
+<td>Remote CLI (plaintext)</td>
+<td>Never use — transmits everything unencrypted</td>
+</tr>
+<tr>
+<td><strong>SMTP</strong></td>
+<td>25/587</td>
 <td>Sending email</td>
+<td>587 with STARTTLS for submission</td>
 </tr>
 <tr>
-<td>DNS</td>
+<td><strong>IMAP</strong></td>
+<td>143/993</td>
+<td>Receiving email (server-sync)</td>
+<td>993 is IMAPS (encrypted)</td>
+</tr>
+<tr>
+<td><strong>POP3</strong></td>
+<td>110/995</td>
+<td>Receiving email (download-delete)</td>
+<td>995 is POP3S (encrypted)</td>
+</tr>
+<tr>
+<td><strong>DNS</strong></td>
 <td>53</td>
-<td>Name resolution</td>
+<td>Domain name resolution</td>
+<td>Target of cache poisoning, DNS hijacking</td>
 </tr>
 <tr>
-<td>DHCP</td>
+<td><strong>DHCP</strong></td>
 <td>67/68</td>
-<td>IP configuration</td>
+<td>Automatic IP assignment</td>
+<td>DHCP starvation and rogue DHCP attacks exist</td>
 </tr>
 <tr>
-<td>RDP</td>
+<td><strong>SNMP</strong></td>
+<td>161/162</td>
+<td>Network device management</td>
+<td>SNMPv1/v2 are insecure — use SNMPv3</td>
+</tr>
+<tr>
+<td><strong>NTP</strong></td>
+<td>123</td>
+<td>Time synchronization</td>
+<td>Critical for log correlation; NTP amplification DDoS</td>
+</tr>
+<tr>
+<td><strong>LDAP</strong></td>
+<td>389/636</td>
+<td>Directory queries</td>
+<td>636 is LDAPS (encrypted)</td>
+</tr>
+<tr>
+<td><strong>RDP</strong></td>
 <td>3389</td>
-<td>Remote desktop access</td>
+<td>Windows remote desktop</td>
+<td>Frequently brute-forced — never expose to internet</td>
+</tr>
+<tr>
+<td><strong>SMB</strong></td>
+<td>445</td>
+<td>Windows file sharing</td>
+<td>Disable SMBv1 — exploited by EternalBlue/WannaCry</td>
 </tr>
 </tbody>
 </table>
-<h2 id="ipv4-and-ipv6">IPv4 and IPv6</h2>
+<h3 id="transport-layer-protocols">Transport Layer Protocols</h3>
+<h4 id="tcp-transmission-control-protocol">TCP (Transmission Control Protocol)</h4>
+<ul>
+<li><strong>Connection-oriented</strong>: establishes a connection before sending data</li>
+<li><strong>Three-way handshake</strong>: SYN → SYN-ACK → ACK</li>
+<li><strong>Reliable</strong>: guarantees delivery, ordering, and error checking</li>
+<li><strong>Use cases</strong>: HTTP, HTTPS, SSH, SMTP, FTP — anything requiring reliability</li>
+</ul>
+<p><strong>TCP Header Key Fields:</strong>
+- Source/Destination Port, Sequence Number, Acknowledgment Number
+- <strong>Flags</strong>: SYN, ACK, FIN, RST, PSH, URG
+- <strong>Window Size</strong>: controls flow (how much data can be sent before acknowledgment)</p>
+<p><strong>SYN Flood attack</strong> exploits the three-way handshake by sending thousands of SYN packets without completing the handshake, exhausting the server's connection queue.</p>
+<h4 id="udp-user-datagram-protocol">UDP (User Datagram Protocol)</h4>
+<ul>
+<li><strong>Connectionless</strong>: sends data without establishing a connection first</li>
+<li><strong>Unreliable</strong>: no guarantee of delivery, no ordering, no retransmission</li>
+<li><strong>Faster</strong>: no overhead of connection management</li>
+<li><strong>Use cases</strong>: DNS, DHCP, NTP, VoIP, video streaming, online gaming</li>
+</ul>
+<p><strong>UDP amplification attacks</strong> spoof source IPs and send small UDP requests to open servers (DNS, NTP) — the large response is sent to the spoofed victim IP.</p>
+<h3 id="network-layer-protocols">Network Layer Protocols</h3>
 <table>
 <thead>
 <tr>
-<th>Version</th>
-<th>Description</th>
+<th>Protocol</th>
+<th>Purpose</th>
+<th>Security Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IP</strong></td>
+<td>Logical addressing and routing</td>
+<td>IP spoofing — forging source address</td>
+</tr>
+<tr>
+<td><strong>ICMP</strong></td>
+<td>Diagnostics — ping, traceroute</td>
+<td>Ping of Death, ICMP tunneling, Smurf attack</td>
+</tr>
+<tr>
+<td><strong>ARP</strong></td>
+<td>Maps IP → MAC on local network</td>
+<td>ARP poisoning/spoofing — redirect traffic to attacker</td>
+</tr>
+<tr>
+<td><strong>OSPF</strong></td>
+<td>Interior routing protocol</td>
+<td>Route injection attacks if authentication not enabled</td>
+</tr>
+<tr>
+<td><strong>BGP</strong></td>
+<td>Inter-AS routing (internet backbone)</td>
+<td>BGP hijacking — reroutes internet traffic</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="nat-network-address-translation">NAT — Network Address Translation</h2>
+<p>NAT allows multiple devices on a private network to share a single public IP address.</p>
+<p><strong>How it works:</strong>
+1. Device at <code>192.168.1.10</code> sends a packet to <code>8.8.8.8:80</code>
+2. The router changes the source IP from <code>192.168.1.10</code> to the public IP <code>203.0.113.5</code> and records the mapping in the NAT table
+3. The server at <code>8.8.8.8</code> sees the request from <code>203.0.113.5</code> and replies to it
+4. The router receives the reply and forwards it to the original <code>192.168.1.10</code></p>
+<p><strong>NAT Types:</strong>
+- <strong>Static NAT</strong>: one-to-one permanent mapping (server hosting a service)
+- <strong>Dynamic NAT</strong>: pool of public IPs mapped on-demand
+- <strong>PAT (Port Address Translation)</strong>: many private IPs share one public IP using different port numbers — most common (what your home router does)</p>
+<hr />
+<h2 id="dns-domain-name-system">DNS — Domain Name System</h2>
+<p>DNS translates human-readable domain names into IP addresses.</p>
+<p><strong>DNS Resolution process:</strong>
+1. Your browser asks: "What is the IP of <code>google.com</code>?"
+2. Your OS checks the <strong>local cache</strong> and <code>/etc/hosts</code> first
+3. If not found, queries the <strong>recursive resolver</strong> (usually your ISP's or <code>8.8.8.8</code>)
+4. The resolver queries the <strong>root nameserver</strong> → gets referral to <code>.com</code> TLD server
+5. The TLD server refers to Google's <strong>authoritative nameserver</strong>
+6. The authoritative nameserver returns the IP address: <code>142.250.x.x</code>
+7. The resolver caches the result (for the TTL duration) and returns it to you</p>
+<p><strong>DNS Record Types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Record</th>
+<th>Purpose</th>
 <th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>IPv4</td>
-<td>32-bit addressing, still widely used</td>
-<td><code>192.168.1.1</code></td>
+<td><strong>A</strong></td>
+<td>Maps domain to IPv4 address</td>
+<td><code>google.com → 142.250.80.46</code></td>
 </tr>
 <tr>
-<td>IPv6</td>
-<td>128-bit addressing with a much larger address space</td>
-<td><code>2001:db8::1</code></td>
+<td><strong>AAAA</strong></td>
+<td>Maps domain to IPv6 address</td>
+<td><code>google.com → 2607:f8b0::200e</code></td>
+</tr>
+<tr>
+<td><strong>MX</strong></td>
+<td>Mail server for the domain</td>
+<td><code>mail.google.com</code></td>
+</tr>
+<tr>
+<td><strong>CNAME</strong></td>
+<td>Alias pointing to another hostname</td>
+<td><code>www.google.com → google.com</code></td>
+</tr>
+<tr>
+<td><strong>TXT</strong></td>
+<td>Text records — used for SPF, DKIM, DMARC</td>
+<td><code>v=spf1 include:_spf.google.com ~all</code></td>
+</tr>
+<tr>
+<td><strong>NS</strong></td>
+<td>Authoritative nameservers for the domain</td>
+<td><code>ns1.google.com</code></td>
+</tr>
+<tr>
+<td><strong>PTR</strong></td>
+<td>Reverse lookup — IP to hostname</td>
+<td>Used in email spam filtering</td>
 </tr>
 </tbody>
 </table>
-<h2 id="common-private-ipv4-ranges">Common private IPv4 ranges</h2>
+<p><strong>DNS Security attacks:</strong>
+- <strong>DNS Cache Poisoning</strong>: attacker poisons a resolver's cache with false records — redirects users
+- <strong>DNS Hijacking</strong>: changing DNS settings on a device or router to point to malicious servers
+- <strong>DNS Tunneling</strong>: encoding data in DNS queries to bypass firewalls (exfiltration, C2)
+- <strong>DNS Amplification DDoS</strong>: small query → large response sent to spoofed victim IP</p>
+<p><strong>DNS Security controls:</strong>
+- <strong>DNSSEC</strong>: digitally signs DNS records to prevent tampering and poisoning
+- Use encrypted DNS: <strong>DoH</strong> (DNS over HTTPS, port 443) or <strong>DoT</strong> (DNS over TLS, port 853)</p>
+<hr />
+<h2 id="dhcp-dynamic-host-configuration-protocol">DHCP — Dynamic Host Configuration Protocol</h2>
+<p>DHCP automatically assigns IP addresses and network configuration to devices when they join a network.</p>
+<p><strong>DORA Process:</strong>
+1. <strong>D</strong>iscover — client broadcasts "I need an IP address"
+2. <strong>O</strong>ffer — DHCP server responds with an available IP
+3. <strong>R</strong>equest — client accepts the offer and requests that IP
+4. <strong>A</strong>cknowledge — server confirms the lease is assigned</p>
+<p><strong>DHCP provides:</strong> IP address, subnet mask, default gateway, DNS server addresses, lease duration</p>
+<p><strong>DHCP security attacks:</strong>
+- <strong>DHCP Starvation</strong>: attacker requests thousands of IPs, exhausting the address pool — legitimate devices get no IPs (DoS)
+- <strong>Rogue DHCP Server</strong>: attacker runs their own DHCP server, assigns themselves as the default gateway and DNS server — full traffic interception
+- <strong>Mitigation</strong>: DHCP Snooping on switches — only trusted ports can respond to DHCP requests</p>
+<hr />
+<h2 id="wireless-networking-security">Wireless Networking Security</h2>
+<h3 id="wi-fi-encryption-standards">Wi-Fi Encryption Standards</h3>
 <table>
 <thead>
 <tr>
-<th>Range</th>
-<th>Common use</th>
+<th>Standard</th>
+<th>Status</th>
+<th>Security</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>10.0.0.0 - 10.255.255.255</code></td>
-<td>Large private networks</td>
+<td><strong>WEP</strong></td>
+<td>Broken — never use</td>
+<td>❌</td>
+<td>Cracked in seconds with Aircrack-ng</td>
 </tr>
 <tr>
-<td><code>172.16.0.0 - 172.31.255.255</code></td>
-<td>Medium-size internal networks</td>
+<td><strong>WPA</strong></td>
+<td>Deprecated</td>
+<td>❌</td>
+<td>Uses TKIP — multiple vulnerabilities</td>
 </tr>
 <tr>
-<td><code>192.168.0.0 - 192.168.255.255</code></td>
-<td>Home and small office networks</td>
+<td><strong>WPA2-Personal</strong></td>
+<td>Acceptable but not ideal</td>
+<td>⚠️</td>
+<td>PMKID/4-way handshake capture + offline cracking</td>
+</tr>
+<tr>
+<td><strong>WPA2-Enterprise</strong></td>
+<td>Good</td>
+<td>✅</td>
+<td>Uses 802.1X/RADIUS — per-user authentication</td>
+</tr>
+<tr>
+<td><strong>WPA3-Personal</strong></td>
+<td>Best for consumer</td>
+<td>✅</td>
+<td>SAE replaces PSK — forward secrecy</td>
+</tr>
+<tr>
+<td><strong>WPA3-Enterprise</strong></td>
+<td>Best overall</td>
+<td>✅</td>
+<td>192-bit cryptographic suite</td>
 </tr>
 </tbody>
 </table>
-<h2 id="why-networking-matters-in-security">Why Networking Matters in Security</h2>
-<p>Security teams use these basics every day to:</p>
+<h3 id="wireless-attacks">Wireless Attacks</h3>
+<table>
+<thead>
+<tr>
+<th>Attack</th>
+<th>Description</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Evil Twin</strong></td>
+<td>Attacker creates a fake AP with same SSID</td>
+<td>Certificate-based auth (802.1X)</td>
+</tr>
+<tr>
+<td><strong>Rogue AP</strong></td>
+<td>Unauthorized AP plugged into corporate network</td>
+<td>Wireless IDS, network scanning</td>
+</tr>
+<tr>
+<td><strong>WPA2 Handshake Capture</strong></td>
+<td>Capture 4-way handshake for offline cracking</td>
+<td>Use WPA3, strong passphrases</td>
+</tr>
+<tr>
+<td><strong>PMKID Attack</strong></td>
+<td>Captures PMKID directly without client — offline crack</td>
+<td>WPA3-SAE, strong passphrases</td>
+</tr>
+<tr>
+<td><strong>Deauth Attack</strong></td>
+<td>Sends deauthentication frames to disconnect clients</td>
+<td>802.11w Management Frame Protection</td>
+</tr>
+<tr>
+<td><strong>Wardriving</strong></td>
+<td>Scanning for open or weak Wi-Fi networks</td>
+<td>Proper encryption everywhere</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="vlans-virtual-lans">VLANs — Virtual LANs</h2>
+<p>VLANs logically segment a switch into separate networks, even though devices share physical hardware.</p>
+<p><strong>Why VLANs matter in security:</strong>
+- Isolate guest Wi-Fi from corporate network
+- Separate finance from engineering from HR
+- Limit broadcast domains — reduce attack surface
+- Contain a compromised device to its VLAN</p>
+<p><strong>VLAN Hopping attack</strong>: An attacker tricks a switch port into becoming a trunk port (which carries all VLANs), then sends double-tagged 802.1Q frames to reach VLANs they should not have access to.</p>
+<p><strong>Mitigation</strong>: Disable DTP (Dynamic Trunking Protocol) on access ports, use a dedicated native VLAN not associated with any users.</p>
+<hr />
+<h2 id="network-security-controls-summary">Network Security Controls Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Firewall</strong></td>
+<td>Filter traffic by rules</td>
+<td>Block inbound RDP from internet</td>
+</tr>
+<tr>
+<td><strong>IDS</strong></td>
+<td>Detect intrusions, alert only</td>
+<td>Snort alerting on SQL injection pattern</td>
+</tr>
+<tr>
+<td><strong>IPS</strong></td>
+<td>Detect and block intrusions</td>
+<td>Suricata dropping malicious traffic inline</td>
+</tr>
+<tr>
+<td><strong>VPN</strong></td>
+<td>Encrypt transit traffic</td>
+<td>Remote worker secure tunnel to office</td>
+</tr>
+<tr>
+<td><strong>VLAN</strong></td>
+<td>Segment network logically</td>
+<td>Guest devices isolated from corp data</td>
+</tr>
+<tr>
+<td><strong>NAC</strong></td>
+<td>Control which devices can join</td>
+<td>802.1X rejecting unregistered devices</td>
+</tr>
+<tr>
+<td><strong>WAF</strong></td>
+<td>Protect web applications</td>
+<td>Blocking SQLi and XSS at the HTTP layer</td>
+</tr>
+<tr>
+<td><strong>SIEM</strong></td>
+<td>Correlate network logs for detection</td>
+<td>Alerting on port scanning patterns</td>
+</tr>
+<tr>
+<td><strong>Proxy</strong></td>
+<td>Inspect and filter web traffic</td>
+<td>Blocking malware-hosting domains</td>
+</tr>
+<tr>
+<td><strong>DLP</strong></td>
+<td>Prevent data leaving the network</td>
+<td>Stopping credit card numbers in email</td>
+</tr>
+<tr>
+<td><strong>DMZ</strong></td>
+<td>Isolate public-facing servers</td>
+<td>Web server separate from internal database</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="interview-questions-answers">Interview Questions &amp; Answers</h2>
+<p><strong>Q1. What is a computer network and how does it work?</strong></p>
+<blockquote>
+<p>"A computer network is a collection of interconnected devices — computers, servers, routers, switches — that communicate using shared protocols to exchange data and resources. When data is sent, the sending device breaks it into packets, each labeled with source and destination IP addresses. Routers forward packets across network hops using routing tables to find the best path. At the destination, packets are reassembled in the correct order using sequence numbers. Protocols like TCP ensure reliable delivery with acknowledgment, while UDP provides faster connectionless delivery for real-time applications."</p>
+</blockquote>
+<p><strong>Q2. What is the difference between a router, switch, and hub?</strong></p>
+<blockquote>
+<p>"A hub broadcasts every packet to every connected device — it has no intelligence and creates the most traffic and the worst security posture. A switch learns MAC addresses and forwards frames only to the specific port where the destination device lives — much more efficient and secure. A router operates at Layer 3 and routes packets between different networks using IP addresses and routing tables. In a security context: hubs are dangerous because any connected device can sniff all traffic; switches are better but vulnerable to MAC flooding attacks that force them to behave like hubs."</p>
+</blockquote>
+<p><strong>Q3. What is a subnet and why is subnetting important for security?</strong></p>
+<blockquote>
+<p>"A subnet is a logical subdivision of an IP network created by applying a subnet mask. Subnetting divides a large network into smaller segments — each with its own broadcast domain. From a security perspective, subnetting enables network segmentation: by placing sensitive systems in separate subnets, you ensure that traffic between them must pass through a router or firewall where security controls can be applied. A compromised device in one subnet cannot directly communicate with devices in other subnets without crossing a security boundary."</p>
+</blockquote>
+<p><strong>Q4. What is NAT and how does it affect security investigations?</strong></p>
+<blockquote>
+<p>"NAT — Network Address Translation — allows multiple devices on a private network to share one public IP. From a security investigation standpoint, NAT can complicate attribution: if you see a malicious connection from <code>203.0.113.5</code>, that's the NAT gateway IP — the actual attacker could be any device behind that gateway. This is why ISPs and organizations use NAT logs to map public IP + port + timestamp to the specific private IP that made the connection. It also means firewall logs show the NATted address, not the original device IP."</p>
+</blockquote>
+<p><strong>Q5. What is ARP and what is ARP poisoning?</strong></p>
+<blockquote>
+<p>"ARP — Address Resolution Protocol — maps an IP address to a MAC address on the local network segment. When a device wants to send traffic to <code>192.168.1.1</code>, it broadcasts 'Who has 192.168.1.1? Tell me your MAC address.' The device at that IP responds with its MAC. ARP poisoning is an attack where the attacker broadcasts fake ARP replies claiming their MAC is associated with another device's IP — typically the default gateway. All local devices update their ARP caches with the false mapping, sending all traffic through the attacker (man-in-the-middle). Defenses include Dynamic ARP Inspection (DAI) on switches and static ARP entries for critical hosts."</p>
+</blockquote>
+<p><strong>Q6. What ports should you know by heart as a SOC analyst?</strong></p>
+<blockquote>
+<p>"The essential ports every analyst must know: 22 (SSH), 23 (Telnet — red flag if open), 25 (SMTP), 53 (DNS), 80 (HTTP), 110 (POP3), 143 (IMAP), 443 (HTTPS), 445 (SMB — EternalBlue target), 389 (LDAP), 636 (LDAPS), 3306 (MySQL), 3389 (RDP — common brute force target), 5985/5986 (WinRM), 8080/8443 (alternate web). When I see unexpected connections to port 3389 from internet IPs, it's likely a brute force. SMB on port 445 between internal hosts could be lateral movement. DNS queries on port 53 to unexpected external resolvers could be DNS tunneling."</p>
+</blockquote>
+<p><strong>Q7. What is the DORA process in DHCP?</strong></p>
+<blockquote>
+<p>"DORA is the four-step process by which a device gets an IP address from a DHCP server: Discover — the device broadcasts asking for any DHCP server; Offer — the DHCP server responds with an available IP address and configuration; Request — the device requests that specific offer; Acknowledge — the server confirms the assignment with a lease duration. A rogue DHCP attack involves placing an unauthorized DHCP server on the network that responds to Discover messages first and assigns itself as the gateway and DNS server — routing all traffic through the attacker."</p>
+</blockquote>
+<p><strong>Q8. What is DNS and what are the most common DNS-based attacks?</strong></p>
+<blockquote>
+<p>"DNS translates domain names like <code>google.com</code> into IP addresses. The resolution goes from local cache → recursive resolver → root nameserver → TLD server → authoritative nameserver. Common attacks include: DNS cache poisoning — injecting false records into a resolver's cache to redirect traffic; DNS hijacking — changing DNS settings on a router or device to point to malicious resolvers; DNS tunneling — encoding data in query subdomain names to exfiltrate data or communicate with C2 through firewalls that permit DNS; and DNS amplification DDoS — using open resolvers to generate large response traffic toward a spoofed victim IP."</p>
+</blockquote>
+<p><strong>Q9. What is the difference between WPA2 and WPA3?</strong></p>
+<blockquote>
+<p>"WPA2 uses a Pre-Shared Key (PSK) and the 4-way handshake to authenticate clients. The handshake can be captured passively when any client authenticates and then cracked offline using dictionary attacks — wordlists like rockyou.txt are effective against weak passphrases. WPA3 replaces PSK with SAE — Simultaneous Authentication of Equals — which provides forward secrecy and is resistant to offline dictionary attacks because each authentication requires interaction with the access point. WPA3 also enforces Protected Management Frames (802.11w) which prevents deauthentication attacks."</p>
+</blockquote>
+<p><strong>Q10. What is a VLAN and how does VLAN hopping work?</strong></p>
+<blockquote>
+<p>"A VLAN is a logical network partition that groups devices on a switch into separate broadcast domains regardless of their physical port. VLAN hopping allows an attacker to send traffic to a VLAN they shouldn't have access to. The most common method uses double tagging — the attacker's frame has two 802.1Q VLAN headers: the outer tag matches the native VLAN of a trunk port, the switch strips it and forwards the frame with the inner tag to the target VLAN. Prevention: disable DTP on all access ports with <code>switchport nonegotiate</code>, set the native VLAN to an unused VLAN ID, and restrict trunk links to explicitly permitted VLANs only."</p>
+</blockquote>
+<p><strong>Q11. What is the difference between TCP and UDP and when is each used?</strong></p>
+<blockquote>
+<p>"TCP is connection-oriented — it uses a three-way handshake (SYN, SYN-ACK, ACK) to establish a session before data transfer, guarantees delivery and ordering through sequence numbers and acknowledgments, and retransmits lost packets. This reliability makes it ideal for web browsing, email, SSH, and file transfers where data integrity matters. UDP is connectionless — it sends packets with no handshake, no acknowledgment, and no retransmission. It's faster and more efficient, making it ideal for DNS, VoIP, video streaming, and online gaming where a dropped packet is better than waiting for a retransmit. Security note: both can be abused — SYN floods target TCP, while UDP amplification targets UDP."</p>
+</blockquote>
+<p><strong>Q12. What is network segmentation and why is it a defense-in-depth control?</strong></p>
+<blockquote>
+<p>"Network segmentation divides a network into isolated zones using VLANs, subnets, and firewall rules. Each zone can have its own access controls — for example, isolating servers, workstations, guest Wi-Fi, IoT devices, and critical infrastructure in separate zones. The security benefit is containment: if an attacker compromises a device in the workstation zone, they cannot directly reach servers in the server zone without passing through a firewall that enforces zone-crossing policies. This 'blast radius' limitation means a compromise in one zone doesn't automatically become a compromise everywhere — which is the core principle of defense in depth."</p>
+</blockquote>
+<p><strong>Q13. What is the purpose of a DMZ?</strong></p>
+<blockquote>
+<p>"A DMZ — Demilitarized Zone — is a network segment that sits between the untrusted internet and the trusted internal network, hosting public-facing services like web servers, mail servers, and DNS servers. It's implemented with two firewall boundaries: the external firewall allows internet traffic to reach the DMZ on specific ports; the internal firewall restricts what the DMZ can reach inside the network, allowing only specific necessary communication. If a DMZ server is compromised, the attacker has to breach the internal firewall — a second control boundary — to reach internal systems. Without a DMZ, a compromised web server would have direct access to internal resources."</p>
+</blockquote>
+<hr />
+<div class="admonition success">
+<p class="admonition-title">Key Facts to Remember</p>
 <ul>
-<li>identify suspicious traffic</li>
-<li>understand which systems are talking to each other</li>
-<li>trace attacker movement</li>
-<li>block risky ports and protocols</li>
-<li>segment networks to limit blast radius</li>
+<li><strong>LAN</strong> = local; <strong>WAN</strong> = wide; <strong>MAN</strong> = metro; <strong>PAN</strong> = personal</li>
+<li><strong>Switch</strong> = MAC addresses, Layer 2 | <strong>Router</strong> = IP addresses, Layer 3 | <strong>Hub</strong> = broadcasts everything (avoid)</li>
+<li><strong>TCP</strong> = reliable, ordered, handshake | <strong>UDP</strong> = fast, connectionless, no guarantee</li>
+<li><strong>NAT</strong> = many private IPs → one public IP (PAT is the most common form)</li>
+<li><strong>DNS port 53</strong> | <strong>DHCP ports 67/68</strong> | <strong>HTTPS port 443</strong> | <strong>RDP port 3389</strong> | <strong>SMB port 445</strong></li>
+<li><strong>VLAN hopping</strong> → disable DTP | <strong>ARP poisoning</strong> → Dynamic ARP Inspection | <strong>Rogue DHCP</strong> → DHCP Snooping</li>
+<li><strong>WPA3 &gt; WPA2 &gt; WPA &gt; WEP (broken)</strong></li>
+<li><strong>Subnetting</strong> = containment | <strong>Segmentation</strong> = blast radius control | <strong>DMZ</strong> = public services isolation</li>
 </ul>
-<p>If you can read IPs, ports, protocols, and traffic patterns comfortably, you can understand both attacks and defenses much faster.</p>
+</div>
 
 
 
@@ -2939,6 +4443,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 SOCAtlas · Built for analysts, by analysts
+    </div>
   
   
     Made with

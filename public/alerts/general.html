@@ -6,11 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The ultimate cybersecurity operations and interview guide — 1200 quick points, real alerts, and Major Attacks.">
+        <meta name="description" content="SOCAtlas — 1200 interview-ready cybersecurity quick points, real SOC alert playbooks, major attack breakdowns, and complete study guides for analysts and engineers.">
       
       
-        <meta name="author" content="Security Expert">
+        <meta name="author" content="SOCAtlas">
       
+      
+        <link rel="canonical" href="https://socatlas.vercel.app/alerts/general.html">
       
       
         <link rel="prev" href="../governance/ioc_ioa_mitre.html">
@@ -52,6 +54,8 @@
         <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../assets/site-polish.css">
     
       <link rel="stylesheet" href="../assets/pdf-builder.css">
     
@@ -1753,13 +1757,85 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#the-universal-soc-triage-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        The Universal SOC Triage Workflow
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="The Universal SOC Triage Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-review-the-alert-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Review the alert details
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-initial-triage-true-positive-or-false-positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Initial triage (true positive or false positive?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-investigate-if-suspicious" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Investigate (if suspicious)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-contain-if-confirmed-malicious" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Contain (if confirmed malicious)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-escalate-with-all-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Escalate with all findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-document-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Document everything
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2548,13 +2624,85 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#the-universal-soc-triage-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        The Universal SOC Triage Workflow
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="The Universal SOC Triage Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-review-the-alert-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Review the alert details
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-initial-triage-true-positive-or-false-positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Initial triage (true positive or false positive?)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-investigate-if-suspicious" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Investigate (if suspicious)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-contain-if-confirmed-malicious" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Contain (if confirmed malicious)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-escalate-with-all-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Escalate with all findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-document-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Document everything
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2587,33 +2735,120 @@
 
 
 <h1 id="general-alert-handling">🚨 General Alert Handling</h1>
+<p class="page-lead">Understanding how to triage and respond to any security alert is the most fundamental SOC analyst skill. Every specialised playbook builds on this foundation.</p>
 <div class="admonition note">
-<p class="admonition-title">What is an Alert?</p>
-<p>An alert is a notification generated by a security tool (like a SIEM, EDR, or Firewall) indicating that a specific rule or threshold has been breached. It serves as the starting point for SOC analysts to investigate potential security incidents.</p>
+<p class="admonition-title">What is a Security Alert?</p>
+<p>An alert is a notification generated by a security tool — SIEM, EDR, firewall, IDS/IPS, or WAF — indicating that a rule threshold or behavioral pattern has been triggered. Alerts are the starting point for every SOC investigation. <strong>Most alerts are false positives; your job is to quickly prove or disprove that.</strong></p>
 </div>
-<h3 id="what-to-check-soc-l1">What to check (SOC L1):</h3>
+<hr />
+<h2 id="the-universal-soc-triage-workflow">The Universal SOC Triage Workflow</h2>
+<h3 id="step-1-review-the-alert-details">Step 1 — Review the alert details</h3>
+<p>Before touching anything, gather all context from the alert itself:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What to Look At</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alert name &amp; rule</strong></td>
+<td>What rule fired? Is it signature-based or behavioral?</td>
+</tr>
+<tr>
+<td><strong>Severity</strong></td>
+<td>Low / Medium / High / Critical — use this to prioritize</td>
+</tr>
+<tr>
+<td><strong>Timestamp</strong></td>
+<td>When did it happen? Business hours or off-hours?</td>
+</tr>
+<tr>
+<td><strong>Source IP / Host</strong></td>
+<td>Internal or external? Known asset or rogue?</td>
+</tr>
+<tr>
+<td><strong>Destination IP / Port</strong></td>
+<td>What was being targeted? What service?</td>
+</tr>
+<tr>
+<td><strong>Username</strong></td>
+<td>Which account triggered this? Service account or human?</td>
+</tr>
+<tr>
+<td><strong>Action taken</strong></td>
+<td>Did the tool Block it, Allow it, or just Alert?</td>
+</tr>
+<tr>
+<td><strong>Alert count</strong></td>
+<td>Is this a single event or a pattern of many?</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-2-initial-triage-true-positive-or-false-positive">Step 2 — Initial triage (true positive or false positive?)</h3>
+<p>Apply quick context to classify the alert:</p>
 <ul>
-<li><strong>Alert Type &amp; Severity</strong> (Low/Medium/High/Critical)</li>
-<li><strong>Timestamp</strong> of the event</li>
-<li><strong>Source IP &amp; Destination IP</strong></li>
-<li><strong>Username</strong> &amp; <strong>Affected System / Hostname</strong></li>
-<li>Did the security tool say "Blocked" or "Allowed"?</li>
+<li><strong>Check alert history</strong> — Has this rule fired on this asset before? Is it recurring?</li>
+<li><strong>Correlate with other events</strong> — Are there related alerts in the 30-minute window (pre or post)?</li>
+<li><strong>Check the asset</strong> — Is the source a known server, endpoint, or service account with expected behavior?</li>
+<li><strong>Check the user</strong> — Is the activity consistent with the user's role and normal working hours?</li>
+<li><strong>Check threat intel</strong> — Is the external IP/domain flagged in VirusTotal, Shodan, or your TIP?</li>
 </ul>
-<h3 id="interview-answer">Interview Answer</h3>
-<p><strong>Q: How do you handle alerts?</strong></p>
-<p>When an alert is generated, the first step is to <strong>review the alert details</strong> in the SIEM or security monitoring tool. I check information such as the alert type, severity, timestamp, source IP, destination IP, username, and affected system.</p>
-<p>After that, I perform <strong>initial triage</strong> to determine whether the alert is legitimate or a false positive. I correlate logs, check historical activity, and verify if similar events occurred earlier.</p>
-<p>If the activity looks suspicious, I move to the <strong>investigation stage</strong>. I analyze related logs, endpoint activity, and network events to understand the root cause and identify any indicators of compromise.</p>
-<p>If the alert is confirmed as malicious, I take <strong>initial containment actions</strong>, such as blocking the malicious IP, isolating the endpoint, or disabling a compromised account depending on the situation.</p>
-<p>Then I <strong>escalate the incident</strong> to the L2 or incident response team with all the investigation findings and relevant evidence.</p>
-<p>Finally, I <strong>document the incident properly</strong> in the ticketing system, including the investigation steps, findings, and actions taken.</p>
+<h3 id="step-3-investigate-if-suspicious">Step 3 — Investigate (if suspicious)</h3>
+<p>Dig into logs, the endpoint, and network data:</p>
+<ul>
+<li><strong>SIEM</strong> — Search for the user/IP across multiple log sources around the same timestamp</li>
+<li><strong>EDR</strong> — Check the process tree, parent process, command-line arguments, network connections</li>
+<li><strong>Network/Proxy logs</strong> — Did the host make outbound connections to suspicious IPs or unusual domains?</li>
+<li><strong>Identity logs</strong> — Was there a login from an unusual location, device, or time?</li>
+<li><strong>Email logs</strong> — Was there a phishing email received around the same time?</li>
+</ul>
+<h3 id="step-4-contain-if-confirmed-malicious">Step 4 — Contain (if confirmed malicious)</h3>
+<p>Take the minimum action needed to stop the threat and preserve evidence:</p>
+<ul>
+<li>Block the malicious IP/domain at the firewall or proxy</li>
+<li>Isolate the endpoint using EDR (do <strong>not</strong> power it off — preserve memory/logs)</li>
+<li>Disable or lock the compromised user account</li>
+<li>Revoke active sessions and tokens</li>
+</ul>
+<h3 id="step-5-escalate-with-all-findings">Step 5 — Escalate with all findings</h3>
+<p>Escalate to L2 or the Incident Response team with:</p>
+<ul>
+<li>Timeline of events</li>
+<li>All IOCs (IPs, hashes, domains, file paths)</li>
+<li>Actions already taken</li>
+<li>Scope assessment — how many systems/users affected?</li>
+</ul>
+<h3 id="step-6-document-everything">Step 6 — Document everything</h3>
+<p>Create a detailed ticket with every step, finding, and decision. Good documentation protects you legally, enables post-incident review, and helps tune future alert rules.</p>
+<hr />
+<h2 id="interview-answer">Interview Answer</h2>
+<p><strong>Q: Walk me through how you handle a security alert in the SOC.</strong></p>
+<blockquote>
+<p>"When an alert fires, I start by reviewing all the alert details in our SIEM — the alert name, severity, timestamp, source IP, destination, username, and whether the tool blocked or just alerted. My first goal is a quick triage decision: is this a true positive or a false positive? I check the alert history for that asset, correlate it with nearby events, and cross-reference the external IP or domain against threat intelligence like VirusTotal.</p>
+<p>If the initial triage looks suspicious, I move into a deeper investigation — I pull EDR telemetry for the process tree and network connections, check proxy logs for outbound communication, and review identity logs for anomalies. I'm building a timeline and looking for corroborating evidence.</p>
+<p>If I confirm it's malicious, I take the minimum containment action needed — isolating the endpoint, blocking the indicator, or locking the account — while making sure I preserve evidence for the IR team. Then I escalate with a written summary of everything I found: timeline, IOCs, actions taken, and scope. Finally, I document the full workflow in the ticketing system."</p>
+</blockquote>
 <hr />
 <div class="admonition success">
 <p class="admonition-title">Very Short Version (Easy to Remember)</p>
+<ol>
+<li><strong>Review</strong> — Read every field of the alert. What fired, when, on what, by whom, and was it blocked?</li>
+<li><strong>Triage</strong> — True positive or false positive? Use history, correlation, and threat intel to decide fast.</li>
+<li><strong>Investigate</strong> — If suspicious: SIEM search, EDR process tree, proxy/DNS logs, identity logs.</li>
+<li><strong>Contain</strong> — Isolate, block, lock. Preserve evidence. Minimum action to stop the threat.</li>
+<li><strong>Escalate</strong> — Hand off to L2 with full timeline, IOCs, and actions taken.</li>
+<li><strong>Document</strong> — Write everything in the ticket. Every step. Every finding. Every decision.</li>
+</ol>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Common L1 Mistakes to Avoid</p>
 <ul>
-<li><strong>Triage:</strong> First, I review the alert details and severity. Then, I perform initial triage by correlating logs and checking historical activity.</li>
-<li><strong>Investigate:</strong> If the alert is suspicious, I investigate further using SIEM and endpoint tools.</li>
-<li><strong>Contain &amp; Escalate:</strong> If confirmed malicious, I take immediate containment actions, escalate to the L2 team, and extensively document the incident.</li>
+<li><strong>Closing alerts without investigation</strong> — "looks fine" is not an answer; prove it.</li>
+<li><strong>Powering off an isolated device</strong> — you destroy volatile memory and active processes.</li>
+<li><strong>Escalating with no context</strong> — L2 needs your findings, not just the raw alert.</li>
+<li><strong>Forgetting to search for lateral scope</strong> — one alert often means more compromised hosts.</li>
 </ul>
 </div>
 
@@ -2689,6 +2924,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 SOCAtlas · Built for analysts, by analysts
+    </div>
   
   
     Made with

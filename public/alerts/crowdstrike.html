@@ -6,11 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The ultimate cybersecurity operations and interview guide — 1200 quick points, real alerts, and Major Attacks.">
+        <meta name="description" content="SOCAtlas — 1200 interview-ready cybersecurity quick points, real SOC alert playbooks, major attack breakdowns, and complete study guides for analysts and engineers.">
       
       
-        <meta name="author" content="Security Expert">
+        <meta name="author" content="SOCAtlas">
       
+      
+        <link rel="canonical" href="https://socatlas.vercel.app/alerts/crowdstrike.html">
       
       
         <link rel="prev" href="brute_force.html">
@@ -52,6 +54,8 @@
         <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../assets/site-polish.css">
     
       <link rel="stylesheet" href="../assets/pdf-builder.css">
     
@@ -1921,10 +1925,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#crowdstrike-alert-severity-levels" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        CrowdStrike Alert Severity Levels
       
     </span>
   </a>
@@ -1932,10 +1936,104 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#key-crowdstrike-concepts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        Key CrowdStrike Concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-check-soc-l1-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to Check (SOC L1 Checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#investigation-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Investigation Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Investigation Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-open-the-detection-in-falcon-console" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Open the Detection in Falcon Console
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-analyze-the-process-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Analyze the Process Tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-review-command-line-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Review Command Line Arguments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-check-network-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Check Network Activity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-decide-contain-or-investigate-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Decide: Contain or Investigate Further
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2548,10 +2646,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#crowdstrike-alert-severity-levels" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        CrowdStrike Alert Severity Levels
       
     </span>
   </a>
@@ -2559,10 +2657,104 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#key-crowdstrike-concepts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        Key CrowdStrike Concepts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-check-soc-l1-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to Check (SOC L1 Checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#investigation-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Investigation Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Investigation Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-open-the-detection-in-falcon-console" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Open the Detection in Falcon Console
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-analyze-the-process-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Analyze the Process Tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-review-command-line-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Review Command Line Arguments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-check-network-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Check Network Activity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-decide-contain-or-investigate-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Decide: Contain or Investigate Further
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2586,35 +2778,255 @@
 
 
 
-<h1 id="crowdstrike-edr-alert">🦅 CrowdStrike (EDR) Alert</h1>
+<h1 id="crowdstrike-edr-alert">🛡️ CrowdStrike (EDR) Alert</h1>
+<p class="page-lead">CrowdStrike Falcon is the most widely deployed EDR platform in enterprise environments. Understanding how to read and respond to Falcon alerts is a daily skill for SOC analysts.</p>
 <div class="admonition note">
-<p class="admonition-title">What is a CrowdStrike Alert?</p>
-<p>CrowdStrike Falcon is an industry-leading EDR platform. An alert here usually indicates advanced endpoint threats like fileless malware, credential dumping (Mimikatz), lateral movement, or ransomware executing on a host.</p>
+<p class="admonition-title">What is CrowdStrike Falcon?</p>
+<p>CrowdStrike Falcon is a cloud-native Endpoint Detection and Response (EDR) platform that monitors endpoint behavior in real time, detects threats using AI/ML and intelligence-driven detections, and enables rapid response actions like host isolation and process termination — all without deploying signatures.</p>
 </div>
-<h3 id="what-to-check-soc-l1">What to check (SOC L1):</h3>
+<hr />
+<h2 id="crowdstrike-alert-severity-levels">CrowdStrike Alert Severity Levels</h2>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Score</th>
+<th>Meaning</th>
+<th>Response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critical</strong></td>
+<td>90–100</td>
+<td>High-confidence malicious behavior, active threat</td>
+<td>Immediate isolation and escalation</td>
+</tr>
+<tr>
+<td><strong>High</strong></td>
+<td>70–89</td>
+<td>Suspicious behavior strongly associated with attacks</td>
+<td>Investigate within 15 minutes</td>
+</tr>
+<tr>
+<td><strong>Medium</strong></td>
+<td>40–69</td>
+<td>Potentially suspicious — context needed</td>
+<td>Investigate within 1 hour</td>
+</tr>
+<tr>
+<td><strong>Low</strong></td>
+<td>1–39</td>
+<td>Informational, likely benign</td>
+<td>Log and review during normal triage</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-crowdstrike-concepts">Key CrowdStrike Concepts</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>What It Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Detection</strong></td>
+<td>A single behavioral event that CrowdStrike flagged</td>
+</tr>
+<tr>
+<td><strong>Incident</strong></td>
+<td>Multiple related detections grouped together</td>
+</tr>
+<tr>
+<td><strong>Process Tree</strong></td>
+<td>Parent-child hierarchy of processes at detection time</td>
+</tr>
+<tr>
+<td><strong>Command Line</strong></td>
+<td>The exact command string the process executed</td>
+</tr>
+<tr>
+<td><strong>Indicators</strong></td>
+<td>IOCs associated with the detection (hashes, IPs, domains)</td>
+</tr>
+<tr>
+<td><strong>MITRE Tactic</strong></td>
+<td>ATT&amp;CK tactic category (e.g., Execution, Persistence)</td>
+</tr>
+<tr>
+<td><strong>Contain Host</strong></td>
+<td>Network isolation — cuts all external/internal networking while preserving console access</td>
+</tr>
+<tr>
+<td><strong>Prevent</strong></td>
+<td>Automatic prevention mode — Falcon blocked the threat</td>
+</tr>
+<tr>
+<td><strong>Detect</strong></td>
+<td>Alert-only mode — Falcon detected but did not block</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="what-to-check-soc-l1-checklist">What to Check (SOC L1 Checklist)</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Field</th>
+<th>What You Are Looking For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔴 First</td>
+<td><strong>Severity score</strong></td>
+<td>Critical/High needs immediate attention</td>
+</tr>
+<tr>
+<td>🔴 First</td>
+<td><strong>Detection action</strong></td>
+<td>Prevented (blocked) or Detected-only (still running)?</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>Process tree</strong></td>
+<td>What spawned the flagged process? Legitimate parent?</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>Command line</strong></td>
+<td>What exact command ran? Encoded PowerShell? Tools?</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>MITRE tactic/technique</strong></td>
+<td>What stage of the attack chain is this?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>Network connections</strong></td>
+<td>Is the process making outbound connections? To what?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>File writes</strong></td>
+<td>Did the process write any files to disk?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>User context</strong></td>
+<td>Which user ran this? Admin or standard user?</td>
+</tr>
+<tr>
+<td>🟢 Fourth</td>
+<td><strong>Host details</strong></td>
+<td>Is this a critical server, workstation, or shared machine?</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="investigation-workflow">Investigation Workflow</h2>
+<h3 id="step-1-open-the-detection-in-falcon-console">Step 1 — Open the Detection in Falcon Console</h3>
 <ul>
-<li><strong>Alert Type &amp; Severity</strong> (Low/Medium/High/Critical)</li>
-<li><strong>Timestamp</strong> of the event</li>
-<li><strong>Source IP &amp; Destination IP</strong> (If a network connection was made)</li>
-<li><strong>Username</strong> &amp; <strong>Affected System / Hostname</strong></li>
-<li>The specific file, process, or IOA that CrowdStrike flagged</li>
-<li>Did CrowdStrike already block or automatically quarantine the threat?</li>
+<li>Navigate to <strong>Activity → Detections</strong> (or <strong>Incidents</strong>)</li>
+<li>Review the severity, detection name, MITRE tactic, and the <strong>detection status</strong> (Prevented vs. Detected)</li>
+<li>If "Detected" (not Prevented): the threat may still be active on the host</li>
 </ul>
-<h3 id="interview-answer">Interview Answer</h3>
-<p><strong>Q: How do you handle a CrowdStrike EDR alert?</strong></p>
-<p>When a CrowdStrike alert triggers, my first step is to open the Falcon console and <strong>review the alert details</strong>. I check the severity, the affected hostname, the specific user logged in, and the exact Indicator of Attack (IOA) that caused the detection.</p>
-<p>Next, I <strong>dive into the Process Tree</strong>. This is critical. I trace the execution backward to see the parent process (for example, did Microsoft Word launch PowerShell?), and analyze the command-line parameters to understand exactly what the script or binary was trying to do. If it reached out to an external IP, I grab that IP and check its reputation on VirusTotal.</p>
-<p>If the activity is confirmed as malicious, I immediately use CrowdStrike's <strong>Network Containment feature</strong> to isolate the host. This cuts the machine off from the corporate network while leaving a secure tunnel open for me to continue forensic analysis via the Real Time Response (RTR) shell.</p>
-<p>After containment, I take <strong>remediation steps</strong> like killing the malicious process or deleting the dropped payload. I then gather all artifacts, process trees, and IOCs.</p>
-<p>Finally, I <strong>escalate the findings</strong> cleanly to the incident response team and document the entire investigation timeline inside the ticketing system.</p>
+<h3 id="step-2-analyze-the-process-tree">Step 2 — Analyze the Process Tree</h3>
+<ul>
+<li>The process tree is the most important piece of evidence</li>
+<li>Trace from the root parent down to the flagged process</li>
+<li>Common malicious patterns:</li>
+<li><code>winword.exe</code> → <code>powershell.exe</code> → <code>cmd.exe</code> (macro-based attack)</li>
+<li><code>explorer.exe</code> → <code>regsvr32.exe</code> → network call (LOLBin abuse)</li>
+<li><code>svchost.exe</code> → unexpected child process (process injection)</li>
+</ul>
+<h3 id="step-3-review-command-line-arguments">Step 3 — Review Command Line Arguments</h3>
+<ul>
+<li>Look for Base64-encoded strings: <code>-enc</code>, <code>-EncodedCommand</code></li>
+<li>Download cradles: <code>Invoke-Expression</code>, <code>IEX</code>, <code>DownloadString</code>, <code>curl</code>, <code>certutil</code></li>
+<li>Lateral movement: <code>psexec</code>, <code>wmic</code>, <code>net use</code>, <code>sc.exe</code></li>
+<li>Credential access: <code>procdump</code>, <code>comsvcs.dll</code>, <code>sekurlsa</code>, <code>mimikatz</code></li>
+</ul>
+<h3 id="step-4-check-network-activity">Step 4 — Check Network Activity</h3>
+<ul>
+<li>In Falcon: go to the process and check <strong>Network Connections</strong></li>
+<li>Look for connections to external IPs on unusual ports</li>
+<li>Look for DNS lookups to DGA (randomly-generated) domain names</li>
+<li>Check if the process established a persistent listener</li>
+</ul>
+<h3 id="step-5-decide-contain-or-investigate-further">Step 5 — Decide: Contain or Investigate Further</h3>
+<ul>
+<li><strong>If Critical/High AND "Detected" (not blocked)</strong>: Contain the host immediately → <strong>Right-click host → Contain Host</strong></li>
+<li><strong>If Prevented AND no lateral movement signals</strong>: Investigate the root cause and tune policy if false positive</li>
+<li><strong>If unsure</strong>: Escalate to L2 with the process tree screenshot and command lines</li>
+</ul>
+<hr />
+<h2 id="interview-questions-answers">Interview Questions &amp; Answers</h2>
+<p><strong>Q1. How do you handle a CrowdStrike Falcon alert?</strong></p>
+<blockquote>
+<p>"I open the detection in the Falcon console and check four things first: the severity score, whether Falcon Prevented the threat or only Detected it, the MITRE tactic/technique to understand the attack stage, and the process tree to see what spawned the flagged process. If the detection is Critical or High and wasn't automatically prevented, I analyze the command line for malicious indicators — encoded PowerShell, download cradles, credential dumping tools. If I confirm it's malicious and active, I use Falcon's 'Contain Host' feature to isolate the endpoint while keeping console access for investigation. Then I escalate to L2 with the full timeline."</p>
+</blockquote>
+<p><strong>Q2. What is the difference between CrowdStrike preventing vs. detecting?</strong></p>
+<blockquote>
+<p>"In CrowdStrike Falcon, 'Prevent' means the sensor automatically blocked the malicious action before it could execute — the threat was stopped. 'Detect' means the sensor saw and recorded the behavior and raised an alert, but did not actively block it. Detection-only mode is used when a policy is set to 'detect' rather than 'prevent' — often in environments where teams are careful about false-positive impact on operations. When a detection says 'Detected' and not 'Prevented', the threat may still be actively running, which makes it a higher urgency."</p>
+</blockquote>
+<p><strong>Q3. What does 'Contain Host' do in CrowdStrike?</strong></p>
+<blockquote>
+<p>"Contain Host activates network isolation on the endpoint — it cuts the host off from all network communication, preventing lateral movement, C2 callbacks, and further exfiltration. Critically, it preserves the Falcon sensor's connection to the CrowdStrike Cloud, so the SOC analyst retains visibility into the host — can still see live telemetry, run Real Time Response commands, and investigate the endpoint remotely even while it's isolated. This is why EDR isolation is always preferred over physically unplugging the network cable."</p>
+</blockquote>
+<p><strong>Q4. What is Real Time Response (RTR) in CrowdStrike?</strong></p>
+<blockquote>
+<p>"Real Time Response is CrowdStrike's remote shell capability. It gives SOC analysts a command-line interface to an endpoint — even while it's contained — to run forensic commands, collect artifacts, kill processes, delete files, or deploy scripts. RTR is used during active incident investigation when you need to collect evidence or remediate on a specific host. RTR sessions are recorded and audited. Common RTR commands include <code>ps</code> to list processes, <code>ls</code> to browse filesystem, <code>get</code> to pull files to the cloud, and <code>reg query</code> to examine registry values."</p>
+</blockquote>
+<p><strong>Q5. What MITRE ATT&amp;CK tactics might you see in a CrowdStrike detection?</strong></p>
+<blockquote>
+<p>"CrowdStrike maps every detection to a MITRE ATT&amp;CK tactic and technique. Common ones include: Initial Access (T1566 Phishing, T1190 Exploit Public-Facing Application), Execution (T1059 Command and Scripting Interpreter — PowerShell/CMD), Persistence (T1053 Scheduled Tasks, T1547 Registry Run Keys), Privilege Escalation (T1055 Process Injection, T1134 Token Manipulation), Credential Access (T1003 OS Credential Dumping — LSASS), Lateral Movement (T1021 Remote Services — RDP/SMB/WMI), and Exfiltration (T1041 Exfiltration over C2 Channel)."</p>
+</blockquote>
+<p><strong>Q6. What is a LOLBin and why does CrowdStrike flag it?</strong></p>
+<blockquote>
+<p>"LOLBin stands for 'Living Off the Land Binary' — legitimate Windows system executables that attackers abuse for malicious purposes because they are trusted by the OS and often permitted by security policies. Common LOLBins include PowerShell, certutil (download files), regsvr32 (execute DLLs), mshta (execute scripts), rundll32, wmic, and PsExec. CrowdStrike detects LOLBin abuse through behavioral patterns — for example, certutil being used to download an executable is unusual for a normal user and gets flagged as 'Suspicious Download'."</p>
+</blockquote>
+<p><strong>Q7. What is process injection and how does EDR detect it?</strong></p>
+<blockquote>
+<p>"Process injection is a technique where malware injects malicious code into a legitimate process — like explorer.exe or svchost.exe — to execute under the legitimate process's identity and hide its activity. Common injection methods include DLL injection, process hollowing, and reflective DLL loading. EDR detects injection by monitoring Windows API calls involved in the process — if a process calls <code>VirtualAllocEx</code> in another process then writes code and executes it with <code>CreateRemoteThread</code>, that sequence is flagged as injection behavior regardless of what the injected code does."</p>
+</blockquote>
+<p><strong>Q8. How do you analyze encoded PowerShell commands?</strong></p>
+<blockquote>
+<p>"Encoded PowerShell commands use Base64 encoding with the <code>-EncodedCommand</code> or <code>-enc</code> flag to obfuscate the actual command being run. To decode: I copy the Base64 string and decode it using PowerShell's <code>[System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String('BASE64HERE'))</code>, or I use CyberChef's 'From Base64' recipe followed by 'Decode text' as UTF-16LE — since PowerShell uses Unicode encoding. The decoded command might contain download cradles, persistence mechanisms, or credential theft code."</p>
+</blockquote>
+<p><strong>Q9. What is LSASS dumping and why is it significant?</strong></p>
+<blockquote>
+<p>"LSASS — Local Security Authority Subsystem Service — is a Windows process that handles authentication and stores credential material in memory, including NTLM hashes and Kerberos tickets. Attackers dump LSASS memory to extract these credentials for subsequent lateral movement without needing to know plaintext passwords. Tools like Mimikatz, ProcDump, or the built-in comsvcs.dll MiniDump can perform this. CrowdStrike detects LSASS access attempts with high confidence — any process accessing LSASS memory with suspicious handles is flagged, typically as a Critical or High severity detection."</p>
+</blockquote>
+<p><strong>Q10. What is a Falcon sensor policy and why does it matter?</strong></p>
+<blockquote>
+<p>"Falcon sensor policies control how the sensor responds to detections on endpoints within a group — whether it Detects only, Prevents automatically, or uses a custom combination. A policy set to 'Detect' means the sensor raises alerts but does not block. It's common for new deployments to start in 'Detect' mode to assess false positive rates before moving to 'Prevent'. As a SOC analyst, knowing the policy mode of a host tells you whether your alerts represent prevented threats or live active threats that need immediate response."</p>
+</blockquote>
+<p><strong>Q11. How does CrowdStrike handle fileless malware?</strong></p>
+<blockquote>
+<p>"Fileless malware operates entirely in memory without writing executables to disk, making traditional file-based antivirus ineffective. CrowdStrike handles fileless attacks through behavioral detection — monitoring process behavior, API call sequences, memory allocation patterns, and network activity regardless of whether files are on disk. Techniques like PowerShell reflective loading, process injection into legitimate processes, and in-memory shellcode execution are detected through the behavioral engine. This is a core advantage of EDR over legacy AV."</p>
+</blockquote>
+<p><strong>Q12. What would you look for if CrowdStrike detected a privilege escalation?</strong></p>
+<blockquote>
+<p>"I'd look at the process tree to understand which process triggered the privilege escalation, and what technique it used — common techniques are token impersonation (exploiting <code>SeImpersonatePrivilege</code>), UAC bypass (which elevates from standard admin to high integrity without a prompt), kernel exploits that grant SYSTEM privileges, or exploiting misconfigured services. I'd check what the process did after escalating — did it access sensitive files, create new admin accounts, disable security tools, or begin lateral movement? The 'after' is often more important than the technique itself."</p>
+</blockquote>
 <hr />
 <div class="admonition success">
 <p class="admonition-title">Very Short Version (Easy to Remember)</p>
-<ul>
-<li><strong>Triage:</strong> I review the Falcon console for severity and the specific Indicator of Attack (IOA).</li>
-<li><strong>Investigate:</strong> I extensively analyze the process tree and command-line arguments to understand the root cause.</li>
-<li><strong>Contain &amp; Escalate:</strong> If malicious, I instantly initiate Network Containment via CrowdStrike, kill the process, and escalate all IOCs to the IR team while documenting the ticket.</li>
-</ul>
+<ol>
+<li><strong>Severity + action</strong> — Critical/High AND Detected (not Prevented) = act now</li>
+<li><strong>Process tree</strong> — trace parent → child, find the origin</li>
+<li><strong>Command line</strong> — encoded PowerShell? Download cradles? Credential tools?</li>
+<li><strong>Network</strong> — is it calling home (C2 callbacks, DNS to DGA domains)?</li>
+<li><strong>Contain Host</strong> — network isolation, keeps Falcon console access active</li>
+<li><strong>RTR</strong> — remote shell for forensic collection and on-host remediation</li>
+<li><strong>MITRE mapping</strong> — tells you what stage of the attack you're looking at</li>
+</ol>
 </div>
 
 
@@ -2689,6 +3101,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 SOCAtlas · Built for analysts, by analysts
+    </div>
   
   
     Made with

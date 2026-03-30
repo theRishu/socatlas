@@ -6,11 +6,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The ultimate cybersecurity operations and interview guide — 1200 quick points, real alerts, and Major Attacks.">
+        <meta name="description" content="SOCAtlas — 1200 interview-ready cybersecurity quick points, real SOC alert playbooks, major attack breakdowns, and complete study guides for analysts and engineers.">
       
       
-        <meta name="author" content="Security Expert">
+        <meta name="author" content="SOCAtlas">
       
+      
+        <link rel="canonical" href="https://socatlas.vercel.app/alerts/ddos.html">
       
       
         <link rel="prev" href="phishing.html">
@@ -53,6 +55,8 @@
       
     
     
+      <link rel="stylesheet" href="../assets/site-polish.css">
+    
       <link rel="stylesheet" href="../assets/pdf-builder.css">
     
       <link rel="stylesheet" href="../assets/mobile-overflow-fixes.css">
@@ -82,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ddos-attacks" class="md-skip">
+        <a href="#ddos-attack" class="md-skip">
           Skip to content
         </a>
       
@@ -1865,10 +1869,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#ddos-attack-categories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        DDoS Attack Categories
       
     </span>
   </a>
@@ -1876,10 +1880,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#what-to-check-soc-l1-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        What to Check (SOC L1 Checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Response Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-05-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate (0–5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-term-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Short-term Mitigation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-attack-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Attack Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2548,10 +2613,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-to-check-soc-l1" class="md-nav__link">
+  <a href="#ddos-attack-categories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to check (SOC L1):
+        DDoS Attack Categories
       
     </span>
   </a>
@@ -2559,10 +2624,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interview-answer" class="md-nav__link">
+  <a href="#what-to-check-soc-l1-checklist" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interview Answer
+        What to Check (SOC L1 Checklist)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Response Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-05-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate (0–5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-term-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Short-term Mitigation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-attack-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Attack Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions &amp; Answers
       
     </span>
   </a>
@@ -2586,35 +2712,181 @@
 
 
 
-<h1 id="ddos-attacks">💥 DDoS Attacks</h1>
+<h1 id="ddos-attack">🌊 DDoS Attack</h1>
+<p class="page-lead">A Distributed Denial of Service attack overwhelms a target with traffic from thousands or millions of sources — making it unavailable to legitimate users. Knowing how to distinguish a real DDoS from a traffic spike is a core SOC skill.</p>
 <div class="admonition note">
-<p class="admonition-title">What is a DDoS Attack?</p>
-<p>A Distributed Denial of Service (DDoS) attack is an attempt to disrupt the normal traffic of a targeted server, service, or network by overwhelming the target or its infrastructure with a flood of malicious internet traffic from multiple compromised sources.</p>
+<p class="admonition-title">DoS vs. DDoS</p>
+<p>A <strong>DoS</strong> (Denial of Service) comes from a <strong>single source</strong>. A <strong>DDoS</strong> (Distributed DoS) comes from <strong>many sources simultaneously</strong> — often a botnet of thousands of compromised devices. DDoS is far harder to block because you cannot just ban one IP.</p>
 </div>
-<h3 id="what-to-check-soc-l1">What to check (SOC L1):</h3>
+<hr />
+<h2 id="ddos-attack-categories">DDoS Attack Categories</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Type</th>
+<th>What It Targets</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Layer &frac34; (Volumetric)</strong></td>
+<td>UDP Flood, ICMP Flood</td>
+<td>Bandwidth saturation</td>
+<td>Mirai botnet (2016 — 1.2 Tbps)</td>
+</tr>
+<tr>
+<td><strong>Layer &frac34; (Protocol)</strong></td>
+<td>SYN Flood, Ping of Death</td>
+<td>Server connection tables</td>
+<td>SYN queue exhaustion</td>
+</tr>
+<tr>
+<td><strong>Layer 4 (Amplification)</strong></td>
+<td>DNS/NTP Amplification</td>
+<td>Spoofed source — victim receives amplified responses</td>
+<td>100 byte query → 3,000 byte response</td>
+</tr>
+<tr>
+<td><strong>Layer 7 (Application)</strong></td>
+<td>HTTP Flood, Slowloris</td>
+<td>Web server resources</td>
+<td>Mimics legitimate user requests</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="what-to-check-soc-l1-checklist">What to Check (SOC L1 Checklist)</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Check</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔴 First</td>
+<td><strong>Is the service actually down?</strong></td>
+<td>Check monitoring — is this an alert or confirmed outage?</td>
+</tr>
+<tr>
+<td>🔴 First</td>
+<td><strong>Source pattern</strong></td>
+<td>Single IP (DoS) or thousands of IPs (DDoS)? Spoofed or real?</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>Traffic volume</strong></td>
+<td>How many Gbps/Mpps? Compare to normal baseline</td>
+</tr>
+<tr>
+<td>🟡 Second</td>
+<td><strong>Attack type</strong></td>
+<td>Volumetric? SYN flood? HTTP flood? Amplification?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>Port and protocol</strong></td>
+<td>UDP 80/443? Random high ports? Specific service targeted?</td>
+</tr>
+<tr>
+<td>🟠 Third</td>
+<td><strong>Geographic distribution</strong></td>
+<td>Traffic from unexpected countries or all from one region?</td>
+</tr>
+<tr>
+<td>🟢 Fourth</td>
+<td><strong>Is DDoS protection active?</strong></td>
+<td>Cloudflare, AWS Shield, scrubbing center — check their status</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="response-workflow">Response Workflow</h2>
+<h3 id="immediate-05-minutes">Immediate (0–5 minutes)</h3>
+<ol>
+<li><strong>Confirm it is an attack</strong> — check monitoring dashboards, CDN/ISP alerts, and user reports</li>
+<li><strong>Notify the ISP or DDoS protection provider</strong> — they may have upstream mitigation options</li>
+<li><strong>Enable or escalate DDoS protection</strong> — Cloudflare Under Attack Mode, AWS Shield Advanced response, Arbor/Radware scrubbing activation</li>
+<li><strong>Do NOT try to block individual IPs</strong> on your own firewall — volumetric attacks saturate the link before your firewall can process anything</li>
+</ol>
+<h3 id="short-term-mitigation">Short-term Mitigation</h3>
 <ul>
-<li><strong>Alert Type &amp; Severity</strong> (Low/Medium/High/Critical)</li>
-<li><strong>Timestamp</strong> of the event</li>
-<li><strong>Source IP</strong> (Thousands of attacking IPs) &amp; <strong>Destination IP</strong> (Your website)</li>
-<li>Are there thousands of requests coming from many different IPs?</li>
-<li>Is the website currently down or very slow?</li>
-<li>Are the IPs coming from unusual countries where you have no customers?</li>
-<li>Did the Web Application Firewall (WAF) block the surge?</li>
+<li><strong>Rate limiting</strong> at CDN and load balancer layer</li>
+<li><strong>Geo-blocking</strong> if source is concentrated in unexpected regions</li>
+<li><strong>Challenge page</strong> (CAPTCHA / JavaScript challenge) for HTTP floods</li>
+<li><strong>Anycast diffusion</strong> — traffic spread across many PoPs</li>
+<li><strong>Blackhole routing</strong> — last resort, null-routes traffic but also makes you unreachable</li>
 </ul>
-<h3 id="interview-answer">Interview Answer</h3>
-<p><strong>Q: How do you respond to a DDoS alert?</strong></p>
-<p>When a DDoS alert triggers, I <strong>review alerts from the WAF</strong> or network monitoring tools to determine the attack type. I check if it is a volumetric Layer &frac34; attack attempting to choke bandwidth, or a Layer 7 application attack targeting specific endpoints.</p>
-<p>I <strong>analyze the firewall access logs</strong> and NetFlow data. For volumetric attacks, I look at the volume of traffic and the protocol being abused. For application attacks, I check WAF logs for patterns in the HTTP requests, such as identical User-Agent strings or abnormal geographic traffic.</p>
-<p>For <strong>containment</strong> of a volumetric attack, local firewalls are usually overwhelmed, so I immediately contact our ISP for <strong>blackhole routing</strong> or ensure our cloud Anti-DDoS provider is absorbing the traffic at the edge. </p>
-<p>For a Layer 7 attack, I deploy <strong>strict rate-limiting policies</strong> on the WAF, block specific malicious User-Agents, and geoblock regions that aren't part of our normal customer base.</p>
-<p>Finally, I <strong>continuously monitor</strong> application health metrics to verify the mitigations are working, and document the peak volumes and attack patterns in the incident report.</p>
+<h3 id="post-attack-analysis">Post-Attack Analysis</h3>
+<ul>
+<li>Review ISP NetFlow / firewall logs for attack signature</li>
+<li>Identify if the DDoS was a smokescreen for another attack (data exfiltration, credential theft)</li>
+<li>Tune rate limits and blacklist rules based on the attack pattern</li>
+</ul>
+<hr />
+<h2 id="interview-questions-answers">Interview Questions &amp; Answers</h2>
+<p><strong>Q1. What is a DDoS attack and how is it different from a DoS?</strong></p>
+<blockquote>
+<p>"A DoS — Denial of Service — originates from a single source and floods a target to make it unavailable. A DDoS — Distributed Denial of Service — uses thousands or millions of sources simultaneously, typically from a botnet of compromised devices. DDoS is far harder to defend against because you cannot just block one IP — the traffic arrives from across the internet. The scale also means it can saturate the upstream bandwidth before any on-premise mitigation can act."</p>
+</blockquote>
+<p><strong>Q2. What is a botnet and how does it relate to DDoS?</strong></p>
+<blockquote>
+<p>"A botnet is a network of compromised devices — PCs, servers, IoT devices — remotely controlled by an attacker through command-and-control infrastructure. The attacker issues a command and all bots simultaneously flood the target with traffic. The Mirai botnet in 2016 compromised thousands of IoT devices (cameras, routers, DVRs) and launched attacks peaking at 1.2 Tbps — the largest DDoS recorded at that time. The distributed nature of botnets makes volumetric DDoS extremely difficult to mitigate without ISP- or CDN-level intervention."</p>
+</blockquote>
+<p><strong>Q3. What is an amplification attack?</strong></p>
+<blockquote>
+<p>"An amplification attack exploits protocols that return much larger responses than the original request. The attacker spoofs the victim's IP as the source address and sends small requests to many open servers — commonly DNS resolvers or NTP servers. Those servers send their large responses to the apparent source — the victim — overwhelming it with traffic the victim never requested. DNS amplification can achieve amplification factors of 28–54x; NTP amplification can reach 556x."</p>
+</blockquote>
+<p><strong>Q4. What is a SYN flood?</strong></p>
+<blockquote>
+<p>"A SYN flood exploits the TCP three-way handshake. Normally, a client sends SYN, the server responds with SYN-ACK and reserves a connection slot, and the client completes with ACK. In a SYN flood, the attacker sends thousands of SYN packets using spoofed source IPs and never sends the final ACK. The server fills its connection table — called the SYN backlog — waiting for completions that never arrive, eventually refusing legitimate connections. Mitigations include SYN cookies, reducing SYN timeout, and upstream filtering."</p>
+</blockquote>
+<p><strong>Q5. What is the difference between a volumetric, protocol, and application-layer DDoS?</strong></p>
+<blockquote>
+<p>"Volumetric attacks saturate raw bandwidth — measured in Gbps or Tbps — by flooding the network link with UDP, ICMP, or amplified traffic. Protocol attacks exploit weaknesses in network protocols to exhaust server or firewall state tables — SYN floods are the primary example. Application-layer (Layer 7) attacks send seemingly legitimate HTTP requests at high volume to exhaust web server resources like CPU and connections — these are harder to detect because individual requests look valid and volume alone doesn't trigger alerts."</p>
+</blockquote>
+<p><strong>Q6. How do you distinguish a DDoS from a legitimate traffic spike?</strong></p>
+<blockquote>
+<p>"A legitimate traffic spike is characterized by: requests from diverse geographic locations matching your user base, normal browser User-Agent strings and HTTP headers, requests distributed across multiple pages and endpoints, and traffic that correlates with a known event like a sale or news coverage. A DDoS shows: traffic from unexpected geographies or ASNs, identical or randomized User-Agent strings, requests hitting a single endpoint repeatedly, traffic that doesn't follow your normal diurnal pattern, and incoming SYN packets without completed handshakes."</p>
+</blockquote>
+<p><strong>Q7. What is Cloudflare Under Attack Mode?</strong></p>
+<blockquote>
+<p>"Cloudflare's Under Attack Mode presents every visitor with a JavaScript challenge before allowing them to access the protected site. It imposes a 5-second delay while the browser executes JavaScript that proves it is a real browser — bots and simple HTTP clients typically cannot complete this challenge. This is a Layer 7 mitigation effective against HTTP flood attacks but it requires that your site is behind Cloudflare's reverse proxy for it to work."</p>
+</blockquote>
+<p><strong>Q8. What is blackhole routing and when is it used?</strong></p>
+<blockquote>
+<p>"Blackhole routing — also called RTBH (Remotely Triggered Black Hole) — is a last-resort mitigation where the ISP or network operator announces that traffic destined for the attacked IP should be dropped at the network edge rather than forwarded. It stops the attack from reaching your infrastructure but makes your service completely unreachable — the target IP is effectively offline. It is used only when the attack volume is so large it saturates upstream links and no other mitigation is effective."</p>
+</blockquote>
+<p><strong>Q9. Could a DDoS be a smokescreen for another attack?</strong></p>
+<blockquote>
+<p>"Yes — this is a known adversary technique. While the security team is consumed by the DDoS response, an attacker simultaneously conducts a data breach, credential theft, or network intrusion behind the noise. The DDoS consumes analyst attention, floods logs with noise, and may degrade monitoring visibility. During any significant DDoS, a good SOC continues monitoring other telemetry — especially authentication logs, data egress, and privileged account activity — for secondary threats."</p>
+</blockquote>
+<p><strong>Q10. What is the role of an ISP in DDoS mitigation?</strong></p>
+<blockquote>
+<p>"ISPs can implement upstream mitigation that operates before traffic ever reaches your network — this is necessary for high-volume volumetric attacks that saturate your internet link. ISPs use techniques like traffic scrubbing (diverting traffic through cleaning centers that strip attack traffic and pass clean traffic), BGP blackholing, and rate limiting at peering points. Many organizations have pre-negotiated DDoS mitigation contracts with their ISP or use cloud-based scrubbing services like Cloudflare, AWS Shield Advanced, or Akamai Prolexic."</p>
+</blockquote>
+<p><strong>Q11. What logs do you review after a DDoS attack?</strong></p>
+<blockquote>
+<p>"I review: firewall and router NetFlow or sFlow data to see the traffic volume and source distribution; IDS/IPS logs for attack signature patterns; CDN or load balancer access logs for HTTP flood characteristics; infrastructure monitoring for availability and latency during the attack window; and DNS query logs if a DNS amplification attack was involved. I also review any secondary security alerts that fired during the DDoS window to check for simultaneous attacks."</p>
+</blockquote>
+<p><strong>Q12. What is Slowloris and why is it hard to detect?</strong></p>
+<blockquote>
+<p>"Slowloris is a Layer 7 DDoS tool that keeps many connections to the target web server open simultaneously by sending HTTP headers incrementally and extremely slowly — never completing the request. Most web servers have a limit on concurrent connections, and Slowloris exhausts this limit while using very low bandwidth itself. It is hard to detect because the traffic volume is low, each connection looks like a slow legitimate user, and simple rate limiting by IP may not be effective. Mitigations include setting aggressive connection timeouts and using a reverse proxy like nginx that handles slow connections efficiently."</p>
+</blockquote>
 <hr />
 <div class="admonition success">
 <p class="admonition-title">Very Short Version (Easy to Remember)</p>
 <ul>
-<li><strong>Triage:</strong> I determine if the alert is a volumetric (Layer &frac34;) or an application-layer (Layer 7) DDoS attack.</li>
-<li><strong>Volumetric Response:</strong> For volumetric attacks, I rely on upstream cloud scrubbing or ISP blackholing.</li>
-<li><strong>Layer 7 Response:</strong> For Layer 7 attacks, I deploy strict WAF rate-limiting, block malicious User-Agents, implement geoblocking, and continuously monitor application health.</li>
+<li><strong>Confirm</strong> it's a real attack, not a spike — check monitoring and CDN dashboards</li>
+<li><strong>Classify</strong> the attack type: volumetric (bandwidth), protocol (SYN), or application (HTTP)?</li>
+<li><strong>Activate</strong> DDoS protection: Cloudflare, Shield, ISP scrubbing — don't block individual IPs</li>
+<li><strong>Geo-block</strong> if source is heavily concentrated in unexpected regions</li>
+<li><strong>Watch for smokescreen</strong> — monitor for secondary attacks behind the DDoS noise</li>
+<li><strong>Post-attack</strong>: analyze logs, tune rate limits, check for data exfiltration</li>
 </ul>
 </div>
 
@@ -2690,6 +2962,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 SOCAtlas · Built for analysts, by analysts
+    </div>
   
   
     Made with
