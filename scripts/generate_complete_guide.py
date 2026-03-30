@@ -817,6 +817,32 @@ def strip_download_lines(content: str) -> str:
     return "\n".join(filtered)
 
 
+def generate_question_bank():
+    questions = []
+    quick_dir = DOCS_DIR / "quick"
+    if not quick_dir.exists():
+        return
+    
+    for md_file in quick_dir.glob("*.md"):
+        content = md_file.read_text()
+        lines = content.splitlines()
+        for line in lines:
+            if line.strip().startswith('|') and '|' in line:
+                cells = [c.strip() for c in line.split('|')]
+                # Expected row: ['', '1', 'Concept', 'Answer', 'Example', '']
+                if len(cells) >= 5 and cells[1].isdigit():
+                    questions.append({
+                        "id": int(cells[1]),
+                        "concept": cells[2],
+                        "answer": cells[3],
+                        "example": cells[4],
+                        "category": md_file.stem.replace('_', ' ').title()
+                    })
+    
+    bank_path = DOCS_DIR / "assets" / "questions-bank.json"
+    bank_path.write_text(json.dumps(questions, indent=2) + "\n")
+
+
 def generate():
     config = yaml.load(CONFIG_PATH.read_text(), Loader=yaml.BaseLoader)
     entries = flatten_nav(config.get("nav", []))
@@ -844,10 +870,13 @@ def generate():
         parts.append("</section>")
 
     for section, title, source in entries:
-        if source == OUTPUT_PATH.name:
+        if source == "complete-guide.md":
             continue
 
         source_path = DOCS_DIR / source
+        if not source_path.exists():
+            continue
+
         content = source_path.read_text()
         content = rewrite_links(content, source, page_anchors, section_anchors)
         content = strip_marked_blocks(content)
@@ -872,6 +901,7 @@ def generate():
 
     OUTPUT_PATH.write_text("\n".join(parts).strip() + "\n")
     SECTIONS_PATH.write_text(json.dumps(sections, indent=2) + "\n")
+    generate_question_bank()
 
 
 if __name__ == "__main__":
