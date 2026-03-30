@@ -1,4 +1,4 @@
-/* --- SOCAtlas Success Engine Design (Manual Edition) --- */
+/* --- SOCAtlas Pure Technical Polish --- */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
@@ -14,39 +14,11 @@
 .md-header { background-color: var(--md-primary-fg-color); }
 h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
 
-/* Sticky Loader Bar */
-#soc-mastery-loader { position: fixed; top: 0; left: 0; height: 4px; background: #0abf53; z-index: 10000; width: 0%; transition: width 1s linear; }
+/* Clear/Remove Mastery Styles */
+#soc-mastery-loader, .guided-footer-card, .mastery-dashboard, .quick-stats-card { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; overflow: hidden !important; }
 
-/* Mastery Panels (Simplified No-Play Edition) */
-.guided-footer-card {
-  margin: 1.5rem 0; padding: 1.25rem 1.75rem; 
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 1.25rem;
-  display: flex; justify-content: space-between; align-items: center;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-}
+/* Modern Documentation Formatting */
+.md-typeset table:not([class]) { border-radius: 0.75rem; border: 1px solid #e2e8f0; }
 
-.guided-top-panel { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); border-radius: 0 0 1.25rem 1.25rem; border-top: none; }
-
-.guided-footer-left h3 { font-size: 1.1rem; margin: 0; color: #1e293b; }
-.guided-footer-left p { margin: 0; font-size: 0.85rem; color: #64748b; font-weight: 600; }
-
-.guided-toggle-btn { margin: 0 !important; font-weight: 700 !important; }
-
-/* Dashboard */
-.mastery-dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
-.mastery-card { padding: 1.5rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 1.25rem; }
-.mastery-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
-.mastery-badge { background: #f5f3ff; color: #6d28d9; padding: 0.2rem 0.5rem; border-radius: 0.4rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
-.mastery-pct { font-size: 2.2rem; font-weight: 800; color: #1e293b; }
-.mastery-bar-bg { height: 8px; background: #f1f5f9; border-radius: 99px; margin-top: 0.5rem; overflow: hidden; }
-.mastery-bar-fill { height: 100%; background: #635bff; transition: width 0.8s; }
-
-/* Quick Table */
-.quick-stats-card { margin: 1rem 0 2rem; padding: 1.25rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem; }
-.quick-stats-main { display: flex; align-items: center; gap: 1.25rem; }
-.quick-stats-progress-bg { flex-grow: 1; height: 8px; background: #f1f5f9; border-radius: 9px; overflow: hidden; }
-.quick-stats-progress-fill { height: 100%; background: linear-gradient(90deg, #635bff, #0abf53); }
-.quick-stats-value { font-size: 2rem; margin: 0; color: #1e293b; font-weight: 800; }
-tr.point-mastered { background-color: #f0fdf4 !important; }
-.quick-stats-meta { display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; font-weight: 700; color: #64748b; }
-.quick-stats-btn { background: #fff; border: 1px solid #fee2e2; color: #ef4444; padding: 0.2rem 0.5rem; border-radius: 0.4rem; font-weight: 800; font-size: 0.7rem; }
+/* Sidebar Checkmark (Silent) */
+.nav-check { font-weight: 800; font-size: 0.9em; margin-left: 0.25rem; }
