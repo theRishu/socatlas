@@ -22,22 +22,7 @@ python3 scripts/generate_complete_guide.py
 echo "🏗️  Building with MkDocs Material..."
 python3 -m mkdocs build -f mkdocs.yml -d "$SITE_DIR"
 
-# FINAL SOURCE-LEVEL FLATTENER: Physically move all nested docs to the root
-echo "📡 Relocating all documentation to the site root for absolute availability..."
-cd "$SITE_DIR"
-find . -mindepth 2 -name "*.html" -print0 | while IFS= read -r -d '' file; do
-    filename=$(basename "$file")
-
-    # If it's a documentation file (not index.html), move it to root
-    if [ "$filename" != "index.html" ]; then
-        cp -f "$file" "$filename"
-    else
-        # If it is an index.html, use the directory name as the root file name
-        dir_name=$(dirname "$file" | sed 's|^\./||; s|/|_|g')
-        cp -f "$file" "${dir_name}.html"
-    fi
-done
-cd "$ROOT_DIR"
+# Standard Static Build - No redirection or flattening
 
 echo "📦 Syncing static output to public/ for Vercel..."
 mkdir -p "$PUBLIC_DIR"
@@ -61,5 +46,8 @@ cat > "$SITE_DIR/vercel.json" <<'EOF'
   "ignoreCommand": "echo \"Skipping Vercel deploy for gh-pages\"; exit 0"
 }
 EOF
+
+echo "✅ Site build complete. Adding .nojekyll for GitHub Pages..."
+touch "$SITE_DIR/.nojekyll"
 
 echo "✅ Build Complete."

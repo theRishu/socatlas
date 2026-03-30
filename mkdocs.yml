@@ -52,7 +52,6 @@ extra_css:
 extra_javascript:
   - assets/pdf-builder.js
   - assets/mobile-table-cards.js
-  - assets/core-ref-v2.js
   - assets/simulator.js
 
 nav:
