@@ -51,4 +51,17 @@ tr.point-mastered { background-color: #ecfdf5 !important; }
 .mastery-pct { font-size: 2.2rem; font-weight: 800; color: #1e293b; }
 .mastery-bar-bg { height: 8px; background: #f1f5f9; border-radius: 99px; margin: 0.5rem 0; overflow: hidden; }
 .mastery-bar-fill { height: 100%; background: #635bff; transition: width 0.8s ease-in-out; }
-.mastery-meta { font-size: 0.8rem; color: #64748b; font-weight: 600; }
+.mastery-meta {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.mastery-recent {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #94a3b8;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 0.75rem;
+}

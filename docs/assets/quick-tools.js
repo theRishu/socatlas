@@ -139,12 +139,39 @@
   function initGuidedPath() {
     const content = document.querySelector('.md-content__inner');
     const path = window.location.pathname;
+    
+    // 2a. Indicators in Sidebar
+    const stored = getStorage(GUIDED_PATH_KEY);
+    const navLinks = document.querySelectorAll('.md-nav__link');
+    
+    navLinks.forEach(link => {
+      const linkPath = link.getAttribute('href');
+      if (!linkPath || linkPath === '/' || linkPath.includes('index.html')) return;
+      
+      // Clean link path for matching
+      const cleanLinkPath = linkPath.replace(/^\./, '').split('#')[0];
+      const isNavDone = !!stored[cleanLinkPath] || !!stored[window.location.origin + cleanLinkPath] || !!stored[cleanLinkPath.replace('.html', '.md')];
+
+      // Remove existing check if any
+      const existing = link.querySelector('.nav-check');
+      if (existing) existing.remove();
+
+      if (isNavDone) {
+        const check = document.createElement('span');
+        check.className = 'nav-check';
+        check.innerHTML = ' ✓';
+        check.style.color = '#0abf53';
+        check.style.fontWeight = '800';
+        link.appendChild(check);
+      }
+    });
+
+    // 2b. Page Footer (Mark as Complete)
     if (!content || path === '/' || path.includes('/quick/') || path.includes('index.html')) return;
 
     const footerId = 'guided-completion-footer';
-    if (document.getElementById(footerId)) return;
+    if (document.getElementById(footerId)) document.getElementById(footerId).remove();
 
-    const stored = getStorage(GUIDED_PATH_KEY);
     const isDone = !!stored[path];
 
     const footer = document.createElement('div');
@@ -153,7 +180,7 @@
     footer.innerHTML = `
       <div class="guided-footer-text">
         <h3>Finished this topic?</h3>
-        <p>Mark it as complete to track your progress through the Guided Path.</p>
+        <p>Mark it as complete to see it tracked on your dashboard and sidebar.</p>
       </div>
       <button class="md-button ${isDone ? '' : 'md-button--primary'} guided-toggle-btn">
         ${isDone ? '✓ Completed' : 'Mark as Complete'}
@@ -170,6 +197,10 @@
       
       this.textContent = isNowDone ? '✓ Completed' : 'Mark as Complete';
       this.classList.toggle('md-button--primary', !isNowDone);
+      
+      // Re-run indicators to update sidebar immediately
+      initGuidedPath();
+      if (typeof initDashboard === 'function') initDashboard();
     });
   }
 
@@ -197,28 +228,36 @@
     const qPct = Math.min(100, Math.round((quickMastered / quickTotal) * 100));
     const gPct = Math.min(100, Math.round((guideMastered / guideTotal) * 100));
 
+    // Get last 3 completed for the dashboard
+    const completedList = Object.keys(getStorage(GUIDED_PATH_KEY))
+      .map(p => p.split('/').pop().replace('.html', '').replace(/_/g, ' '))
+      .filter(p => !['', 'index'].includes(p))
+      .slice(-3);
+
     container.innerHTML = `
       <div class="mastery-dashboard">
         <div class="mastery-card">
           <div class="mastery-card-header">
-            <span class="mastery-badge">Path 1</span>
-            <h3>Guided Mastery</h3>
+            <span class="mastery-badge">Guided Path</span>
+            <h3>Progress Summary</h3>
           </div>
           <div class="mastery-stats">
             <span class="mastery-pct">${gPct}%</span>
             <div class="mastery-bar-bg"><div class="mastery-bar-fill" style="width: ${gPct}%"></div></div>
             <span class="mastery-meta">${guideMastered} of ${guideTotal} topics complete</span>
+            ${completedList.length ? `<div class="mastery-recent">Recently: ${completedList.join(', ')}</div>` : ''}
           </div>
         </div>
         <div class="mastery-card">
           <div class="mastery-card-header">
-            <span class="mastery-badge">Path 2</span>
-            <h3>Quick Revision Mastery</h3>
+            <span class="mastery-badge">Quick Points</span>
+            <h3>Progress Summary</h3>
           </div>
           <div class="mastery-stats">
             <span class="mastery-pct">${qPct}%</span>
             <div class="mastery-bar-bg" style="--bar-color: #0abf53"><div class="mastery-bar-fill" style="width: ${qPct}%; background: #0abf53"></div></div>
             <span class="mastery-meta">${quickMastered} of ${quickTotal} points mastered</span>
+            <div class="mastery-recent">Across 12 focused domains</div>
           </div>
         </div>
       </div>
