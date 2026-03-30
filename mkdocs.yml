@@ -9,6 +9,8 @@ theme:
   name: material
   features:
     - navigation.tracking
+    - navigation.sections
+    - navigation.tabs
     - navigation.footer
     - navigation.instant
     - navigation.top
