@@ -1,5 +1,5 @@
 (function() {
-  /* --- SOCAtlas Robust Progress & Autoplay Engine --- */
+  /* --- SOCAtlas Robust Progress & Autoplay Engine (Universal Load Support) --- */
   
   const STORAGE_PREFIX = 'socatlas-progress-';
   const QUICK_PATH_KEY = 'quick-points';
@@ -18,18 +18,16 @@
     } catch {}
   }
 
-  // Universal ID generator for pages (fundamentals/introduction, etc)
   function getPathId(p) {
     if (!p) return 'none';
     try {
         let clean = p.split('#')[0].split('?')[0];
         if (clean.includes('://')) clean = new URL(clean).pathname;
         
-        // Comprehensive normalization
-        clean = clean.replace(/^\/socatlas\//, '/')  // Sub-directory host support
-                     .replace(/\.html$|\.md$/g, '')  // Extension support
-                     .replace(/\/$/, '')             // Trailing slash support
-                     .replace(/^\//, '');            // Leading slash support
+        clean = clean.replace(/^\/socatlas\//, '/')
+                     .replace(/\.html$|\.md$/g, '')
+                     .replace(/\/$/, '')
+                     .replace(/^\//, '');
         
         return clean || 'home';
     } catch (e) {
@@ -37,7 +35,7 @@
     }
   }
 
-  // --- 1. SIDEBAR INDICATORS ---
+  // --- Sidebar Indications ---
   function updateSidebar() {
     const stored = getStorage(GUIDED_PATH_KEY);
     document.querySelectorAll('.md-nav__link').forEach(link => {
@@ -61,14 +59,17 @@
     });
   }
 
-  // --- 2. GUIDED PATH CONTROLS (Top & Bottom) ---
+  // --- Guided Path Controls ---
   function initGuidedPath() {
     const content = document.querySelector('.md-content__inner');
     const pathId = getPathId(window.location.pathname);
     
-    // Safety exit
+    // Stop if not a guide page or already initialized
     if (!content || window.location.pathname.includes('/quick/') || pathId === 'home') return;
     updateSidebar();
+
+    // Check for existing top/bottom panels
+    if (document.getElementById('guided-ctrl-top') && document.getElementById('guided-ctrl-bottom')) return;
 
     const stored = getStorage(GUIDED_PATH_KEY);
     const isDone = !!stored[pathId];
@@ -117,17 +118,17 @@
     };
 
     let scrollInterval;
-    const flowPref = localStorage.getItem('socatlas-flow-enabled') === 'true';
-    const speedPref = localStorage.getItem('socatlas-flow-speed') || '1';
+    function getSpd() { return parseInt(localStorage.getItem('socatlas-flow-speed') || '1'); }
+    function isFlow() { return localStorage.getItem('socatlas-flow-enabled') === 'true'; }
 
-    els.flow.forEach(c => c.checked = flowPref);
-    els.speed.forEach(s => s.value = speedPref);
-    els.speedTxt.forEach(t => t.textContent = speedPref + 'x');
+    els.flow.forEach(c => c.checked = isFlow());
+    els.speed.forEach(s => s.value = getSpd());
+    els.speedTxt.forEach(t => t.textContent = getSpd() + 'x');
 
     function startScroll() {
         clearInterval(scrollInterval);
-        if (isDone || localStorage.getItem('socatlas-flow-enabled') !== 'true') return;
-        const spd = parseInt(localStorage.getItem('socatlas-flow-speed') || '1');
+        if (isDone || !isFlow()) return;
+        const spd = getSpd();
         const intv = Math.max(10, 60 - (spd * 10));
         scrollInterval = setInterval(() => {
             window.scrollBy(0, 1);
@@ -138,11 +139,11 @@
     function syncUI() {
         const d = !!getStorage(GUIDED_PATH_KEY)[pathId];
         els.btns.forEach(b => {
-            b.textContent = d ? '✓ Topic Mastered' : (waitSeconds > 0 ? `Unlocking in ${waitSeconds}s` : 'Mark as Complete');
+            b.textContent = d ? '✓ Topic Mastered' : (waitSeconds > 0 ? `Unlocking... (${waitSeconds}s)` : 'Mark as Complete');
             b.classList.toggle('md-button--primary', !d);
             b.disabled = (waitSeconds > 0 && !d);
         });
-        const txt = d ? 'Great job! You have fully mastered this concept.' : (waitSeconds > 0 ? 'Analyzing engagement levels...' : 'Ready to certify this concept.');
+        const txt = d ? 'Great job! You have fully mastered this concept.' : (waitSeconds > 0 ? 'Analyzing concept mastery...' : 'Ready to mark as complete.');
         els.notes.forEach(n => n.textContent = txt);
     }
 
@@ -152,7 +153,7 @@
             if (waitSeconds <= 0) {
                 clearInterval(timer); clearInterval(scrollInterval);
                 els.btns.forEach(b => b.disabled = false);
-                if (localStorage.getItem('socatlas-flow-enabled') === 'true') {
+                if (isFlow()) {
                     els.btns[0].click();
                     setTimeout(() => { const next = document.querySelector('.md-footer__link--next'); if (next) next.click(); }, 1500);
                 }
@@ -171,7 +172,7 @@
         localStorage.setItem('socatlas-flow-speed', e.target.value);
         els.speed.forEach(x => x.value = e.target.value);
         els.speedTxt.forEach(x => x.textContent = e.target.value + 'x');
-        if (localStorage.getItem('socatlas-flow-enabled') === 'true') startScroll();
+        if (isFlow()) startScroll();
     });
 
     els.btns.forEach(b => b.onclick = () => {
@@ -183,23 +184,25 @@
         if (typeof initDashboard === 'function') initDashboard();
     });
 
-    if (flowPref && !isDone) startScroll();
+    if (isFlow() && !isDone) startScroll();
     syncUI();
   }
 
-  // --- 3. HOMEPAGE DASHBOARD (ALREADY STABLE) ---
+  // --- Dashboard ---
   function initDashboard() {
     const isHome = getPathId(window.location.pathname) === 'home';
     if (!isHome) return;
+    if (document.getElementById('socatlas-mastery-dashboard')) return;
+
+    const content = document.querySelector('.md-content__inner');
+    if (!content) return;
+
     const dashId = 'socatlas-mastery-dashboard';
-    let container = document.getElementById(dashId);
-    if (!container) {
-      container = document.createElement('div');
-      container.id = dashId;
-      const hero = document.querySelector('.hero-actions') || document.querySelector('h1');
-      if (hero) hero.insertAdjacentElement('afterend', container);
-    }
-    if (!container) return;
+    const container = document.createElement('div');
+    container.id = dashId;
+    const hero = document.querySelector('.hero-actions') || content.querySelector('h1') || content.firstChild;
+    if (hero) hero.insertAdjacentElement('afterend', container);
+
     const qCount = Object.keys(getStorage(QUICK_PATH_KEY)).length;
     const gCount = Object.keys(getStorage(GUIDED_PATH_KEY)).length;
     container.innerHTML = `
@@ -210,12 +213,12 @@
     `;
   }
 
-  // --- 4. QUICK PATH (STABLE) ---
+  // --- Quick Path ---
   function initQuickPath() {
     if (!window.location.pathname.includes('/quick/')) return;
-    const pageId = getPathId(window.location.pathname);
     if (document.getElementById('quick-stats-container')) return;
     const content = document.querySelector('.md-content__inner');
+    const pageId = getPathId(window.location.pathname);
     const container = document.createElement('div');
     container.id = 'quick-stats-container';
     container.className = 'quick-stats-card';
@@ -249,8 +252,24 @@
     updateStats();
   }
 
-  function start() { try { initQuickPath(); initGuidedPath(); initDashboard(); } catch (e) { console.error('SOCAtlas Crash:', e); } }
-  if (typeof window.document$ !== "undefined" && window.document$ !== null) { window.document$.subscribe(start); }
-  else if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', start); }
-  else { start(); }
+  // --- Double-Trigger Kickstart ---
+  function kickstart() {
+    initQuickPath();
+    initGuidedPath();
+    initDashboard();
+  }
+
+  // Handle both standard loads and MkDocs Instant navigation
+  if (typeof window.document$ !== "undefined" && window.document$ !== null) {
+      window.document$.subscribe(kickstart);
+  }
+  
+  // Standard load watcher
+  document.addEventListener('DOMContentLoaded', kickstart);
+  
+  // High-frequency polling for direct links / race-conditions
+  setTimeout(kickstart, 100);
+  setTimeout(kickstart, 500);
+  setTimeout(kickstart, 1200);
+
 })();
