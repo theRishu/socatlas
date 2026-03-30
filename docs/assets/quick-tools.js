@@ -166,13 +166,21 @@
       }
     });
 
-    // 2b. Page Footer (Mark as Complete)
+    // 2b. Page Footer (Time-Gated Mark as Complete)
     if (!content || path === '/' || path.includes('/quick/') || path.includes('index.html')) return;
 
     const footerId = 'guided-completion-footer';
     if (document.getElementById(footerId)) document.getElementById(footerId).remove();
 
     const isDone = !!stored[path];
+    
+    // Estimate Reading Time (200 words per minute, min 30 sec, max 5 min)
+    const wordCount = content.innerText.split(/\s+/).length;
+    const estMinutes = wordCount / 200;
+    let waitSeconds = Math.max(30, Math.min(300, Math.round(estMinutes * 60)));
+    
+    // If already done, no need to wait
+    if (isDone) waitSeconds = 0;
 
     const footer = document.createElement('div');
     footer.id = footerId;
@@ -180,16 +188,34 @@
     footer.innerHTML = `
       <div class="guided-footer-text">
         <h3>Finished this topic?</h3>
-        <p>Mark it as complete to see it tracked on your dashboard and sidebar.</p>
+        <p id="guided-timer-note">${isDone ? 'Topic mastered.' : 'Please take a moment to read the content before marking it as complete.'}</p>
       </div>
-      <button class="md-button ${isDone ? '' : 'md-button--primary'} guided-toggle-btn">
-        ${isDone ? '✓ Completed' : 'Mark as Complete'}
+      <button class="md-button ${isDone ? '' : 'md-button--primary'} guided-toggle-btn" ${!isDone && waitSeconds > 0 ? 'disabled' : ''}>
+        ${isDone ? '✓ Completed' : `Wait ${waitSeconds}s`}
       </button>
     `;
 
     content.appendChild(footer);
 
-    footer.querySelector('button').addEventListener('click', function() {
+    const btn = footer.querySelector('button');
+    let timer;
+
+    if (!isDone && waitSeconds > 0) {
+      let remaining = waitSeconds;
+      timer = setInterval(() => {
+        remaining--;
+        if (remaining <= 0) {
+          clearInterval(timer);
+          btn.disabled = false;
+          btn.textContent = 'Mark as Complete';
+          document.getElementById('guided-timer-note').textContent = 'Ready to mark as complete!';
+        } else {
+          btn.textContent = `Wait ${remaining}s`;
+        }
+      }, 1000);
+    }
+
+    btn.addEventListener('click', function() {
       const fresh = getStorage(GUIDED_PATH_KEY);
       const isNowDone = !fresh[path];
       if (isNowDone) fresh[path] = true; else delete fresh[path];
