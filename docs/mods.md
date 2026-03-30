@@ -1,52 +1,32 @@
-# 🛠️ SOCAtlas Proposed Modernizations (DRAFT)
+# 🤖 Antigravity AI Command Center (Drafts & Suggestions)
 
-This file contains my high-perfomance "Polish" suggestions for the SOCAtlas platform. 
-**Workflow:** Read the suggestions below, copy the parts you like into your main files, and then **delete this file** once you are done.
-
----
-
-## 1. Premium Typography (Indigo & Jakarta Sans)
-*   **File:** `docs/assets/site-polish.css`
-*   **Recommendation:** Use this CSS to give the platform a modern, top-tier technical aesthetic without breaking the standard layout.
-
-```css
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Inter:wght@400;500;600&display=swap');
-
-:root {
-  --font-main: 'Inter', -apple-system, system-ui, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', sans-serif;
-  --md-primary-fg-color: #4f46e5; /* Indigo 600 */
-}
-
-body, .md-typeset { font-family: var(--font-main); font-size: 0.8rem; }
-h1, h2, h3, .md-nav__title { font-family: var(--font-heading); font-weight: 800; letter-spacing: -0.02em; }
-```
+Welcome to the SOCAtlas AI Command Center. This page belongs to the **Site Owner**. 
 
 ---
 
-## 2. Interview Simulation Cards (Knowledge Check)
-*   **File:** `docs/assets/core-ref-v2.js`
-*   **Recommendation:** Inject a small, professional "Interview Challenge" card at the bottom of lesson pages.
-
-```javascript
-/* Proposed injection logic inside your start() function */
-const content = document.querySelector('.md-content__inner');
-if (content && !document.getElementById('soc-knowledge-check')) {
-  const card = document.createElement('div');
-  card.id = 'soc-knowledge-check';
-  card.className = 'admonition example';
-  card.innerHTML = '<strong>🎯 Interview Challenge:</strong> Explain the 3-way handshake in a SOC triage context.';
-  content.appendChild(card);
-}
-```
+### **How it Works (Autonomous Workflow):**
+1.  **User Writes:** A visitor finds an error and writes their suggestion in the box below.
+2.  **Submission:** Clicking "Submit" creates a **GitHub Issue** in this repository.
+3.  **Antigravity Fixes:** When the Site Owner chats with me (Antigravity), I will automatically scan these issues and **write the code to fix them** for you. 
 
 ---
 
-## 3. Sidebar Cleanup
-*   **Goal:** Keep the sidebar completely free of ticks (✓) and progress stars.
-*   **Status:** Already enforced in the main `core-ref-v2.js` logic. No further action needed.
+### **📝 Capture User Suggestion**
+Use the box below to report an error or suggest a new "Quick Point."
+
+<form action="https://github.com/theRishu/socatlas/issues/new" method="get" target="_blank">
+  <input type="hidden" name="labels" value="ai-suggestion">
+  <input type="hidden" name="title" value="[Draft] User Suggestion via Command Center">
+  
+  <div style="margin-bottom: 1.5rem;">
+    <label for="body" style="font-weight: 800; display: block; margin-bottom: 0.5rem;">Describe the Fix or Addition:</label>
+    <textarea id="body" name="body" rows="6" style="width: 100%; border: 2px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; font-family: inherit;" placeholder="Example: In 'Networking Basics', the definition of TCP is slightly off. It should say..."></textarea>
+  </div>
+
+  <button type="submit" class="md-button md-button--primary">Submit to AI Queue</button>
+</form>
 
 ---
 
-### End of Suggestions. 
-**Delete this file (MODS.md) to close the draft.**
+> [!IMPORTANT]
+> **Owner Tip:** Once a suggestion is submitted to your GitHub Issues, just tell me: *"Antigravity, check the AI suggestions and fix them."* I will handle the rest of the code work for you.

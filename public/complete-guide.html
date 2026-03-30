@@ -8135,10 +8135,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-premium-typography-indigo-jakarta-sans" class="md-nav__link">
+  <a href="#how-it-works-autonomous-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Premium Typography (Indigo &amp; Jakarta Sans)
+        How it Works (Autonomous Workflow):
       
     </span>
   </a>
@@ -8146,41 +8146,13 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-interview-simulation-cards-knowledge-check" class="md-nav__link">
+  <a href="#capture-user-suggestion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Interview Simulation Cards (Knowledge Check)
+        📝 Capture User Suggestion
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-sidebar-cleanup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Sidebar Cleanup
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Sidebar Cleanup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#end-of-suggestions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        End of Suggestions.
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -21675,50 +21647,33 @@ All the victim computers update their ARP cache and start sending their internet
 <h2 id="start-here_1">Start Here</h2>
 <div id="guide-page-mods"></div>
 <h3 id="proposals-staging">🛠️ Proposals &amp; Staging</h3>
-<p>This file contains my high-perfomance "Polish" suggestions for the SOCAtlas platform. 
-<strong>Workflow:</strong> Read the suggestions below, copy the parts you like into your main files, and then <strong>delete this file</strong> once you are done.</p>
+<p>Welcome to the SOCAtlas AI Command Center. This page belongs to the <strong>Site Owner</strong>. </p>
 <hr />
-<h4 id="1-premium-typography-indigo-jakarta-sans">1. Premium Typography (Indigo &amp; Jakarta Sans)</h4>
-<ul>
-<li><strong>File:</strong> <code>docs/assets/site-polish.css</code></li>
-<li><strong>Recommendation:</strong> Use this CSS to give the platform a modern, top-tier technical aesthetic without breaking the standard layout.</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">@</span><span class="k">import</span><span class="w"> </span><span class="nt">url</span><span class="o">(</span><span class="s1">&#39;https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap&#39;</span><span class="o">)</span><span class="p">;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nv">--font-main</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Inter&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">apple-system</span><span class="p">,</span><span class="w"> </span><span class="n">system-ui</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nv">--font-heading</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Plus Jakarta Sans&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="nv">--md-primary-fg-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#4f46e5</span><span class="p">;</span><span class="w"> </span><span class="c">/* Indigo 600 */</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">}</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nt">body</span><span class="o">,</span><span class="w"> </span><span class="p">.</span><span class="nc">md-typeset</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--font-main</span><span class="p">);</span><span class="w"> </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="nt">h1</span><span class="o">,</span><span class="w"> </span><span class="nt">h2</span><span class="o">,</span><span class="w"> </span><span class="nt">h3</span><span class="o">,</span><span class="w"> </span><span class="p">.</span><span class="nc">md-nav__title</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--font-heading</span><span class="p">);</span><span class="w"> </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">800</span><span class="p">;</span><span class="w"> </span><span class="k">letter-spacing</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.02</span><span class="kt">em</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
+<h5 id="how-it-works-autonomous-workflow"><strong>How it Works (Autonomous Workflow):</strong></h5>
+<ol>
+<li><strong>User Writes:</strong> A visitor finds an error and writes their suggestion in the box below.</li>
+<li><strong>Submission:</strong> Clicking "Submit" creates a <strong>GitHub Issue</strong> in this repository.</li>
+<li><strong>Antigravity Fixes:</strong> When the Site Owner chats with me (Antigravity), I will automatically scan these issues and <strong>write the code to fix them</strong> for you. </li>
+</ol>
 <hr />
-<h4 id="2-interview-simulation-cards-knowledge-check">2. Interview Simulation Cards (Knowledge Check)</h4>
-<ul>
-<li><strong>File:</strong> <code>docs/assets/core-ref-v2.js</code></li>
-<li><strong>Recommendation:</strong> Inject a small, professional "Interview Challenge" card at the bottom of lesson pages.</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="cm">/* Proposed injection logic inside your start() function */</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;.md-content__inner&#39;</span><span class="p">);</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">content</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;soc-knowledge-check&#39;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">card</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nx">card</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;soc-knowledge-check&#39;</span><span class="p">;</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="nx">card</span><span class="p">.</span><span class="nx">className</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;admonition example&#39;</span><span class="p">;</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nx">card</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&lt;strong&gt;🎯 Interview Challenge:&lt;/strong&gt; Explain the 3-way handshake in a SOC triage context.&#39;</span><span class="p">;</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="nx">content</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">card</span><span class="p">);</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="p">}</span>
-</code></pre></div>
+<h5 id="capture-user-suggestion"><strong>📝 Capture User Suggestion</strong></h5>
+<p>Use the box below to report an error or suggest a new "Quick Point."</p>
+<form action="https://github.com/theRishu/socatlas/issues/new" method="get" target="_blank">
+  <input type="hidden" name="labels" value="ai-suggestion">
+  <input type="hidden" name="title" value="[Draft] User Suggestion via Command Center">
+
+  <div style="margin-bottom: 1.5rem;">
+    <label for="body" style="font-weight: 800; display: block; margin-bottom: 0.5rem;">Describe the Fix or Addition:</label>
+    <textarea id="body" name="body" rows="6" style="width: 100%; border: 2px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem; font-family: inherit;" placeholder="Example: In 'Networking Basics', the definition of TCP is slightly off. It should say..."></textarea>
+  </div>
+
+  <button type="submit" class="md-button md-button--primary">Submit to AI Queue</button>
+</form>
 <hr />
-<h4 id="3-sidebar-cleanup">3. Sidebar Cleanup</h4>
-<ul>
-<li><strong>Goal:</strong> Keep the sidebar completely free of ticks (✓) and progress stars.</li>
-<li><strong>Status:</strong> Already enforced in the main <code>core-ref-v2.js</code> logic. No further action needed.</li>
-</ul>
-<hr />
-<h5 id="end-of-suggestions">End of Suggestions.</h5>
-<p><strong>Delete this file (MODS.md) to close the draft.</strong></p>
+<blockquote>
+<p>[!IMPORTANT]
+<strong>Owner Tip:</strong> Once a suggestion is submitted to your GitHub Issues, just tell me: <em>"Antigravity, check the AI suggestions and fix them."</em> I will handle the rest of the code work for you.</p>
+</blockquote>
 </section>
 
 
