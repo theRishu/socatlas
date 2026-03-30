@@ -43,10 +43,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="assets/site-polish.css">
     
       <link rel="stylesheet" href="assets/pdf-builder.css">
     
@@ -84,7 +86,7 @@
 
   
 
-<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="index.html" title="SOCAtlas" class="md-header__button md-logo" aria-label="SOCAtlas" data-md-component="logo">
       
@@ -143,8 +145,6 @@
         </button>
       </nav>
       
-        <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
@@ -163,181 +163,13 @@
     
   </nav>
   
-    
-      
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
-  <div class="md-grid">
-    <ul class="md-tabs__list">
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="index.html" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Home
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="fundamentals/introduction.html" class="md-tabs__link">
-          
-  
-  
-  🏛️ Fundamentals
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="networking/basics.html" class="md-tabs__link">
-          
-  
-  
-  🌐 Networking
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="threats/vulnerabilities.html" class="md-tabs__link">
-          
-  
-  
-  🏴‍☠️ Major Attacks Directory
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="defense/ids_ips.html" class="md-tabs__link">
-          
-  
-  
-  🛡️ Detection & Defense
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="governance/compliance.html" class="md-tabs__link">
-          
-  
-  
-  ⚖️ Governance & Compliance
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="alerts/general.html" class="md-tabs__link">
-          
-  
-  
-  🚨 SOC Alerts & Scenarios
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="quick/basics.html" class="md-tabs__link">
-          
-  
-  
-  ⚡ 1200 Quick Points
-
-        </a>
-      </li>
-    
-  
-
-      
-    </ul>
-  </div>
-</nav>
-    
-  
 </header>
     
     <div class="md-container" data-md-component="container">
       
       
+        
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -351,10 +183,8 @@
                     
 
 
-  
 
-
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="index.html" title="SOCAtlas" class="md-nav__button md-logo" aria-label="SOCAtlas" data-md-component="logo">
       
@@ -400,26 +230,46 @@
   
   
   
-    
-    
-    
-    
-      
-      
+    <li class="md-nav__item">
+      <a href="interviews/simulator.html" class="md-nav__link">
         
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🎯 Mock Interview Simulator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
       
+      
+  
+  
+  
+  
+    
+    
+    
     
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -437,8 +287,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -577,22 +427,15 @@
     
     
     
-      
-      
-        
-      
-    
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -610,8 +453,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -750,22 +593,15 @@
     
     
     
-      
-      
-        
-      
-    
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -783,8 +619,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1091,22 +927,15 @@
     
     
     
-      
-      
-        
-      
-    
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1124,8 +953,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1320,22 +1149,15 @@
     
     
     
-      
-      
-        
-      
-    
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
@@ -1353,8 +1175,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1493,22 +1315,15 @@
     
     
     
-      
-      
-        
-      
-    
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
             
   
   
@@ -1526,8 +1341,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1890,22 +1705,15 @@
     
     
     
-      
-      
-        
-      
-    
     
     <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
             
   
   
@@ -1923,8 +1731,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2277,6 +2085,144 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🚀 Career & Roadmap
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    🚀 Career & Roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="career/roadmap.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOC Career Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="career/interview_prep.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Readiness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="career/tools_checklist.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -2404,6 +2350,34 @@
     <span class="md-ellipsis">
       
         The 12 SOC alert playbooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mock-interview-simulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Mock Interview Simulator
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Mock Interview Simulator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-use-the-simulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to use the simulator
       
     </span>
   </a>
@@ -7861,6 +7835,228 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#career-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Career &amp; Roadmap
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Career &amp; Roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#soc-career-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOC Career Roadmap
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SOC Career Roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-the-foundation-month-1-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: The Foundation (Month 1-2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-security-concepts-month-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Security Concepts (Month 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-the-soc-toolset-month-4-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: The SOC Toolset (Month 4-5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-hands-on-practice-month-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Hands-on Practice (Month 6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-interview-prep-month-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 5: Interview Prep (Month 7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interview-readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Readiness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Readiness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#three-types-of-interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚦 Three Types of Interview Questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-investigation-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 The "Investigation Framework"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-interview-questions-quick-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💼 Core Interview Questions (Quick Answers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-you-dont-know-an-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🆘 If You Don't Know an Answer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tools-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools Checklist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tools Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#siem-security-information-event-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 SIEM (Security Information &amp; Event Management)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edr-endpoint-detection-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛡️ EDR (Endpoint Detection &amp; Response)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-security-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🕸️ Network Security &amp; Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email-phishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📧 Email &amp; Phishing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-source-investigation-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Open Source &amp; Investigation Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -8723,6 +8919,20 @@ html[data-pdf-export="download"] .pdf-export-canvas .md-typeset blockquote {
 <p class="admonition-title">Two modes of study</p>
 <p><strong>Learning mode:</strong> Work through the guide pages under Fundamentals, Networking, Threats, and Detection. They give you context, worked examples, and structured explanations.
 <strong>Revision mode:</strong> Switch to the 1200 quick-point pages when you want concise answers you can review in minutes before walking into an interview.</p>
+</div>
+<div id="guide-page-interviews-simulator"></div>
+<h3 id="mock-interview-simulator">🎯 Mock Interview Simulator</h3>
+<p class="page-lead">Test your technical recall with our interactive interview simulator. This tool pulls from our bank of 1200+ quick revision points to help you practice concise, high-impact answers.</p>
+<h4 id="how-to-use-the-simulator">How to use the simulator</h4>
+<ol>
+<li><strong>Think First:</strong> Read the concept and try to define it using the <a href="#guide-page-index">SOCAtlas Answer Pattern</a>.</li>
+<li><strong>Speak Aloud:</strong> Actually say the answer out loud. This builds muscle memory for real interviews.</li>
+<li><strong>Compare:</strong> Reveal our recommended answer. If you covered the definition, mechanism, and example, you've mastered the point.</li>
+<li><strong>Repeat:</strong> Aim for 20-30 questions per session to stay sharp.</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Targeted Practice</p>
+<p>If you want to focus on a specific domain (like Networking or Cloud), visit that specific <a href="#guide-page-quick-basics">Quick Points page</a> and use the interactive checkboxes to track your progress manually.</p>
 </div>
 </section>
 <section class="pdf-guide-section" data-pdf-section-group="fundamentals" data-pdf-section-title="🏛️ Fundamentals">
@@ -21195,6 +21405,134 @@ All the victim computers update their ARP cache and start sending their internet
 </tbody>
 </table>
 </section>
+<section class="pdf-guide-section" data-pdf-section-group="career-roadmap" data-pdf-section-title="🚀 Career &amp; Roadmap">
+<div id="guide-section-career-roadmap"></div>
+<h2 id="career-roadmap">🚀 Career &amp; Roadmap</h2>
+<div id="guide-page-career-roadmap"></div>
+<h3 id="soc-career-roadmap">SOC Career Roadmap</h3>
+<p class="page-lead">Transitioning into a Security Operations Center (SOC) role requires a blend of networking knowledge, OS fundamentals, and specialized security tool proficiency. This roadmap outlines the exact phases to go from zero to hire-ready.</p>
+<h4 id="phase-1-the-foundation-month-1-2">Phase 1: The Foundation (Month 1-2)</h4>
+<p>Before touching security tools, you must understand the "plumbing" of the internet.
+- <strong>Networking:</strong> OSI Model, TCP/IP, DNS, DHCP, HTTP/S, and Subnetting.
+- <strong>Operating Systems:</strong> Linux command line (grep, awk, find, permissions) and Windows internals (Registry, Event Logs, Services).
+- <strong>Virtualization:</strong> Set up a home lab using VirtualBox or VMware. Install Kali Linux and a Windows Server trial.</p>
+<h4 id="phase-2-security-concepts-month-3">Phase 2: Security Concepts (Month 3)</h4>
+<p>Learn the "why" behind defense.
+- <strong>Frameworks:</strong> NIST CSF, MITRE ATT&amp;CK, and Cyber Kill Chain.
+- <strong>Core Principles:</strong> CIA Triad, Least Privilege, Defense in Depth.
+- <strong>Attacks:</strong> OWASP Top 10 (SQLi, XSS, CSRF) and common network attacks (Brute Force, MitM).</p>
+<h4 id="phase-3-the-soc-toolset-month-4-5">Phase 3: The SOC Toolset (Month 4-5)</h4>
+<p>The tools you will use every single shift.
+- <strong>SIEM:</strong> Learn to query logs in Splunk (Search Processing Language - SPL) or Microsoft Sentinel (Kusto Query Language - KQL).
+- <strong>EDR:</strong> Understand how CrowdStrike, SentinelOne, or Microsoft Defender for Endpoint detect behavior-based threats.
+- <strong>Traffic Analysis:</strong> Use Wireshark to analyze PCAP files and identify malicious patterns.</p>
+<h4 id="phase-4-hands-on-practice-month-6">Phase 4: Hands-on Practice (Month 6)</h4>
+<p>Build a portfolio and prove your skills.
+- <strong>TryHackMe / HackTheBox:</strong> Complete the "SOC Level 1" and "Blue Team" paths.
+- <strong>BTLO (Blue Team Labs Online):</strong> Real-world investigation scenarios.
+- <strong>Let'sDefend:</strong> A simulated SOC environment with real alerts.</p>
+<h4 id="phase-5-interview-prep-month-7">Phase 5: Interview Prep (Month 7)</h4>
+<ul>
+<li><strong>Review Alert Playbooks:</strong> Be able to explain exactly how you would triage a malware or phishing alert.</li>
+<li><strong>1200 Quick Points:</strong> Use the SOCAtlas Quick Revision path to master concise answers for technical questions.</li>
+<li><strong>Soft Skills:</strong> Practice explaining technical concepts to non-technical stakeholders (e.g., explaining a breach to a manager).</li>
+</ul>
+<div id="guide-page-career-interview-prep"></div>
+<h3 id="interview-readiness">Interview Readiness</h3>
+<p class="page-lead">Interviewing for a SOC role is not about knowing everything — it is about demonstrating a <strong>systematic investigative mindset</strong>. You must prove you can follow a process, document your logic, and prioritize alerts correctly.</p>
+<h4 id="three-types-of-interview-questions">🚦 Three Types of Interview Questions</h4>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Goal</th>
+<th>Example Question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fundamental Knowledge</strong></td>
+<td>Test your grasp of the basics.</td>
+<td>"What is the difference between TCP and UDP?"</td>
+</tr>
+<tr>
+<td><strong>Scenario-Based</strong></td>
+<td>Test your investigation process.</td>
+<td>"We see 50 failed logins from an internal IP. What do you do?"</td>
+</tr>
+<tr>
+<td><strong>Cultural/Behavioral</strong></td>
+<td>Test your fit within a high-pressure team.</td>
+<td>"Explain a time you were wrong about a security alert."</td>
+</tr>
+</tbody>
+</table>
+<h4 id="the-investigation-framework">🧪 The "Investigation Framework"</h4>
+<p>When asked a "What do you do?" question, NEVER start with containment. Always follow the <strong>Triage → Investigation → Action</strong> flow:
+1. <strong>Verify (Triage):</strong> Check the source, destination, and severity. Is this a false positive or true positive?
+2. <strong>Contextualize (Investigation):</strong> What is the source reputation? What is the user's role? What other alerts are firing around the same time?
+3. <strong>Analyze (Mechanism):</strong> Look for patterns — PowerShell encoded strings, large data transfers, or connections to unauthorized IPs.
+4. <strong>Respond (Containment):</strong> Isolate the host, disable the account, or block the IP <em>only after</em> verifying.</p>
+<h4 id="core-interview-questions-quick-answers">💼 Core Interview Questions (Quick Answers)</h4>
+<div class="admonition tip">
+<p class="admonition-title">Use the SOCAtlas Pattern: Define, Mechanism, Example, Control</p>
+</div>
+<ul>
+<li><strong>"What happens when you type google.com?"</strong><ul>
+<li><code>DNS</code> resolution → <code>TCP 3-way handshake</code> → <code>TLS/SSL handshake</code> → <code>HTTP GET</code> request.</li>
+</ul>
+</li>
+<li><strong>"What is a SIEM?"</strong><ul>
+<li>A centralized platform for <code>Security Information</code> (log storage) and <code>Event Management</code> (real-time correlation and alerting). Example: Splunk, Microsoft Sentinel.</li>
+</ul>
+</li>
+<li><strong>"Explain the OSI Model to a 5-year-old."</strong><ul>
+<li>It is like the levels of building a toy house — you need a <code>Foundation</code> (cables), <code>Frames</code> (switches), <code>Address</code> (IPs), and <code>Final Paint</code> (the app you see).</li>
+</ul>
+</li>
+</ul>
+<h4 id="if-you-dont-know-an-answer">🆘 If You Don't Know an Answer</h4>
+<ol>
+<li><strong>Don't Guess:</strong> Say "I haven't encountered that specific protocol/technique yet."</li>
+<li><strong>Show Your Methodology:</strong> "However, I would investigate it by checking [Documentation/Google/PCAP] and looking for [Indicators]." This shows you can solve unknown problems.</li>
+</ol>
+<div id="guide-page-career-tools-checklist"></div>
+<h3 id="tools-checklist">Tools Checklist</h3>
+<p class="page-lead">What tools should you know? Every SOC is different, but they all use a common stack of defensive technologies. This checklist covers the industry standards.</p>
+<h4 id="siem-security-information-event-management">📊 SIEM (Security Information &amp; Event Management)</h4>
+<p>The "Brain" of the SOC.
+- [ ] <strong>Splunk:</strong> Search Processing Language (SPL), dashboards, and alert logic.
+- [ ] <strong>Microsoft Sentinel:</strong> Kusto Query Language (KQL), workbooks, and playbooks.
+- [ ] <strong>IBM QRadar / LogRhythm:</strong> Core log correlation and investigation modules.
+- [ ] <strong>ELK Stack (Elasticsearch, Logstash, Kibana):</strong> Open-source log analysis and visualization.</p>
+<h4 id="edr-endpoint-detection-response">🛡️ EDR (Endpoint Detection &amp; Response)</h4>
+<p>The "Eyes" on the host.
+- [ ] <strong>CrowdStrike Falcon:</strong> Process trees, RTR (Real Time Response), and Falcon Fusion.
+- [ ] <strong>SentinelOne:</strong> Static vs dynamic detection, rollbacks, and binary verification.
+- [ ] <strong>Microsoft Defender for Endpoint:</strong> Advanced hunting, device isolation, and timeline analysis.
+- [ ] <strong>Carbon Black:</strong> Cloud-native endpoint visibility and control.</p>
+<h4 id="network-security-analysis">🕸️ Network Security &amp; Analysis</h4>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Wireshark:</strong> PCAP analysis, protocol disassembly, and flow graphing.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Zeek / Suricata:</strong> Network-based IDS/IPS logging and rule writing.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Cisco Firepower / Palo Alto Networks:</strong> Next-gen firewalls (NGFW) and App-ID rules.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Burp Suite:</strong> Web application proxying and automated vulnerability scanning.</li>
+</ul>
+<h4 id="email-phishing">📧 Email &amp; Phishing</h4>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Proofpoint / Mimecast:</strong> Email gateway policies, rewritten URLs, and attachment sandboxing.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Microsoft Defender for Office 365:</strong> Global purge, spoofing detection, and user impact analysis.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>KnowBe4:</strong> Phishing simulations and security awareness training.</li>
+</ul>
+<h4 id="open-source-investigation-tools">🧪 Open Source &amp; Investigation Tools</h4>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>VirusTotal:</strong> Hash, IP, domain, and URL reputation.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Cisco Talos Intelligence:</strong> Global threat intelligence and reputation scoring.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Any.run / Hatching Triage:</strong> Interactive malware analysis and sandboxing.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>AbuseIPDB:</strong> Community-driven IP reputation and blocklists.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>MXToolbox / Urlscan.io / CyberChef:</strong> The Swiss army knives for security analysts.</li>
+</ul>
+</section>
 
 
 
@@ -21215,17 +21553,9 @@ All the victim computers update their ARP cache and start sending their internet
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
-          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
-  Back to top
-</button>
-        
       </main>
       
         <footer class="md-footer">
-  
-    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -21256,16 +21586,18 @@ All the victim computers update their ARP cache and start sending their internet
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": [], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="assets/default-theme.js"></script>
-      
         <script src="assets/pdf-builder.js"></script>
       
         <script src="assets/mobile-table-cards.js"></script>
+      
+        <script src="assets/quick-tools.js"></script>
+      
+        <script src="assets/simulator.js"></script>
       
     
   </body>

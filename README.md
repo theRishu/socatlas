@@ -1,138 +1,88 @@
 <div align="center">
+  <img src="https://socatlas.vercel.app/assets/logo.png" width="120" alt="SOCAtlas Logo">
   <h1>🛡️ SOCAtlas</h1>
-  <p><b>The ultimate cybersecurity operations, alert playbook, and interview guide.</b></p>
+  <p><b>The ultimate high-performance cybersecurity training & interview platform.</b></p>
+
+  [![Vercel Deployment](https://img.shields.io/badge/Vercel-Deployment-blue?style=for-the-badge&logo=vercel)](https://socatlas.vercel.app/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+  [![Mastery System](https://img.shields.io/badge/Mastery-System-indigo?style=for-the-badge)](https://socatlas.vercel.app/fundamentals/introduction)
 </div>
 
 <br>
 
-Welcome to **SOCAtlas**, a comprehensive, open-source cybersecurity knowledge base. This repository holds highly structured playbooks, deep technical walkthroughs, and 1200 high-yield revision points designed specifically for Security Operations Center (SOC) Analysts, Security Engineers, and Infosec students.
+Welcome to **SOCAtlas**, an open-source, high-fidelity cybersecurity knowledge base designed for the modern security professional. This platform combines structured playbooks, deep technical walkthroughs, and **1200 high-yield revision points** into a gamified, mastery-based learning experience.
 
-## 🌐 View the Live Website
-You do not need to download or install anything to read the documentation. You can view the fully interactive, hosted version of **SOCAtlas** directly in your browser right here:
+## 🌐 Live Platform
+View the fully interactive, hosted version of **SOCAtlas** directly in your browser:
 
 👉 **[https://socatlas.vercel.app/](https://socatlas.vercel.app/)**
-*(Backup: [https://theRishu.github.io/socatlas/](https://theRishu.github.io/socatlas/))*
 
 ---
 
-## 🏗️ Local Setup
+## 🚀 Key Features
 
-SOCAtlas is a Python-based static documentation site built with **MkDocs Material**. You do not need Node.js to run it locally.
+### 🏁 **Mastery-Based Learning**
+Stop "speed-clicking" through documentation. SOCAtlas uses a **time-gated completion system** calibrated to technical reading speeds (200 WPM). You must engage with the content to certify mastery and earn your progress checkmarks.
 
-### 1. Clone the repository
+### ⏯️ **Guided Flow (Autoplay)**
+Prefer a hands-free experience? Turn on **Guided Flow** with adjustable speed (1x to 5x). The platform will slowly auto-scroll through the lesson and automatically advance you to the next topic once mastery is achieved.
+
+### 🎯 **Mock Interview Simulator**
+Ready for the hot seat? Use the **Interview Simulator** to test your knowledge against randomized questions pulled from our vast 1200-point database. Practice defining concepts, explaining mechanisms, and providing real-world examples.
+
+### ⚡ **The "1200 Quick Points"**
+Rapid-revision concepts spanning **Cloud Security, Cryptography, Defensive Frameworks (NIST/ISO), and SIEM tooling**. Each point is structured into an Interview-Ready format: *Concept ➜ Answer ➜ Example*.
+
+---
+
+## 🏗️ Technical Architecture
+
+SOCAtlas is a high-performance static site built with **MkDocs Material** and a custom **JavaScript Success Engine**.
+
+### **Core Technologies:**
+- **Markdown:** All content is managed in simple, accessible markdown files.
+- **Python Build Pipeline:** Custom scripts automate the generation of the 1200-point question bank and the consolidated "Full Guide" printable PDF.
+- **Progress Tracking:** Universal `localStorage` based state management with robust path normalization for consistent production tracking.
+
+---
+
+## 💻 Local Development
+
+### 1️⃣ Setup
 ```bash
 git clone https://github.com/theRishu/socatlas
 cd socatlas
-```
-
-### 2. Create and activate a virtual environment
-```bash
 python3 -m venv .venv
 source .venv/bin/activate
+pip install -r deps.txt
 ```
 
-### 3. Install dependencies
+### 2️⃣ Run
 ```bash
-python3 -m pip install --upgrade pip
-python3 -m pip install -r deps.txt
-```
-
----
-
-## 💻 Run Locally
-
-### Development mode with hot reload
-Use this while editing markdown content. The site is served at `http://127.0.0.1:8087`.
-```bash
+# Start development server with hot-reload
 sh dev.sh
-# or
-npm run dev
-```
 
-### Production preview on your machine
-Use this when you want to preview the same static output that is deployed. This command builds the site into `./site` and then serves it locally on `http://127.0.0.1:8087`.
-```bash
-sh start.sh
-# or
-npm run preview
-```
-
-### Change the local port
-All run scripts support a custom port:
-```bash
-PORT=3000 sh dev.sh
-PORT=3000 sh start.sh
-```
-
----
-
-## 📦 Production Build
-
-### Create the deployable static site
-This generates the production output in `./site` and syncs the static Vercel directory in `./public`.
-```bash
+# Re-build consolidated guides and question banks
 sh build.sh
-# or
-npm run build:site
 ```
-
-### Deploy output
-After the build finishes, deploy the contents of `./site` to your static hosting platform.
 
 ---
 
-## 🔎 CLI Search
-
+## 🔎 CLI Power Tools
 Search across the **1200 Quick Points** directly from your terminal:
 ```bash
 ./search.sh "firewall"
-./search.sh "incident response"
-# or
-npm run search -- "firewall"
 ```
-
----
-
-## ⚡ Command Reference
-
-```bash
-# one-time setup
-git clone https://github.com/theRishu/socatlas
-cd socatlas
-python3 -m venv .venv
-source .venv/bin/activate
-python3 -m pip install --upgrade pip
-python3 -m pip install -r deps.txt
-
-# local development
-sh dev.sh
-
-# local production preview
-sh start.sh
-
-# production build
-sh build.sh
-
-# quick search
-./search.sh "firewall"
-```
-
----
-
-## 🌟 Key Features
-* **🚨 SOC Alerts & Playbooks:** Step-by-step triage, investigation, and containment workflows for EDR events, Malware, Ransomware, DDoS, Impossible Travel, and Privilege Escalation.
-* **🏴‍☠️ Major Attacks Directory:** Clear technical breakdowns of critical attack vectors (SQLi, XSS, CSRF, SSRF, ARP Spoofing) mapped directly across the OSI Model.
-* **⚡ 1200 Quick Points:** Rapid-revision concepts spanning Cloud Security, Cryptography, Defensive Frameworks (NIST/ISO), and SIEM tooling.
-* **🌐 Security Fundamentals:** Beautifully structured breakdowns of the CIA Triad, Zero Trust architecture, and core network protocols.
-
----
-
-## ☁️ Deployment & CI/CD
-SOCAtlas is optimized for:
-- **Vercel**: Serves the committed `public/` directory as a static deployment with no build step and no runtime functions.
-- **GitHub Pages**: Deployed via GitHub Actions to the `gh-pages` branch on every push to `main`.
 
 ---
 
 ## 🤝 Contributing
-We believe that cybersecurity knowledge should be universally accessible. Whether it's adding new major attack walkthroughs, refining SOC alert triage steps, or expanding the quick revision points, pull requests are heavily encouraged!
+We believe that cybersecurity knowledge should be universally accessible. PRs are encouraged for:
+- New **Major Attack** walkthroughs.
+- Refining **SOC Alert** triage steps.
+- Expanding the **1200 Quick Points** database.
+
+---
+<div align="center">
+  <p>Built for Analysts. Powered by the Community.</p>
+</div>

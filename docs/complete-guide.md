@@ -711,6 +711,24 @@ Each alert page includes: what the alert means, what to check as L1, a full spok
     **Learning mode:** Work through the guide pages under Fundamentals, Networking, Threats, and Detection. They give you context, worked examples, and structured explanations.
     **Revision mode:** Switch to the 1200 quick-point pages when you want concise answers you can review in minutes before walking into an interview.
 
+<div id="guide-page-interviews-simulator"></div>
+
+### 🎯 Mock Interview Simulator
+
+Test your technical recall with our interactive interview simulator. This tool pulls from our bank of 1200+ quick revision points to help you practice concise, high-impact answers.
+{ .page-lead }
+
+
+#### How to use the simulator
+
+1. **Think First:** Read the concept and try to define it using the [SOCAtlas Answer Pattern](#guide-page-index).
+2. **Speak Aloud:** Actually say the answer out loud. This builds muscle memory for real interviews.
+3. **Compare:** Reveal our recommended answer. If you covered the definition, mechanism, and example, you've mastered the point.
+4. **Repeat:** Aim for 20-30 questions per session to stay sharp.
+
+!!! tip "Targeted Practice"
+    If you want to focus on a specific domain (like Networking or Cloud), visit that specific [Quick Points page](#guide-page-quick-basics) and use the interactive checkboxes to track your progress manually.
+
 </section>
 
 <section class="pdf-guide-section" data-pdf-section-group="fundamentals" data-pdf-section-title="🏛️ Fundamentals" markdown="1">
