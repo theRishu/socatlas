@@ -5,115 +5,36 @@ site_description: SOCAtlas — 1200 interview-ready cybersecurity quick points, 
 site_author: SOCAtlas
 copyright: "&copy; 2026 SOCAtlas (v3_Manual_Only)"
 
-# ── Theme ────────────────────────────────────────────────────────
 theme:
   name: material
-  logo: assets/logo.png
-  favicon: assets/favicon.ico
-
   palette:
-    - scheme: slate
-      primary: custom
-      accent: custom
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light mode
     - scheme: default
-      primary: custom
-      accent: custom
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
-
-  font:
-    text: Inter
-    code: JetBrains Mono
-
-  icon:
-    repo: fontawesome/brands/github
-    admonition:
-      note: octicons/tag-16
-      tip: octicons/squirrel-16
-      warning: octicons/alert-16
-      danger: octicons/zap-16
-      info: octicons/info-16
-
+      primary: indigo
+      accent: indigo
+    - scheme: slate
+      primary: indigo
+      accent: indigo
   features:
-    # Navigation
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.expand
-    - navigation.indexes
     - navigation.tracking
-    - navigation.top
     - navigation.footer
-    # TOC
-    - toc.follow
-    - toc.integrate
-    # Search
-    - search.suggest
-    - search.highlight
-    - search.share
-    # Content
-    - content.code.copy
-    - content.code.annotate
-    - content.tooltips
-    # Header
-    - header.autohide
+    - navigation.top
 
-# ── Custom Colors ────────────────────────────────────────────────
-extra_css:
-  - assets/theme.css
-  - assets/pdf-builder.css
-  - assets/mobile-overflow-fixes.css
-
-extra_javascript:
-  - assets/pdf-builder.js
-  - assets/mobile-table-cards.js
-
-# ── Plugins ──────────────────────────────────────────────────────
-plugins:
-  - search:
-      lang: en
-
-# ── Social & Repo ────────────────────────────────────────────────
-extra:
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/socatlas
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/socatlas
-    - icon: fontawesome/brands/linkedin
-      link: https://linkedin.com/company/socatlas
-  analytics:
-    provider: google
-    property: G-XXXXXXXXXX
-
-# ── Markdown Extensions ──────────────────────────────────────────
 markdown_extensions:
   - admonition
   - md_in_html
   - tables
   - attr_list
   - def_list
-  - footnotes
   - pymdownx.betterem
   - pymdownx.caret
   - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.smartsymbols
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:
@@ -121,8 +42,18 @@ markdown_extensions:
   - pymdownx.tilde
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator:
-        !!python/name:material.extensions.emoji.to_svg # ── Nav ──────────────────────────────────────────────────────────
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+
+extra_css:
+  - assets/pdf-builder.css
+  - assets/mobile-overflow-fixes.css
+
+extra_javascript:
+  - assets/pdf-builder.js
+  - assets/mobile-table-cards.js
 
 nav:
   - Home: index.md
