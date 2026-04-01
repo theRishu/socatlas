@@ -23,14 +23,10 @@ theme:
         name: Switch to dark mode
   features:
     - navigation.tabs
-    - navigation.tabs.sticky
+
     - navigation.tracking
     - navigation.sections
     - navigation.top
-    - navigation.footer
-    - search.suggest
-    - search.highlight
-    - header.autohide
 
 markdown_extensions:
   - admonition
@@ -61,6 +57,7 @@ plugins:
   - search
 
 extra_css:
+  - assets/site-polish.css
   - assets/pdf-builder.css
   - assets/mobile-overflow-fixes.css
 
