@@ -44,10 +44,6 @@
         <div class="card-badge">🎯 Interview Challenge</div>
         <h3>Knowledge Check</h3>
         <p class="challenge-q">"${question}"</p>
-        <div class="card-footer">
-          <span>Think you know the answer?</span>
-          <a href="/interviews/simulator.html" class="md-button md-button--primary">Test in Simulator</a>
-        </div>
       </div>
     `;
     content.appendChild(card);

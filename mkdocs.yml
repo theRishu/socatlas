@@ -54,11 +54,9 @@ extra_css:
 extra_javascript:
   - assets/pdf-builder.js
   - assets/mobile-table-cards.js
-  - assets/simulator.js
 
 nav:
   - Home: index.md
-  - 🎯 Mock Interview Simulator: interviews/simulator.md
   - 🏛️ Fundamentals:
     - Introduction to Cybersecurity: fundamentals/introduction.md
     - CIA Triad & Founding Principles: fundamentals/cia_triad.md
