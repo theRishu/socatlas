@@ -10,17 +10,16 @@ cd "$ROOT_DIR"
 
 echo "🛡️  Compiling SOCAtlas into ultra-fast HTML..."
 
-if ! python3 -m mkdocs --version &> /dev/null; then
+if ! python3.14 -m mkdocs --version &> /dev/null; then
     echo "📦 Installing build dependencies..."
-    python3 -m pip install --upgrade pip
-    python3 -m pip install -r deps.txt
+    python3.14 -m pip install -r deps.txt --break-system-packages
 fi
 
 echo "📚 Generating complete guide export..."
-python3 scripts/generate_complete_guide.py
+python3.14 scripts/generate_complete_guide.py
 
 echo "🏗️  Building with MkDocs Material..."
-python3 -m mkdocs build -f mkdocs.yml -d "$SITE_DIR"
+python3.14 -m mkdocs build -f mkdocs.yml -d "$SITE_DIR"
 
 # Standard Static Build - No redirection or flattening
 

@@ -6,31 +6,31 @@ site_author: SOCAtlas
 copyright: "&copy; 2026 SOCAtlas (v3_Manual_Only)"
 
 theme:
-  name: windmill
+  name: material
   favicon: assets/favicon.ico
-  # palette:
-  #   - scheme: default
-  #     primary: teal
-  #     accent: teal
-  #     toggle:
-  #       icon: material/weather-sunny
-  #       name: Switch to light mode
-  #   - scheme: slate
-  #     primary: teal
-  #     accent: teal
-  #     toggle:
-  #       icon: material/weather-night
-  #       name: Switch to dark mode
-  # features:
-  #   - navigation.tabs
-  #   - navigation.tabs.sticky
-  #   - navigation.tracking
-  #   - navigation.sections
-  #   - navigation.top
-  #   - navigation.footer
-  #   - search.suggest
-  #   - search.highlight
-  #   - header.autohide
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - header.autohide
 
 markdown_extensions:
   - admonition

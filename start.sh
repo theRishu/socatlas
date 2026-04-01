@@ -9,10 +9,9 @@ cd "$ROOT_DIR"
 echo "🛡️  Preparing SOCAtlas Production-Grade Preview..."
 
 # Ensure dependencies are present for local preview
-if ! python3 -m mkdocs --version &> /dev/null; then
+if ! python3.14 -m mkdocs --version &> /dev/null; then
     echo "📦 Installing preview dependencies..."
-    python3 -m pip install --upgrade pip
-    python3 -m pip install -r deps.txt
+    python3.14 -m pip install -r deps.txt --break-system-packages
 fi
 
 # Release port
@@ -28,4 +27,4 @@ echo "🌐 SOCAtlas living at: http://127.0.0.1:$PORT"
 echo "──────────────────────────────────────────"
 
 # Serve the actual static output directory
-cd site && python3 -m http.server "$PORT" --bind 127.0.0.1
+cd site && python3.14 -m http.server "$PORT" --bind 127.0.0.1
