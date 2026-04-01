@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://socatlas.vercel.app/assets/logo.png" width="120" alt="SOCAtlas Logo">
+  
   <h1>🛡️ SOCAtlas</h1>
   <p><b>The ultimate high-performance cybersecurity training & interview platform.</b></p>
 
